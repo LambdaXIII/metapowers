@@ -1,7 +1,7 @@
 ---
 name: skill-distillator
 description: |
-  将Agent技能文档转化为人类可读的方法论文档。输入技能的SKILL.md和references/目录，输出结构化的方法论文档（README + methodology/ + reference/ + meta/）。
+  将Agent技能文档转化为人类可读的方法论文档。读取技能的SKILL.md（含frontmatter的name/description/metadata）、references/、README.md等文件，输出结构化的方法论文档（README + methodology/ + reference/ + meta/）。
 
   **何时使用**：
   - 用户说"整理技能文档"、"生成方法论"、"把技能输出为文档"
@@ -16,8 +16,8 @@ description: |
 
   **核心能力**：五阶段转化（理解→解构→编排→表达→质检）、类型自适应（纯指令型/混合型）、推断边界标注、源一致性检测。
 metadata:
-  version: 1.2
-  last_updated: 2026-04-24
+  version: 1.4
+  last_updated: 2026-06-17
   author: LambdaXIII
   email: xiii_1991@163.com
 license: LICENSE.md
@@ -137,9 +137,9 @@ license: LICENSE.md
 ### 技能目录
 
 ```
-skills/skill-distillator/
+skill-distillator/
 ├── SKILL.md                    # 主文件（本文件）
-├── DESIGN.md                   # 设计意图
+├── README.md                   # 设计意图与维护参考
 ├── CHANGELOG.md                # 版本历史
 ├── LICENSE.md                  # 许可协议
 └── references/

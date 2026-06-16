@@ -7,3 +7,8 @@ node_modules/
 .opencode/
 .pi/
 .agents/
+.venv/
+.test*/
+.hermes/
+.omp/
+.agents/skills/

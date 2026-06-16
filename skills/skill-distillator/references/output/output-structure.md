@@ -10,7 +10,7 @@
 |-------------|----------|
 | 只有 SKILL.md，且 < 400 行 | 单文件 |
 | 只有 SKILL.md，但 ≥ 400 行 | 多文件 |
-| 有 SKILL.md + 其他文件（references/、examples/、DESIGN.md 等） | 多文件 |
+| 有 SKILL.md + 其他文件（references/、templates/、examples/、README.md 等） | 多文件 |
 
 ---
 
@@ -61,7 +61,7 @@
 ...
 
 ## 设计笔记
-（如有 DESIGN.md，补充设计思想）
+（如有 README.md，补充设计思想）
 ```
 
 **章节说明**：
@@ -94,7 +94,7 @@
 
 **内容来源**：
 - SKILL.md 中的"核心定位"、"指导思想"
-- DESIGN.md 中的"核心思想"
+- README.md 中的"设计初衷"、"核心思想"
 
 **处理原则**：
 - 解释"为什么这样设计"
@@ -124,7 +124,7 @@
 
 **内容来源**：
 - SKILL.md 中的"触发决策规则"、"边界与约束"
-- DESIGN.md 中的"关键决策"
+- README.md 中的"关键决策"
 
 **处理原则**：
 - 明确什么情况下应该/不应该使用
@@ -177,7 +177,7 @@
 
 **目标**：设计笔记
 
-**内容来源**：DESIGN.md
+**内容来源**：README.md
 
 **处理原则**：
 - 保留设计初衷和关键决策
@@ -189,10 +189,12 @@
 
 | 源文件/目录 | 处理方式 | 输出位置 | 处理原则 |
 |------------|----------|----------|----------|
-| SKILL.md | 拆解为核心概念、工作流程、决策规则 | methodology/ + README.md | 提取 WHY/HOW/WHAT |
-| DESIGN.md | 提取设计思想和关键决策 | meta/design-notes.md + methodology/core-concepts.md | 深入心智模型层 |
+| SKILL.md frontmatter | 提取 name、description、metadata | README.md + meta/ | name 为标题，description 为一句话定义，metadata 为版本信息 |
+| SKILL.md body | 拆解为核心概念、工作流程、决策规则 | methodology/ + README.md | 提取 WHY/HOW/WHAT |
+| README.md | 提取设计思想和关键决策 | meta/design-notes.md + methodology/core-concepts.md | 深入心智模型层 |
 | CHANGELOG.md | 整理为版本历史 | meta/changelog.md | 保留摘要 |
 | references/ | 每个文件转换为人类可读版 | reference/guide-xxx.md | 视角转换，保留完整内容 |
+| templates/ | 转换为人类可读版使用说明 | reference/guide-templates.md（或合入 workflow.md） | 说明模板用途、使用场景和关键参数 |
 | examples/ | 选择典型示例汇总 | reference/examples.md | 选择 2-3 个典型 |
 
 ---
@@ -203,10 +205,14 @@
 |------|----------|
 | 技能没有 references/ | 跳过 reference/ 目录生成 |
 | 技能没有 examples/ 且 SKILL.md 中无可提取示例 | 不生成 examples.md，在 README.md 导航中说明该文件不存在 |
-| 技能没有 DESIGN.md | 仅从 SKILL.md 推断设计思想，输出中标注"设计笔记基于推断" |
-| DESIGN.md 存在但内容空洞（可提取的元认知知识 < 5 条） | 视同"不存在"，从 SKILL.md 推断设计思想，输出中标注"设计笔记部分基于推断" |
+| 技能没有 README.md（项目规范可选） | 仅从 SKILL.md body 和 metadata 推断设计思想，输出中标注"设计笔记基于推断" |
+| README.md 存在但内容空洞（可提取的元认知知识 < 5 条） | 视同"不存在"，从 SKILL.md 推断设计思想，输出中标注"设计笔记部分基于推断" |
+| 技能没有 CHANGELOG.md（项目规范必需但目标技能可能不含） | 从 SKILL.md frontmatter metadata.version 提取版本信息；如无 metadata，标注"版本历史不可用" |
+| 技能没有 templates/ | 跳过模板相关输出 |
+| 技能仅有 templates/ 但无 references/ | 模板内容合入 workflow.md 的"模板使用"章节，不单独生成 guide 文件 |
 | references/ > 10个 | 按核心能力域分组，每组一个 guide 文件（能力域来自解构阶段的能力清单） |
 | 技能版本为 1.0（无变更历史） | changelog.md 可简化或标注"初始版本" |
+| SKILL.md 无 metadata 字段（仅符合 skill-creator 标准） | 不推断版本和作者信息，相关字段留空或标注"不可用" |
 
 ---
 

@@ -30,9 +30,16 @@
 
 ### 步骤1：读取技能文件
 
-- 读取被蒸馏技能的 SKILL.md
-- 读取 DESIGN.md（如有）
-- 读取 CHANGELOG.md（了解版本历史）
+按照技能标准的定义，技能目录包含以下文件：
+
+- **SKILL.md**（skill-creator 标准必需）：解析 YAML frontmatter，提取 `name`（技能标识）、`description`（触发描述与核心定位）和 `metadata`（如有：version、last_updated、author）。frontmatter 中的 `description` 是技能的自述摘要，包含"做什么"和"何时使用"，是理解 WHY/WHAT 的首要来源
+- **references/**（skill-creator 标准可选）：按需加载的参考文档目录
+- **scripts/**、**assets/**（skill-creator 标准可选）：可执行代码与媒体资源，蒸馏过程不涉及
+- **README.md**（项目规范可选）：设计意图与维护参考，如有则读取
+- **CHANGELOG.md**（项目规范必需）：版本历史
+- **templates/**（项目规范可选）：提示词或文档模板，如有则读取
+
+> **注意**：skill-creator 标准仅要求 SKILL.md（含 frontmatter 的 name + description）和可选的 references/scripts/assets。README.md、CHANGELOG.md、templates/ 是本项目的追加规范。蒸馏时不可假设目标技能必定包含这些追加文件——仅有 skill-creator 标准文件时也能正常蒸馏。
 
 ### 步骤2：应用黄金圈法则
 
@@ -76,16 +83,22 @@
 | 检查项 | 说明 |
 |--------|------|
 | SKILL.md 内部一致性 | 流程描述与约束声明是否矛盾 |
-| SKILL.md vs DESIGN.md | 核心描述是否一致 |
+| SKILL.md frontmatter vs body | description 与正文定位是否一致 |
+| SKILL.md vs README.md | 核心描述是否一致（仅当 README.md 存在） |
 | SKILL.md vs references/ | 关键信息是否一致 |
+| SKILL.md vs templates/ | 模板内容与流程描述是否一致（仅当 templates/ 存在） |
+| metadata.version vs CHANGELOG.md | 版本号是否对应（仅当 metadata 存在） |
 
 发现矛盾时的裁决策略：
 
 | 矛盾类型 | 裁决策略 | 说明 |
 |----------|----------|------|
 | SKILL.md 内部矛盾 | 以约束部分为准 | 约束通常比流程更审慎 |
-| SKILL.md vs DESIGN.md | 以 SKILL.md 为准 | SKILL.md 是运行时主文件 |
+| frontmatter vs body 矛盾 | 以 body 为准，frontmatter description 是摘要 | body 是完整表述 |
+| SKILL.md vs README.md | 以 SKILL.md 为准 | SKILL.md 是运行时主文件 |
 | SKILL.md vs references/ | 以 SKILL.md 为准 | references/ 是辅助材料 |
+| SKILL.md vs templates/ | 以 SKILL.md 为准 | 模板是执行辅助，可能滞后 |
+| metadata.version vs CHANGELOG | 以 CHANGELOG.md 为准 | CHANGELOG 是版本权威来源 |
 | 数值型矛盾 | 并列呈现，标注矛盾来源 | 数值无法自动裁决 |
 
 ### 步骤5：输出理解摘要
@@ -96,6 +109,10 @@
 
 ```markdown
 ## 理解摘要
+
+### 元信息
+- name：...
+- metadata（如有）：version=..., last_updated=..., author=...
 
 ### 黄金圈
 - WHY：...
@@ -122,13 +139,17 @@
 
 ### 源一致性
 - 内部一致性：[一致 / 存在矛盾：...]
-- 与 DESIGN.md 一致性：[一致 / 存在矛盾：...]
+- frontmatter vs body：[一致 / 存在矛盾：...]
+- 与 README.md 一致性：[一致 / 不存在 / 存在矛盾：...]
 - 与 references/ 一致性：[一致 / 存在矛盾：...]
+- 与 templates/ 一致性：[一致 / 不存在 / 存在矛盾：...]
+- metadata vs CHANGELOG：[一致 / 不存在 / 存在矛盾：...]
 - 裁决结果：...
 ```
 
 ## 质量检查
 
+- [ ] SKILL.md frontmatter 解析了吗？（name、description、metadata）
 - [ ] 能一句话说明 WHY 吗？
 - [ ] 核心机制（HOW）清晰吗？
 - [ ] 具体功能（WHAT）完整吗？
@@ -138,3 +159,4 @@
 - [ ] 技能类型识别了吗？
 - [ ] 源一致性扫描了吗？
 - [ ] 发现的矛盾有裁决策略吗？
+- [ ] 项目追加文件（README.md、CHANGELOG.md、templates/）的存在性确认了吗？

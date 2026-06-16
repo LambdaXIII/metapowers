@@ -1,5 +1,41 @@
 # CHANGELOG
 
+## v1.4 (2026-06-17)
+
+技能探索方式对齐 skill-creator 标准：区分 skill-creator 标准文件与 metapowers 项目追加文件，补全 frontmatter 解析和 templates/ 处理。
+
+### 新增
+
+- [新增] phase-01 步骤1：明确区分 skill-creator 标准文件（SKILL.md、references/、scripts/、assets/）与项目追加文件（README.md、CHANGELOG.md、templates/）
+- [新增] phase-01 步骤1：SKILL.md frontmatter 解析——提取 name、description、metadata
+- [新增] phase-01 步骤4.6：新增 frontmatter vs body 一致性检查、templates/ 一致性检查、metadata.version vs CHANGELOG 一致性检查
+- [新增] phase-01 输出格式：新增"元信息"小节
+- [新增] phase-02 步骤2：知识来源扩展——含 SKILL.md frontmatter、templates/、CHANGELOG.md
+- [新增] output-structure.md 文件处理规则：SKILL.md frontmatter 和 templates/ 的处理方式与输出位置
+- [新增] output-structure.md 边界情况：templates/ 不存在、仅有 templates 无 references、无 CHANGELOG、无 metadata
+- [新增] phase-01 质量检查：frontmatter 解析检查项、项目追加文件存在性检查项
+
+### 修改
+
+- [修改] phase-01 步骤1：从简单罗列"读取 SKILL.md、README.md、CHANGELOG.md"改为按标准来源分类说明
+- [修改] phase-01 步骤4.6 一致性检查：新增 frontmatter vs body、templates/、metadata vs CHANGELOG 三项
+- [修改] phase-01 步骤4.6 裁决策略：新增 frontmatter vs body、SKILL.md vs templates/、metadata vs CHANGELOG 三条裁决规则
+- [修改] phase-01 输出格式：源一致性新增 frontmatter vs body、templates/、metadata vs CHANGELOG 三行
+- [修改] phase-02 步骤2：知识类型来源从"SKILL.md、references/、examples/"扩展为按文件逐一分类
+- [修改] phase-02 输出格式：知识图谱来源列从 examples/ 扩展为含 frontmatter、templates/、CHANGELOG.md
+- [修改] output-structure.md 输出形态决策：第三行增加 templates/
+- [修改] SKILL.md description：明确"读取技能的 SKILL.md（含 frontmatter）"
+- [修改] 版本号从 v1.3 升至 v1.4
+
+## v1.3 (2026-06-17)
+
+项目规范对齐：DESIGN.md 更名为 README.md，与 metapowers 项目 Skill 规范保持一致。
+
+### Changed
+
+- [修改] DESIGN.md → README.md：所有文件内的引用同步更新
+- [修改] README.md 标题从“DESIGN”改为与内容匹配的设计文档标题
+
 ## v1.1 (2026-04-24)
 
 边界场景增强，基于5种边界场景推演评估。

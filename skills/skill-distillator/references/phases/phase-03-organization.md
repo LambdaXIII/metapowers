@@ -34,7 +34,7 @@
 |-------------|----------|
 | 只有 SKILL.md，且 < 400 行 | 单文件 |
 | 只有 SKILL.md，但 ≥ 400 行 | 多文件 |
-| 有 SKILL.md + 其他文件（references/、examples/、DESIGN.md 等） | 多文件 |
+| 有 SKILL.md + 其他文件（references/、examples/、README.md 等） | 多文件 |
 
 ### 步骤2：应用 Diátaxis 分类
 
@@ -81,7 +81,7 @@
 | 文件 | Diátaxis 类型 | 内容来源 | 阅读层级 |
 |------|---------------|----------|----------|
 | README.md | Tutorials | SKILL.md 核心定位 | L1 |
-| methodology/core-concepts.md | Explanation | SKILL.md + DESIGN.md | L2 |
+| methodology/core-concepts.md | Explanation | SKILL.md + README.md | L2 |
 | methodology/workflow.md | How-to | SKILL.md 流程 | L3 |
 | ... | ... | ... | ... |
 
