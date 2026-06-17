@@ -6,7 +6,7 @@ description: >-
   knowledge→combination, opinions→disputes, data→methodology) →
   deliver report with sources independent of conclusions (Phase 4).
   Use when thorough investigation matters more than speed.
-version: "2.0.0"
+version: "2.3.0"
 last_updated: "2026-06-18"
 author: "Ĉalio"
 ---
@@ -26,12 +26,16 @@ For simple fact lookups, use web-search-protocol instead. The two skills load to
 | `references/workflow.md` | Phase 0（话题确认）→ Phase 1（线索起点）→ Phase 2（纯收集，记录URL）→ Phase 3（按资料性质评估：事实→置信度，知识→组合，意见→争议，数据→溯源）→ Phase 4（整理报告，资料不被结论覆盖） | **Always** |
 | `references/creative-work.md` | Domain-specific strategies for film, anime, games, books | When researching creative works — ideally before or alongside Phase 0 |
 | `references/person-biography.md` | Domain-specific strategies for public figures | When researching people — ideally before or alongside Phase 0 |
+| `references/policy-law.md` | Domain-specific strategies for policies, laws, regulations | When researching policies or laws — ideally before or alongside Phase 0 |
+| `references/academic-research.md` | Strategies for academic and highly specialized topics | When researching academic or highly specialized topics — ideally before or alongside Phase 0 |
+| `references/controversial-topics.md` | Strategies for polarizing or controversial topics | When researching polarizing or controversial topics |
+| `references/historical-events.md` | Strategies for historical events | When researching historical events |
+| `references/competitive-research.md` | Strategies for competitive and market landscape research | When researching competitors, market landscapes, or doing comparative product/company analysis |
 | `templates/report-template.md` | 研究报告模板，结论前置。章节以名称定位（无编号）：研究概要→研究结论→资料来源→交叉比对→追踪链索引→信息空白→参考资料→元知识。结论可向后追溯至来源URL | Before writing the report |
-| `references/domain-reference-design-principles.md` | 领域参考文档的设计原则与自检清单——来源组织、维度梯度、收束机制、加载时机 | When adding a new domain reference to this skill |
 
 ## Instructions
 
-1. Make a preliminary judgment: does the research topic match any domain reference listed in the Content Index? If so, load it now. If unsure, skip — you can load one later if you discover a match during research
+1. Make a preliminary judgment: does the research topic match any domain references listed in the Content Index? If so, load all matching ones now. If unsure, skip — you can load one later if you discover a match during research
 2. Read `references/workflow.md` and follow Phase 0 → Phase 1 → Phase 2 → Phase 3 → Phase 4. Phase 2 collects + records URLs (no judgment). Phase 3 evaluates by information type. Phase 4 compiles the report — sources independent of conclusions
 
 ## What This Skill Is NOT
