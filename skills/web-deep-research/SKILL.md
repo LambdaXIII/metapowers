@@ -6,7 +6,7 @@ description: >-
   knowledge→combination, opinions→disputes, data→methodology) →
   deliver report with sources independent of conclusions (Phase 4).
   Use when thorough investigation matters more than speed.
-version: "2.3.0"
+version: "2.3.1"
 last_updated: "2026-06-18"
 author: "Ĉalio"
 ---
@@ -17,7 +17,19 @@ Information is a network, not a list. The first search result is a clue, not an 
 
 **Core mechanism:** Before any search, clarify what you're actually researching (Phase 0). Then trace clue chains — collect, read, summarize, connect, record URLs (Phase 2 — no judgment yet). In Phase 3, cross-reference everything by information type: facts get confidence assessment, knowledge gets systematic combination, opinions get dispute analysis, data gets methodology tracing. Discoveries that raise new questions loop back to Phase 2. Phase 4 delivers a complete research report where source materials stand independent of conclusions — readers can judge without reading conclusions.
 
-For simple fact lookups, use web-search-protocol instead. The two skills load together — this one for research strategy, that one for tool execution.
+> **Delegation:** This skill involves multiple search phases and many tool calls.
+> Consider delegating to a sub-agent when the research topic is self-contained —
+> the sub-agent can execute Phase 0–4 independently without blocking the main conversation.
+> If the topic depends heavily on conversation context (prior decisions, nuanced
+> user preferences discussed earlier), keep the research in the main agent where
+> full context is available. Judge based on how much the research needs to know
+> about what came before it.
+>
+> When delegating, pass only the task description — do **not** read this skill's
+> files and relay their content to the sub-agent. The sub-agent should load the
+> skill itself and follow its workflow.
+
+For simple fact lookups where a quick answer suffices, this methodology is overkill — a direct search without the Phase structure will serve better.
 
 ## Content Index
 
