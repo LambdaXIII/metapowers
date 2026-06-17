@@ -4,6 +4,10 @@
 
 ---
 
+## 进入条件
+
+- 无前置条件——这是第一阶段的强制起点。其他阶段从 phase-02 开始均有进入条件。
+
 ## 目标
 
 建立对技能的全面认知，回答：这个技能是什么？为什么存在？为谁服务？如何使用？
@@ -40,6 +44,8 @@
 - **templates/**（项目规范可选）：提示词或文档模板，如有则读取
 
 > **注意**：skill-creator 标准仅要求 SKILL.md（含 frontmatter 的 name + description）和可选的 references/scripts/assets。README.md、CHANGELOG.md、templates/ 是本项目的追加规范。蒸馏时不可假设目标技能必定包含这些追加文件——仅有 skill-creator 标准文件时也能正常蒸馏。
+
+语言识别：确定 SKILL.md 正文的主要语言（通过扫描前 50 行非 frontmatter 内容）。记录语言标签（如 `zh-CN`、`en-US`），此标签在整个蒸馏流程中不可变更。输出文件必须使用相同语言。
 
 ### 步骤2：应用黄金圈法则
 
@@ -113,6 +119,7 @@
 ### 元信息
 - name：...
 - metadata（如有）：version=..., last_updated=..., author=...
+- 语言：zh-CN / en-US / ...
 
 ### 黄金圈
 - WHY：...
@@ -147,16 +154,10 @@
 - 裁决结果：...
 ```
 
-## 质量检查
+## 阶段完成确认
 
-- [ ] SKILL.md frontmatter 解析了吗？（name、description、metadata）
-- [ ] 能一句话说明 WHY 吗？
-- [ ] 核心机制（HOW）清晰吗？
-- [ ] 具体功能（WHAT）完整吗？
-- [ ] 冰山模型四个层次都覆盖了吗？
-- [ ] 5W1H 六个维度都覆盖了吗？
-- [ ] 理解摘要忠实于原技能吗？
-- [ ] 技能类型识别了吗？
-- [ ] 源一致性扫描了吗？
-- [ ] 发现的矛盾有裁决策略吗？
-- [ ] 项目追加文件（README.md、CHANGELOG.md、templates/）的存在性确认了吗？
+- [ ] 本阶段所有步骤已执行
+- [ ] 输出格式已填写完整
+- [ ] 质量检查全部通过
+- [ ] 语言标签已记录
+- [ ] 下一阶段：phase-02-deconstruction.md
