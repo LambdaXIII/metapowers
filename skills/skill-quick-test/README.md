@@ -61,16 +61,6 @@
 
 ---
 
-## 与相关技能的关系
-
-| 技能 | 关系 | 说明 |
-|------|------|------|
-| skill-creator | 互补 | creator 验证功能正确性，quick-test 验证可用性 |
-| agent-prompt-design | 被测 | quick-test 可测试 agent-prompt-design 的可用性 |
-| cx-skill-test | 不同 | cx-skill-test 是功能测试，quick-test 是可用性推演 |
-
----
-
 ## 维护注意事项
 
 ### 错误模式清单（error-patterns.md）
@@ -87,6 +77,3 @@ Context 模板是主代理与子代理之间的唯一契约。修改时注意：
 - 可选字段标注 `← 可选`，必填字段不标注
 - Full 模式的约束覆盖（写入权限）在 execution-full.md 中定义，不在模板中
 
-### 版本号
-
-Follow SemVer。修改 context 模板结构或报告格式 = minor 版本。修错别字/措辞 = patch。

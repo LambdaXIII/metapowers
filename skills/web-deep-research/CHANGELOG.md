@@ -4,11 +4,17 @@ All notable changes to this skill will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [2.3.2] - 2026-06-17
+
+### Fixed
+- **frontmatter 结构修正**：`version`、`last_updated`、`author` 从顶层字段移至 `metadata:` 下级，值均为字符串
+
 ## [2.3.1] - 2026-06-18
 
 ### Changed
 - 简介区：删除硬编码技能引用，新增委派子代理建议（`>` 块引用醒目，按上下文依赖程度自判，只传任务描述不转述技能内容）
 - 边界声明改为功能描述而非点名
+
 
 ## [2.3.0] - 2026-06-18
 

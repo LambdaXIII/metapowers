@@ -2,13 +2,10 @@
 name: web-entity-search
 description: >-
   Answer "what is X?" questions by searching the web for named entities.
-  Use when the user asks about a specific person, organization, creative
-  work, product, event, or concept — this provides a quick structured
-  overview: more thorough than a bare search, far lighter than a research
-  report.
-version: "1.3.0"
-last_updated: "2026-06-18"
-author: "Ĉalio"
+metadata:
+  version: "1.3.1"
+  last_updated: "2026-06-17"
+  author: "Ĉalio"
 ---
 
 # Web Entity Search

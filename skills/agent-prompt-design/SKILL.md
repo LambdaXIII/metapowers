@@ -16,9 +16,9 @@ description: |
   - 纯代码实现问题 → 本技能关注提示词文本设计
 
 metadata:
-  version: 1.0.1
-  last_updated: 2026-06-17
-  author: Ĉalio
+  version: "1.0.2"
+  last_updated: "2026-06-17"
+  author: "Ĉalio"
 ---
 
 # agent-prompt-design：Agent 系统提示词设计方法论

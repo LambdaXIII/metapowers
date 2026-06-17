@@ -6,9 +6,10 @@ description: >-
   knowledge→combination, opinions→disputes, data→methodology) →
   deliver report with sources independent of conclusions (Phase 4).
   Use when thorough investigation matters more than speed.
-version: "2.3.1"
-last_updated: "2026-06-18"
-author: "Ĉalio"
+metadata:
+  version: "2.3.2"
+  last_updated: "2026-06-17"
+  author: "Ĉalio"
 ---
 
 # Web Deep Research

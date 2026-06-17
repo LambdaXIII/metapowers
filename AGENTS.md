@@ -47,13 +47,24 @@
 
 ### metadata 字段（必须）
 
-skill-creator 标准要求 `name` 和 `description`，本项目额外要求 `metadata` 中包含：
+skill-creator 标准要求 `name` 和 `description`，本项目额外要求 `metadata` 字段，其中包含以下子字段（**值必须为字符串**）：
 
-| 字段 | 示例 |
-|------|------|
-| `version` | `1.0.0` |
-| `last_updated` | `2026-06-17` |
-| `author` | `Ĉalio` |
+```yaml
+---
+name: my-skill
+description: 一句话描述技能的用途和触发条件
+metadata:
+  version: "1.0.0"
+  last_updated: "2026-06-17"
+  author: "Ĉalio"
+---
+```
+
+| 子字段 | 说明 | 值类型 |
+|--------|------|--------|
+| `version` | 语义化版本号 | 字符串，如 `"1.0.0"` |
+| `last_updated` | 最后更新日期 | 字符串，ISO 8601 日期格式 `"YYYY-MM-DD"` |
+| `author` | 作者标识 | 字符串 |
 
 ### CHANGELOG.md（必须）
 
@@ -61,12 +72,20 @@ skill-creator 标准要求 `name` 和 `description`，本项目额外要求 `met
 
 ### README.md（可选，给人读的）
 
-与 SKILL.md（给 Agent 读的指令）互补：
-- 设计意图：为什么这样设计？
-- 关键架构决策和取舍
-- 维护注意事项
+README.md 是技能的**设计锚定文档**——介绍技能的存在理由和设计思想，帮助后来者（包括未来的自己）理解"为什么长这样"。
 
-> **README.md 和 CHANGELOG.md 不是技能标准文件。** 它们是开发过程中的参考文件，仅供人类阅读。技能的标准文件（SKILL.md、references/、scripts/、assets/、templates/）中**不应引用或引导加载** README.md 和 CHANGELOG.md。
+**应当包含**：
+- 设计意图：这个技能解决什么问题？为什么需要它？
+- 关键架构决策：重要的取舍及其理由（如"为什么拆成 references/ 和 templates/"、"为什么用 X 而非 Y"）
+- 措辞风格约定：技能中一致的用语选择及其原因
+- 维护注意事项：修改时需要注意的坑、耦合点、不变量
+
+**不得包含**：
+- 版本号或版本历史——版本信息在 frontmatter `metadata.version` 和 `CHANGELOG.md` 中，README 不应随每次发版更新
+- 文件目录树——SKILL.md 正文已包含，重复是维护负担
+- SKILL.md 中已有的内容索引、触发规则、执行流程——README 解释"为什么"，SKILL.md 定义"怎么做"，各司其职
+
+> 好的 README 只在设计发生实质性变化时才更新。如果一个修改只触及实现细节而不改变设计意图，README 不受影响。
 
 ### templates/ 目录
 

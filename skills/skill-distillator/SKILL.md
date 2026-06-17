@@ -16,10 +16,10 @@ description: |
 
   **核心能力**：五阶段转化（理解→解构→编排→表达→质检）、类型自适应（纯指令型/混合型）、推断边界标注、源一致性检测。
 metadata:
-  version: 1.5
-  last_updated: 2026-06-17
-  author: LambdaXIII
-  email: xiii_1991@163.com
+  version: "1.5.1"
+  last_updated: "2026-06-17"
+  author: "LambdaXIII"
+  email: "xiii_1991@163.com"
 license: LICENSE.md
 ---
 

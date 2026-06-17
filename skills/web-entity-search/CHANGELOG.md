@@ -2,6 +2,11 @@
 
 所有重要变更记录。格式遵循 [Keep a Changelog](https://keepachangelog.com/)。
 
+## [1.3.1] — 2026-06-17
+
+### Fixed
+- **frontmatter 结构修正**：`version`、`last_updated`、`author` 从顶层字段移至 `metadata:` 下级，值均为字符串
+
 ## [1.3.0] — 2026-06-18
 
 ### Changed
@@ -11,6 +16,7 @@
 - **参考资料整合**：模板中"来源"和"扩展线索"合并为一个「参考资料」章节
 - 新增委派子代理建议（简介区，`>` 块引用醒目）：简单搜索强烈委派，只传任务描述不转述技能内容
 - Content Index 新增 workflow.md 条目
+
 
 ## [1.2.0] — 2026-06-18
 

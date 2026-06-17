@@ -54,25 +54,6 @@
 - **按信息需求（"去哪儿找什么"）**——适用法规研究，"条文的唯一来源是官方数据库"比"全国人大发布的信息"更直接有用
 - **学术研究不适合按来源分类**——跨学科、跨来源性质差异太大，按"获取途径"（摘要、综述、同行讨论）组织更实用
 
-## 文件结构
-
-```
-web-deep-research/
-├── SKILL.md                  ← 给 Agent 读的入口：Content Index + Instructions
-├── CHANGELOG.md              ← 变更记录（Keep a Changelog 格式）
-├── README.md                 ← 你正在读的文件（给人看的）
-├── references/
-│   ├── workflow.md              ← Phase 0-4 完整流程
-│   ├── creative-work.md         ← 创意作品领域特化
-│   ├── person-biography.md      ← 公众人物领域特化
-│   ├── policy-law.md            ← 政策/法规领域特化
-│   ├── academic-research.md     ← 学术/高专业性话题特化
-│   ├── controversial-topics.md  ← 争议性话题特化
-│   ├── historical-events.md     ← 历史事件特化
-│   ├── competitive-research.md  ← 竞品/市场横向对比特化
-└── templates/
-    └── report-template.md       ← 研究报告模板
-```
 
 ## 维护指南
 
