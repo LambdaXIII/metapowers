@@ -5,6 +5,8 @@
 > 
 > 📍 本文件是 [agent-prompt-design skill](../SKILL.md) 的参考文件。主入口和决策树请见 SKILL.md。
 
+
+> **术语说明**：本文件中的「工具」（Tool）特指 Agent 可调用的 **API 函数**（function calling / tool use），包括搜索、计算、外部系统交互等。不包括业务层面的软件系统（如 CRM、工单平台、知识库管理系统）。
 ## 目录
 
 1. [工具作为契约](#1-工具作为契约)

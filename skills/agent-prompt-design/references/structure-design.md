@@ -83,7 +83,10 @@ You are a customer support specialist for an e-commerce platform.
 
 ### 2.0 先选模型，再选标签
 
-标签选择取决于目标模型——不同模型对标记格式的响应存在显著差异。如果你还没选定模型，先阅读 [model-specific.md](model-specific.md) 了解各厂商差异。
+标签选择取决于目标模型——不同模型对标记格式的响应存在显著差异。
+
+- **已选定模型** → 阅读 [model-specific.md](model-specific.md) 了解标签偏好
+- **未选定或需通用** → 使用 Markdown 标题（`##`、`###`），所有主流模型都支持
 
 | 目标模型 | 首选标签 | 原因 |
 |---------|---------|------|
@@ -423,7 +426,9 @@ When given a complex request, explicitly break it down:
 
 ### 组件 5: Environment & Context Awareness
 
-**动态系统信息注入——让 Agent 知道它运行的环境。**
+**动态环境信息注入——让 Agent 知道它运行的环境。**
+
+> **术语区分**：此处的"注入"指将运行时环境信息（时间、平台、用户身份等）写入 Agent 上下文的技术操作，与安全领域的"提示注入"（Prompt Injection，一种攻击手法）是完全不同的概念。
 
 这是 Agent 了解「我在哪」的信息基础。没有环境感知，Agent 可能会尝试系统上不存在的操作（如在 Windows 上运行 `apt-get`，或在生产环境执行 `rm -rf`）。
 

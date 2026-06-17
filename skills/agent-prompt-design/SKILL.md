@@ -16,7 +16,7 @@ description: |
   - 纯代码实现问题 → 本技能关注提示词文本设计
 
 metadata:
-  version: 1.0.0
+  version: 1.0.1
   last_updated: 2026-06-17
   author: Ĉalio
 ---
@@ -70,7 +70,8 @@ metadata:
 ├── 从零设计系统提示词
 │   → structure-design.md（结构框架）
 │   → content-writing.md（编写指令正文）
-│   → tool-design.md（如果需要工具）
+│   → tool-design.md（如果需要定义工具（即 API 函数调用，非业务系统））
+│   → safety.md（安全是设计起点，不是部署终点）
 │   → templates/ 选起点模板
 │
 ├── 已有 Agent，行为异常
@@ -78,6 +79,7 @@ metadata:
 │   → 定位问题 → 加载对应 reference 修复
 │   → 用自查清单验证修复效果
 │
+│   （如异常与安全相关 → 先走下方「安全审查」分支，再回来诊断）
 ├── 准备生产部署 / 安全审查
 │   → safety.md（必读：注入防御 + 三层边界）
 │   → operations.md（如需团队协作和版本管理）
@@ -96,6 +98,14 @@ metadata:
 │   → 回归测试 → operations.md §3（至少 20 个测试用例）
 │   → 安全审查 → safety.md §6（三层边界需重新校准）
 │   ✅ 迁移完成后自查：标签、铁律、工具、推理策略、安全边界五维全覆盖
+│
+│   **迁移检查清单（按顺序逐项完成）：**
+│   □ 1. 标签结构 → model-specific.md 对比 + structure-design.md §2 调整
+│   □ 2. 指令写法 → content-writing.md 复查五条铁律
+│   □ 3. 工具协议 → tool-design.md 检查函数调用兼容性
+│   □ 4. 推理策略 → reasoning-models-2026.md（如适用）
+│   □ 5. 回归测试 → operations.md §3（至少 20 个用例）
+│   □ 6. 安全边界 → safety.md §6 三层边界重新校准
 │
 ├── 想深入理解理论基础
 │   → context-engineering.md
@@ -145,4 +155,4 @@ metadata:
 
 ### 适用模型
 
-覆盖 Claude 4.x、Gemini 3.x、GPT-5.x / o-series、Grok 4.x 及同等能力的前沿模型。对旧模型（GPT-3.5、Claude 2 等）部分策略不适用。
+覆盖 Claude 4.6+、Gemini 3.x、GPT-5.x / o-series、Grok 4.x 及同等能力的前沿模型。对旧模型（GPT-3.5、Claude 2 等）：本技能的核心策略面向 2026 前沿模型。旧模型用户请参考各 reference 文件中标注了适用版本的策略，未标注的默认为前沿模型专属。

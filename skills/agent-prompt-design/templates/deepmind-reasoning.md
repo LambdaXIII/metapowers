@@ -84,9 +84,9 @@ Before taking any action (tool calls OR user responses), you MUST methodically r
 - Complex multi-step agents where a wrong action is costly or irreversible
 - Agents that chain 5+ tool calls with interdependent results
 
-### ❌ When NOT to use this template
+### ❌ When NOT to use this template (full 9-step)
 - **Simple single-step tasks** (e.g., "summarize this text") — the 9-step overhead wastes tokens and latency
-- **Models with native strong reasoning** (e.g., Claude 4.6 with Adaptive Thinking = high, GPT-5.4 Reasoner) — adding external reasoning on top of internal reasoning can harm performance (see SurePrompts 2026)
+- **Reasoning models apply here *only* to the full 9-step:** native reasoning + full external reasoning can interact unpredictably (see SurePrompts 2026). If your target is a reasoning model, skip to the 🪶 Lightweight version below — it provides just enough structure without competing with the model's own reasoning.
 - **Real-time conversational agents** where latency < 1s is required
 
 ### ⚠️ Token cost warning
@@ -94,16 +94,11 @@ This template adds ~400-600 tokens to every prompt. For high-traffic agents, con
 - Using the lightweight version below
 - Applying it only to specific "high-risk" sub-workflows rather than globally
 
-### 🪶 Lightweight version (4-step minimal)
-For scenarios where full 9-step is too heavy but some structured reasoning is needed:
+### 🧠 For reasoning model targets
+If your agent uses a model with native strong reasoning (DeepMind Gemini 3 Pro, Claude Opus, GPT-5.4 Reasoner, etc.):
+- **Do NOT use the full 9-step version above** — it may interfere with the model's internal reasoning.
+- **Use the 🪶 Lightweight 4-step version below** — it gives just enough structural guardrails (dependency ordering, outcome evaluation, persistence strategy, response inhibition) without duplicating or competing with the model's native reasoning.
+→ Jump directly to *Lightweight version* below.
 
-```text
-You are a strong reasoner and planner.
-
-Before taking any action, you MUST reason about:
-
-1. **LOGICAL DEPENDENCIES** — Policy > Order > Prerequisites > Preferences. Resolve conflicts by priority.
-2. **OUTCOME EVALUATION** — Does the latest observation require plan changes? Adapt dynamically.
-3. **PERSISTENCE** — Transient errors → retry. Other errors → change strategy. Don't repeat failures.
-4. **INHIBIT RESPONSE** — Only act after completing ALL reasoning above.
-```
+### 🪶 Lightweight version (4-step — for reasoning models)
+For reasoning models, or scenarios where full 9-step is too heavy but some structured reasoning is still needed:
