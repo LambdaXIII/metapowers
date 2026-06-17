@@ -12,3 +12,4 @@ node_modules/
 .hermes/
 .omp/
 .agents/skills/
+.quick-tests/
