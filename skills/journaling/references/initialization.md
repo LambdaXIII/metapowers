@@ -162,46 +162,19 @@ Optional sections are not included in the initial template. Refer to `references
 > - **语言可以翻译**——如果运行时环境使用非中文，将指令翻译为对应语言，保持结构不变。
 > - **唯一需要替换的部分**：`<journal-root>` 替换为实际路径。
 >
-> 核心结构：理解 journal 是什么 → 每次启动必须读取 → 与其他记忆层协调 → 读不需要技能 → 写才需要技能。
+> 核心结构：介绍 journal → 强调读取必要性 → 注明位置 → 写入指引在 index.md 内。
 
 ```markdown
-## Journal — Agent Long-Term Memory
+## Journal
 
-> ⚠️ This is your own memory body — you write it, you use it, it serves you.
-> It is NOT the user's document or a project log. It is your accumulated
-> experience, decisions, lessons, and methodology across all projects and sessions.
->
-> Without reading it at session start, you are working without your own
-> accumulated knowledge — every session starts from zero.
+This is your long-term memory — experiences, decisions, lessons, methodology
+accumulated across all projects and sessions. Not a project log, not the user's document.
 
-### At Every Session Start
+**At every session start, before any action:**
+Read `<journal-root>/index.md` — the dashboard.
+Without it, you are working without your own accumulated knowledge.
 
-Before any action, read `<journal-root>/index.md` — the dashboard.
-It tells you what's active, what's changed, and what demands attention.
-
-### Memory Layer Coordination
-
-| Layer | What belongs here |
-|-------|-------------------|
-| MEMORY | Hard constraints, universal rules, environment truths (injected every round) |
-| USER PROFILE | User identity, communication preferences |
-| Fact Store / structured knowledge | Objective facts, paths, simple data, references |
-| **Journal** | **Everything else** — experiences, decisions, lessons, project state, methodology, plans, relationships |
-| Session search | Recovering what happened in a past session (fallback when journal has no record) |
-
-The journal is your **primary long-term memory.** If something isn't in MEMORY,
-USER PROFILE, or Fact Store, check the journal. Most things live here.
-
-### Reading
-
-index.md is self-sufficient — the protocol declaration on line 1 of index.md
-confirms this is a managed journal. Use its links to navigate into detailed
-entries. No skill needed.
-
-### Writing
-
-Load the `journaling` skill → follow `references/note-spec.md` for format,
-directory, tags, and self-check. Writing is higher-ceremony by design.
+The index.md protocol declaration tells you when to load the journaling skill.
 ```
 
 ---
