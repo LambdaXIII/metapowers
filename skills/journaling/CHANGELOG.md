@@ -40,15 +40,18 @@ All notable changes to the journaling skill.
 ### Removed
 - **daily-ops.md**: Content absorbed into note-spec.md, SKILL.md, and maintenance.md.
 
+### Changed
+- **Startup Protocol slimmed**: 从 41 行（身份声明 + 记忆协调表 + Reading/Writing 四节）精简至 11 行。保留三要素：journal 是什么、为什么必须读、位置在哪。写入指引交给 index.md 协议声明行，不再重复。
+- **initialization.md Step 0**: 新增 Pre-Check 决策树，覆盖 5 种目标路径状态（不存在/空/有协议声明index.md/无协议声明index.md/无index.md但有内容）。核心约束：绝不覆盖现有内容，不确定时向用户展示发现。
+- **README.md**: Updated description of initialization template (六节骨架 → four core sections, gates not pre-populated).
+- **Cross-references**: All daily-ops.md references removed from current files. Decision Capture + Trace-back relocated to SKILL.md Operating Rules. Cascade Rename relocated to maintenance.md.
+
 ### Fixed
 - **maintenance.md vs note-spec.md tag rule contradiction**: maintenance.md Phase 3 Step 4 要求"每条至少一个项目标签 + 活动标签"，与 note-spec.md "活动标签或元标签至少一个，项目标签可选"矛盾。统一为 `activity tag or meta tag, project tags optional`。
-- **initialization.md Step 0 expanded**: 新增 Pre-Check 表格，覆盖 5 种目标路径状态（不存在/空/有协议声明index.md/无协议声明index.md/无index.md但有内容）。确保 agent 不覆盖现有内容，不确定时向用户展示发现。
-- **README.md**: Updated description of initialization template (六节骨架 → four core sections, gates not pre-populated).
-- **Cross-references**: All daily-ops.md references removed from current files. Decision Capture + Trace-back now in SKILL.md Operating Rules. Cascade Rename in maintenance.md.
-- **Startup Protocol slimmed**: 从 41 行（身份声明 + 记忆协调表 + 读写四节）精简至 11 行。保留三要素：journal 是什么、为什么必须读、位置在哪。写入指引交给 index.md 协议声明行，不再重复。
+- **bootstrap entry 使用未注册标签**：initialization.md Step 6 模板 `tags: [journaling, meta]` 中两个标签均不在 tag-registry 中。改为 `[journal, skill]`。
+
 ---
 ## [3.2.1] — 2026-06-25
-
 ### Fixed
 - **initialization.md Prerequisites rewritten**: "Check the framework's configuration" (a hanging reference for zero-context agents) replaced with a 4-step decision process: (1) check for existing journal, (2) check framework env vars/config, (3) choose stable location by constraints, (4) confirm with user if uncertain. Includes platform-specific path examples and a "Record the Path" section that mandates writing the journal root into index.md protocol declaration and bootstrap entry.
 - **initialization.md index.md template**: Added `Journal root: <chosen-path>` line to the protocol declaration block.
