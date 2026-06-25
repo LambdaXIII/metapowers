@@ -13,3 +13,5 @@ node_modules/
 .omp/
 .agents/skills/
 .quick-tests/
+.codegraph/
+.omp/
