@@ -28,7 +28,7 @@ All notable changes to the journaling skill.
 
 ---
 
-## [3.4.0] — 2026-06-25
+## [4.0.0] — 2026-06-25
 
 ### Redesigned
 - **initialization.md rewritten**: Discovery contract model replaces 5-step search chain. Step 0-7 structure: Step 0 (confirm journal root), Step 1 (directory structure), Step 2 (initial index.md), Step 3 (establish discovery contract — meta-instructions + startup protocol separated), Step 4 (maintenance memo), Step 5 (tag registry), Step 6 (bootstrap entry), Step 7 (verify). Carrier identification criteria (3 standards), insertion guidance, verification criteria, fallback paths, and self-test.
