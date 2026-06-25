@@ -42,7 +42,7 @@ All notable changes to the journaling skill.
 
 ### Fixed
 - **maintenance.md vs note-spec.md tag rule contradiction**: maintenance.md Phase 3 Step 4 要求"每条至少一个项目标签 + 活动标签"，与 note-spec.md "活动标签或元标签至少一个，项目标签可选"矛盾。统一为 `activity tag or meta tag, project tags optional`。
-- **bootstrap entry 使用未注册标签**：initialization.md Step 6 模板 `tags: [journaling, meta]` 中两个标签均不在 tag-registry 中。改为 `[journal, skill]`。
+- **initialization.md Step 0 expanded**: 新增 Pre-Check 表格，覆盖 5 种目标路径状态（不存在/空/有协议声明index.md/无协议声明index.md/无index.md但有内容）。确保 agent 不覆盖现有内容，不确定时向用户展示发现。
 - **README.md**: Updated description of initialization template (六节骨架 → four core sections, gates not pre-populated).
 - **Cross-references**: All daily-ops.md references removed from current files. Decision Capture + Trace-back now in SKILL.md Operating Rules. Cascade Rename in maintenance.md.
 - **Startup Protocol slimmed**: 从 41 行（身份声明 + 记忆协调表 + 读写四节）精简至 11 行。保留三要素：journal 是什么、为什么必须读、位置在哪。写入指引交给 index.md 协议声明行，不再重复。

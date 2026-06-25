@@ -1,7 +1,6 @@
-# Journal Initialization
-
 > Use this reference when creating a new journal from scratch — first install, new environment, or blank start.
 > If a journal already exists (index.md is present and validated by protocol declaration), initialization is not needed.
+> If the target path already has content (files, directories), see Step 0 for the decision tree — the correct action depends on what's there.
 >
 > This reference contains **two layers of instruction**:
 > - **Meta-instructions** (explain why and how): tell *you*, the agent running initialization, what needs to happen and why
@@ -11,7 +10,7 @@
 
 ---
 
-## Step 0: Confirm Journal Root
+## Step 0: Confirm Journal Root & Pre-Check
 
 > ⚠️ Meta-instruction
 >
@@ -25,6 +24,20 @@ Present candidate paths to the user. Collect input. Confirm the chosen `<journal
 
 After confirmation, record the path internally: you'll need it in every subsequent step.
 
+### Pre-Check: Does the target path already have content?
+
+Check what exists at `<journal-root>`. Branch based on findings:
+
+| What you find | What it means | Action |
+|---------------|---------------|--------|
+| Path does not exist | Truly blank start | Proceed normally (Steps 1–7) |
+| Path exists, empty | No previous content | Proceed normally (Steps 1–7) |
+| `index.md` present with valid protocol declaration (`> ⚠️ 本 journal 由 journaling 技能管理`) | Journal is already initialized and in use | **Stop.** Skip Steps 1–2, 4–6. Jump to Step 3 (establish/modify discovery contract) + Step 7 (verify) |
+| `index.md` present but NO protocol declaration | Existing content that is NOT a managed journal — could be a personal index or misidentified path | **Present findings to the user.** Ask: (a) absorb existing content into a new journal? → Steps 1–2 skip directory creation for existing dirs, write new index.md with protocol declaration; (b) archive existing content first, start fresh? (c) wrong path entirely? |
+| Content exists but NO `index.md` at all | Unstructured files at the target path, no journal structure | **Present findings to the user.** Same three options as above. |
+
+> ⚠️ Do not destroy, overwrite, or move existing content without explicit user confirmation.
+> If unsure, present the findings and ask.
 ---
 
 ## Step 1: Create Directory Structure
