@@ -45,7 +45,7 @@ All notable changes to the journaling skill.
 - **bootstrap entry 使用未注册标签**：initialization.md Step 6 模板 `tags: [journaling, meta]` 中两个标签均不在 tag-registry 中。改为 `[journal, skill]`。
 - **README.md**: Updated description of initialization template (六节骨架 → four core sections, gates not pre-populated).
 - **Cross-references**: All daily-ops.md references removed from current files. Decision Capture + Trace-back now in SKILL.md Operating Rules. Cascade Rename in maintenance.md.
-
+- **Startup Protocol rewritten**: 新增 journal 是什么（own memory body）、不读的后果（every session starts from zero）、与其他记忆层（MEMORY/USER PROFILE/Fact Store/Session search）的协调表格。从纯命令式改为含 why + coordination 的完整上下文。旧版三条命令结构扩展为四节：身份声明 → 启动必读 → 记忆协调 → 读写规则。
 ---
 ## [3.2.1] — 2026-06-25
 
