@@ -2,6 +2,45 @@
 
 All notable changes to the journaling skill.
 
+
+
+## [4.1.0] — 2026-06-26
+
+> Base: v4.0.0 (last committed). All intermediate versions (4.1.x–4.3.x) were uncommitted session artifacts — consolidated here.
+
+### Redesigned
+- **`README.md` 完整重写**：从"技能维护参考"重新定位为"独立的设计锚定文档"（不被运行时加载）。结构从 10 节精简至 7 条真实设计决策。删除闸门模型、虚构的七执行锚点、已删除文件的幽灵残留。修正 12 处事实错误。
+- **`SKILL.md` Operating Rules → Operating Principles**：12 条行为指令 → 6 条设计原则，每条以设计决策为根。人称统一为"你"。移除的规则重分配到 reference 文件。
+- **Journal 概念重新定义**：Journal 是 Agent 的长期记忆笔记本，不是项目日志。读不需要加载 skill。四种子目录（inbox/experience/knowledge/active_works/）。
+- **`patterns/dashboard.md` 重写**：从 INDEX 板块模式 → 项目/领域级次级 INDEX 设计参考。
+- **`.maintenance-memo.md` 生命周期重新设计**：初始化不创建空文件。Phase 0 不清空——Phase 4 完成后清理。`protocal-write.md` Maintenance Signals 是日常写入 memo 的入口。
+
+### Added
+- **`references/spec-note.md`** — 笔记编写指南，从 protocal-write 独立。
+- **`patterns/dashboard.md`** + **`patterns/` 目录**。
+- **`protocal-write.md` Maintenance Signals**：日常操作通向维护循环的 memo 写入入口。
+- **`protocal-maintenance.md` Phase 4 Step 4**、Phase 0 memo 上下文段落、技能升级触发信号。
+- **`examples/classification-systems/`**、**`references/design-classification.md`**、**`references/design-tags.md`**、**`references/spec-frontmatter.md`**、**`examples/journal-standards/`**。
+
+### Changed
+- **闸门引用清理（6 文件 23 处）**：闸门概念从 journaling 设计层移除。替换为 agent operating rule / custom section tables / self-regulation rules。
+- **`protocal-write.md` 精简**：纯工作流程，格式指南移至 spec-note.md。
+- **`spec-index.md` 重组**：核心规范 = 协议声明 + 设计原理。
+- **维护协议重写**：五阶段框架、信号合并优先级。
+- **`protocal-init.md` 步骤重编号**：Step 5→4, 6→5, 7→6（删除 Step 4 创建空 memo）。
+- **`protocal-import.md`** 增加 tagging 检查。
+- **读/写非对称明确化**：读取 INDEX.md 不需要加载 skill。
+
+### Removed
+- **闸门概念从 journaling 设计层移除**（CHANGELOG 历史记录保留）。
+- **`README.md` §9 "七执行锚点"**、**§10 "内存定位"**。
+- **`protocal-init.md` Step 4 "创建维护备忘录"**。
+- **DAILY-OPS 文件** → 拆分为 protocal-write + spec-note。
+
+### Fixed
+- **C4 敏感信息验证**：0 泄露。
+- **memo 鸡和蛋问题**：protocal-write.md Maintenance Signals 解决——日常写条目时即可了解并写入 memo。
+
 ## [3.3.0] — 2026-06-25
 
 ### Redesigned

@@ -1,52 +1,55 @@
 ---
 name: journaling
 description: |
-  The skill for all journal operations — reading, writing, and maintaining my long-term memory notebook.
+  The skill for all journal operations — reading, writing, and maintaining your long-term memory notebook.
 
   Triggers:
   - **Creating a new journal from scratch (first install or new environment)**
   - Need to write a journal entry (decide where, what format, create vs update)
   - Need to maintain / clean up the journal
-  - Unsure about journal usage decisions after reading index.md dashboard
+  - Unsure about journal usage decisions after reading INDEX.md dashboard
   - **A discussion just produced a design decision that needs immediate capture in a project document**
 
   Do NOT load for:
-  - Reading index.md dashboard (the dashboard itself says "读不需要加载 skill")
+  - Reading INDEX.md dashboard (the dashboard itself says "读不需要加载 skill")
   - Browsing existing journal entries
   - Searching journal content
 metadata:
-  version: "4.0.0"
-  last_updated: "2026-06-25"
+  version: "4.1.0"
+  last_updated: "2026-06-26"
   author: "Ĉalio"
 ---
 
 # Journaling
 
-> **Journal is my long-term memory notebook.** I write it. I use it. It serves me, not the user.
+> **Journal is your long-term memory notebook.** You write it. You use it. It serves you, not the user.
 
 > **Journal is documentation.** Writing a journal entry and writing a project document follow the same principles — self-check, independence, boundary coverage, decision-capture timing. The skill's writing protocols (decision capture, self-check) apply to both.
 
-This skill defines how the journal works — the design concept (why), the cover (index.md), the pages (entries), the daily operations (read/write), and the maintenance cycles.
+This skill defines how the journal works — the design concept (why), the cover (INDEX.md), the pages (entries), the daily operations (read/write), and the maintenance cycles.
 
-> **Design concept →** `references/journal-concept.md`. Seven anchors (5 writing + 2 reading) + mechanism mapping + gate theory + memory positioning. Load when proposing new mechanisms or auditing journal design.
 
 ---
 
 ## Core Constraint
 
-**index.md is the sole entrance to journal.** It is the notebook cover — a dashboard of state signals, not a directory listing. All journal norms (format, directory usage, maintenance) are defined by this skill.
+**INDEX.md is the sole entrance to journal.** It is the notebook cover — a dashboard of state signals, not a directory listing. All journal norms (format, directory usage, maintenance) are defined by this skill.
 
 ## Linked Files
 
-- [Journal Concept](references/journal-concept.md) — Design philosophy: what a journal is, 7 execution anchors, mechanism mapping, memory positioning, gate design principles.
-- [Dashboard (index.md) Specification](references/index-spec.md) — Dashboard structure: protocol declaration, 3 core sections (experience summary, project work status, recent changes), plus optional organizational patterns. Workspace dashboard pattern.
-- [Note Specification](references/note-spec.md) — Entry format and write procedure: frontmatter fields, directory assignment, summary anchoring, before-writing triage, after-writing index update, delivery self-check.
-- [Maintenance Protocol](references/maintenance.md) — Four-phase maintenance: signal collection, evaluation, restructure, verification. Diagnostics, pitfalls, cascade rename, cleanup patterns.
-- [Journal Initialization](references/initialization.md) — Create a new journal: directory structure, initial index.md, discovery contract, maintenance memo, bootstrap entry.
-- [Tag Registry](references/tag-registry.md) — Controlled vocabulary for journal entry tags. Consult when writing and during maintenance.
-- [Maintenance Memo](.maintenance-memo.md) — Running checklist of issues noticed during daily work. Append freely, process during maintenance Phase 1 Step 0. The memo is a maintenance trigger at 10+ items. (Lives at journal root.)
-- [Inbox](`inbox/README.md`) — Zero-friction staging area for unsure content. Requires only `date`. Processed during maintenance.
-
+- [INDEX.md Specification](references/spec-index.md) — INDEX.md 的核心规范：协议声明、设计原理、与自管理文件（CLASSIFICATION.md/TAGS.md）的关系。关于项目级次级 INDEX 的设计参考，见 `patterns/dashboard.md`。
+- [Writing Protocol](references/protocal-write.md) — 写条目的工作流程：triage 判断、同 session 补充 vs 跨 session 补充、After Writing 更新 INDEX.md、Before Delivery 自检。
+- [Note Writing Guide](references/spec-note.md) — 条目格式指南：summary anchoring 三检查点、body 格式（一句一行/wikilink/过度泛化/context boundary）、粒度控制、4 种子目录分配、条目生命周期。
+- [Importing Protocol](references/protocal-import.md) — Bring existing external content into the journal: evaluation, copy, frontmatter, adjustment.
+- [Journal Initialization](references/protocal-init.md) — Create a new journal: directory structure, initial INDEX.md, discovery contract, bootstrap entry.
+- [Maintenance Protocol](references/protocal-maintenance.md) — Full maintenance cycle: Phase 0 scan, Phase 1 rule review, Phase 2 restructure, Phase 3 quality check, Phase 4 finalize. Trigger when dashboard signals or memo exceeds 10 items.
+- [Journal Standards Examples](examples/journal-standards/) — Reference examples of journal self-managed files: INDEX.example.md, CLASSIFICATION.example.md, TAGS.example.md.
+- [Inbox](`inbox/README.md`) — Zero-friction staging area for unsure content. Requires only minimum frontmatter (title or date). Processed during maintenance.
+- [Classification Design Guide](references/design-classification.md) — Design your journal's own classification: when to customize, design process, verification.
+- [Classification System Examples](examples/classification-systems/) — Reference catalog of common real-world classification systems (PARA, Zettelkasten, Johnny Decimal, MOC/LYT, Evergreen, GTD, and journaling default). Each file starts with a summary for quick scanning.
+- [Tag Design Guide](references/design-tags.md) — Tag creation, naming, registration, and lifecycle methodology. Consult when registering new tags or during tag maintenance.
+- [Frontmatter Specification](references/spec-frontmatter.md) — YAML format rules, required fields, recommended optional fields, custom field guidelines, and examples.
+- [Project Dashboard Pattern](patterns/dashboard.md) — 项目/领域级次级 INDEX 设计参考。和 INDEX.md 类比：提供聚焦一域的状态概览，作为 session 的次级路由入口。不是规范——从实际需求中生长。
 ---
 
 ## How to Use This Skill
@@ -55,43 +58,34 @@ This skill uses progressive disclosure. Load the reference document matching you
 
 | Scenario | Load |
 |----------|------|
-| **Creating a new journal from scratch** | **`references/initialization.md`** |
-| Writing/reviewing index.md dashboard structure | `references/index-spec.md` |
-| Writing a journal entry (pre-check → format → write → update index → self-check) | `references/note-spec.md` |
+| **Creating a new journal from scratch** | **`references/protocal-init.md`** |
+| Writing/reviewing INDEX.md core spec and protocol declaration | `references/spec-index.md` |
+| Creating or reviewing a project-level dashboard (secondary INDEX) | `patterns/dashboard.md` |
+| Writing a journal entry (workflow: triage → supplement → update INDEX.md → self-check) | `references/protocal-write.md` |
+| Writing a journal entry (format: summary → body → granularity → directory → lifecycle) | `references/spec-note.md` |
+| **Importing existing content into the journal** | **`references/protocal-import.md`** |
 | **Capturing a discussion decision immediately into a project document** | **Operating Rules below** |
-| Maintaining or cleaning up the journal | `references/maintenance.md` |
-| Recording a maintenance issue noticed during daily work | `.maintenance-memo.md` — append a line, don't load anything |
-| Understanding the full journal design philosophy (concept, anchors, gate theory, memory positioning) | `references/journal-concept.md` |
-
+| Maintaining or cleaning up the journal | `references/protocal-maintenance.md` |
+| Designing or revising journal classification | **`references/design-classification.md`** |
+| Researching classification patterns for a custom design | **`examples/classification-systems/`** — read summaries, decide which to load |
+| Designing or revising journal tag system | **`references/design-tags.md`** |
+| Writing or checking entry frontmatter format | **`references/spec-frontmatter.md`** |
 If the scenario is ambiguous, load two references. Don't load all at once.
 
 ---
 
-## Operating Rules
+## Operating Principles
 
-These rules govern journal operations. They are not suggestions — loading this skill means following them.
+These principles follow from the journal's design decisions. Each exists because a design choice creates a specific operational constraint.
 
-- **Verify actual entry state before proposing improvements.** The note spec mandates frontmatter, tags, summary anchoring, and directory assignment — all typically already in place. Check files in `experience/`, `research/`, etc. before recommending changes. Skill spec → actual files: verify both before proposing.
+- **Journal serves you, not the user — don't ask for approval.** You write it, you maintain it, for your future self. The user cannot effectively judge whether a directory reorganization, tag merge, or archive is correct — these depend on patterns only you see. So routine operations do not need permission. You MAY solicit the user's perspective on ambiguous cases to learn from their judgment, but the decision and execution are yours.
 
-- **Don't ask the user for journal approval.** The journal is the Agent's own notebook. Maintenance decisions (archive, merge, delete, tag remediation) are the Agent's to make. Ask for *advice* on ambiguous cases, not *permission* on routine operations.
+- **Select tags from TAGS.md before writing — the tag system is self-managed.** A tag not in `<journal-root>/TAGS.md` doesn't exist for this journal. If a needed tag is missing, register it there first. Freeform tags bypass the registry and silently decay into noise.
 
-- **Select tags from the registry before writing.** Tags come from `references/tag-registry.md`. If a needed tag is missing, register it first. Freeform tags decay into noise.
+- **Determine directory assignment before writing — the directories are the classification.** Which directory an entry lands in is a decision about what kind of thing this is. Read `references/spec-note.md`'s Directory Assignment before creating.
 
-- **Determine directory assignment before writing.** Read `references/note-spec.md`'s directory table. A blocked/investigation item is `active/`, not `experience/`. A pending question is `active/` or `goal/`, not `research/`.
+- **Verify actual entry state before proposing improvements — the spec is ideal, the disk is truth.** The loaded spec describes what entries should look like; actual entries may already conform. Check files before recommending changes.
 
-- **Search journal for cross-references before any bulk deletion.** When deleting skills, config sections, or project files, search the journal directory first. The journal is a dependency map — deleting without checking causes silent breakage.
+- **Search journal before any bulk deletion — the journal is a dependency map.** Entries cross-reference skills, configs, and project files. Deleting without checking breaks those references silently.
 
-- **Treat cross-skill reference hits as low-confidence after skill digestion.** When a skill is deleted, its reference files copied into other skills persist as frozen snapshots. Priority: actual files > journal design docs > cross-skill references.
-
-- **Present conclusions at the same level of detail as the analysis.** Don't compress by selecting a subset of insights. If the analysis identified 8 issues, the conclusion names all 8. If compression is needed, explicitly state what is deferred and where it will be addressed.
-
-- **Separate Journal (content layer) from Journaling (mechanism layer) during audits.** Journal = actual entries, dashboard state, gate rules. Journaling = SKILL.md + references. Conflating the two produces misattributed findings. Before any audit: state which layer each finding targets.
-
-- **Capture discussion decisions immediately.** When the user confirms a design decision (naming, path, field, boundary, behavior convention), write it to the target project document in the same turn — not later, not after the discussion ends. Pause conversation → open file → write → resume. If the target document doesn't exist, search the project for related files or create a decision log. Do not defer to journal.
-
-  Capture urgency tiers:
-  - 即时级 (simple, irreversible decision) → **MUST** write in the same round
-  - 段落级 (multi-step design decision) → write all consensus at the natural paragraph boundary
-  - Self-check after write: was this written in the same round as confirmation? If no → write now.
-
-- **Trace-back: search journal first.** When the user says "last time", "previously", "before", "we discussed X" — search the journal directory first. Journal is the primary long-term memory. Fall back to session history only if journal returns no results.
+- **Capture discussion decisions immediately — confirmed decisions live on a different timeline than journal entries.** When the user confirms a design decision, write it to the target project document in the same turn. Do not defer to journal. A journal summary can follow later during maintenance.
