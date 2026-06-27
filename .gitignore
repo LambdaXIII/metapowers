@@ -1,17 +1,66 @@
+# 项目自身
 .worktrees/
 .private-journal/
-.claude/
+
+# 系统
 .DS_Store
+
+# 通用
 node_modules/
-.tree/
-.opencode/
-.pi/
-.agents/
 .venv/
-.test*/
+
+# Agent 工具项目级隐藏目录（来源：journal research/2026-06-23-agent-project-dirs.md）
+.agents/
 .hermes/
+.opencode/
 .omp/
-.agents/skills/
+.claude/
+.cursor/
+.windsurf/
+.codex/
+.cline/
+.continue/
+.roo/
+.gemini/
+.amazonq/
+.tabnine/
+.junie/
+.aiassistant/
+.zed/
+.augment/
+.trae/
+.devin/
+.goose/
+.amp/
+.factory/
+.forge/
+.antigravity/
+.bob/
+.autohand/
+.pochi/
+.adal/
+.zencoder/
+.neovate/
+.terramind/
+.codebuddy/
+.codeartsdoer/
+.cortex/
+.crush/
+.commandcode/
+.agent/
+.aider-desk/
+.claude-plugin/
+
+# Agent skills 包管理器生成文件
+.skills.json
+skills-lock.json
+
+# 项目测试空间
+.test*/
 .quick-tests/
+test-space/
+
+# 其他
+.tree/
+.pi/
 .codegraph/
-.omp/
