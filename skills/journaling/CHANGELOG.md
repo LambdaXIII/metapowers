@@ -1,7 +1,34 @@
 # Changelog
 
+## [4.2.0] — 2026-06-27
+
+> Base: v4.1.1. 发现链从附录提升为目标态展开——明确它是三阶段初始化的共同保证效果，而非 Phase 3 的附属信息。
+
+### Changed
+- **`protocal-init.md` 发现链定位修正**：从"附录：发现链（信息参考）"移至初始化目标 → 可发现态，作为三阶段共同保证的链路展开。不再是"仅作参考"。
+- **`design-tags.md` Type Identification 措辞修正**："此行首" → "这些标识"。
+- **`protocal-init.md` 补充占位符替换提示**：复制种子文件后替换 INDEX.md 中的 YYYY-MM-DD 和 <初始化原因>。
+
 All notable changes to the journaling skill.
 
+
+
+## [4.1.1] — 2026-06-27
+
+> Base: v4.1.0. Init protocol restructure — move from bloated 7-step flow to clear 3-phase structure with type identification.
+
+### Redesigned
+- **`protocal-init.md` 全篇重写**：7 步流程 → 三阶段（确定位置 / 初始化内容 / 设计发现合约）。Pre-check 分支逻辑并入 Phase 2 通用检查流程。移除"设计模式"和 bootstrap entry。种子目录不再主动创建——由写入操作按需催生。Phase 3 标记为"禁止自行执行"。
+
+### Added
+- **`templates/seed/`**：三个种子文件模板（INDEX.md、CLASSIFICATION.md、TAGS.md）。协议不再内嵌初始模板——引用此目录取用。`seed/` 子目录强调版本身份，文件名不加前缀——复制使用时无需改名。
+- **`spec-index.md` — `What is INDEX.md?`** 节：包含 Role、Type Identification 和与其他骨架文件的关系。
+- **`design-classification.md` — `What is CLASSIFICATION.md?`** 节：同上。
+- **`design-tags.md` — `What is TAGS.md?`** 节：同上。
+
+### Changed
+- **`README.md` Section 7**：从"最小种子 + 设计模式"重写为"三阶段明确分工"。
+- **`SKILL.md` Linked Files**：新增 `templates/seed/` 引用行，Journal Initialization 描述更新。
 
 
 ## [4.1.0] — 2026-06-26
