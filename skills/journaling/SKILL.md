@@ -15,7 +15,7 @@ description: |
   - Browsing existing journal entries
   - Searching journal content
 metadata:
-  version: "4.2.0"
+  version: "4.3.0"
   last_updated: "2026-06-27"
   author: "Ĉalio"
 ---

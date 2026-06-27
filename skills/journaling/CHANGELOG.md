@@ -1,5 +1,26 @@
 # Changelog
 
+
+## [4.3.0] — 2026-06-27
+
+> Base: v4.2.0. Import protocol redesigned from 6-step English procedure to full 3-phase Chinese protocol with REJECT/SUSPEND control flow. README expanded with design decisions #8-#12.
+
+### Redesigned
+- **`protocal-import.md` 全篇重写**：6 步英文指令 → 三阶段中文协议（P1 准入判断 / P2 策略判断 / P3 执行）。新增 REJECT/SUSPEND 控制流信号、用户交互式暂停机制。删除 import 的 write-style adaptation 步骤（adjust body、proceed）。
+
+### Added
+- **`README.md` 设计决策 #8-#12**：Protocol 操作模式分化（远征型/内嵌型）、目标前置、理解验证≠质量检查、加法胜于减法、模板分离时机。
+- **`protocal-write.md` 定位节**：目标前置风格的开端描述，定位为内嵌型协议。
+- **`protocal-maintenance.md` 目标节 + 理解验证提示 + 加法模式提示**：远征型协议完成状态描述，Phase 0→1 边界理解验证，Phase 2 加法操作模式。
+- **`design-tags.md` 约定标签（Seed Tags）子节**：文档化 `imported` 标签含义、生命周期和角色。
+- **`templates/seed/TAGS.md` `imported` 标签**：注册种子标签。
+
+### Fixed
+- **`protocal-import.md` P3-S2 步骤编号引用错误**：P2-S3→P2-S4（frontmatter 验证）、P2-S4→P2-S2（摘要来源）、P2-S3→P2-S4（标签来源）。
+
+### Removed
+- **`protocal-import.md` 设计泄漏**：总体要求安全设计理由说明、P1-S0 注释规则设计哲学。
+
 ## [4.2.0] — 2026-06-27
 
 > Base: v4.1.1. 发现链从附录提升为目标态展开——明确它是三阶段初始化的共同保证效果，而非 Phase 3 的附属信息。

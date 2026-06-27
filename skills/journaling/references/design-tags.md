@@ -131,6 +131,11 @@ As the tag list grows past ~15 entries, navigation becomes harder. Dimension gro
 
 The `## Rules` section in TAGS.md defines journal-specific usage constraints. The initialization seed includes one default rule (`每条至少选一个 tag`). Add more as usage patterns emerge.
 
+### 约定标签（Seed Tags）
+
+种子模板中预置了一个约定标签 `imported`，含义为"从外部直接收录的文件，经过修改或自行编写的笔记不应再包含此标签"。
+此标签由导入协议（protocal-import）在收录时添加，由维护协议管理其生命周期。它不是内容分类标签，而是来源追踪标签。
+
 ### Common Rule Patterns
 
 | Rule | When to Add |
