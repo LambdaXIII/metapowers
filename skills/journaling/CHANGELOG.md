@@ -1,7 +1,55 @@
 # Changelog
 
+
+## [4.3.0] — 2026-06-27
+
+> Base: v4.2.0. Import protocol redesigned from 6-step English procedure to full 3-phase Chinese protocol with REJECT/SUSPEND control flow. README expanded with design decisions #8-#12.
+
+### Redesigned
+- **`protocal-import.md` 全篇重写**：6 步英文指令 → 三阶段中文协议（P1 准入判断 / P2 策略判断 / P3 执行）。新增 REJECT/SUSPEND 控制流信号、用户交互式暂停机制。删除 import 的 write-style adaptation 步骤（adjust body、proceed）。
+
+### Added
+- **`README.md` 设计决策 #8-#12**：Protocol 操作模式分化（远征型/内嵌型）、目标前置、理解验证≠质量检查、加法胜于减法、模板分离时机。
+- **`protocal-write.md` 定位节**：目标前置风格的开端描述，定位为内嵌型协议。
+- **`protocal-maintenance.md` 目标节 + 理解验证提示 + 加法模式提示**：远征型协议完成状态描述，Phase 0→1 边界理解验证，Phase 2 加法操作模式。
+- **`design-tags.md` 约定标签（Seed Tags）子节**：文档化 `imported` 标签含义、生命周期和角色。
+- **`templates/seed/TAGS.md` `imported` 标签**：注册种子标签。
+
+### Fixed
+- **`protocal-import.md` P3-S2 步骤编号引用错误**：P2-S3→P2-S4（frontmatter 验证）、P2-S4→P2-S2（摘要来源）、P2-S3→P2-S4（标签来源）。
+
+### Removed
+- **`protocal-import.md` 设计泄漏**：总体要求安全设计理由说明、P1-S0 注释规则设计哲学。
+
+## [4.2.0] — 2026-06-27
+
+> Base: v4.1.1. 发现链从附录提升为目标态展开——明确它是三阶段初始化的共同保证效果，而非 Phase 3 的附属信息。
+
+### Changed
+- **`protocal-init.md` 发现链定位修正**：从"附录：发现链（信息参考）"移至初始化目标 → 可发现态，作为三阶段共同保证的链路展开。不再是"仅作参考"。
+- **`design-tags.md` Type Identification 措辞修正**："此行首" → "这些标识"。
+- **`protocal-init.md` 补充占位符替换提示**：复制种子文件后替换 INDEX.md 中的 YYYY-MM-DD 和 <初始化原因>。
+
 All notable changes to the journaling skill.
 
+
+
+## [4.1.1] — 2026-06-27
+
+> Base: v4.1.0. Init protocol restructure — move from bloated 7-step flow to clear 3-phase structure with type identification.
+
+### Redesigned
+- **`protocal-init.md` 全篇重写**：7 步流程 → 三阶段（确定位置 / 初始化内容 / 设计发现合约）。Pre-check 分支逻辑并入 Phase 2 通用检查流程。移除"设计模式"和 bootstrap entry。种子目录不再主动创建——由写入操作按需催生。Phase 3 标记为"禁止自行执行"。
+
+### Added
+- **`templates/seed/`**：三个种子文件模板（INDEX.md、CLASSIFICATION.md、TAGS.md）。协议不再内嵌初始模板——引用此目录取用。`seed/` 子目录强调版本身份，文件名不加前缀——复制使用时无需改名。
+- **`spec-index.md` — `What is INDEX.md?`** 节：包含 Role、Type Identification 和与其他骨架文件的关系。
+- **`design-classification.md` — `What is CLASSIFICATION.md?`** 节：同上。
+- **`design-tags.md` — `What is TAGS.md?`** 节：同上。
+
+### Changed
+- **`README.md` Section 7**：从"最小种子 + 设计模式"重写为"三阶段明确分工"。
+- **`SKILL.md` Linked Files**：新增 `templates/seed/` 引用行，Journal Initialization 描述更新。
 
 
 ## [4.1.0] — 2026-06-26

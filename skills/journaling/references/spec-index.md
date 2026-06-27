@@ -13,6 +13,23 @@ INDEX.md must be:
 - **Self-sufficient** — it works without any skill loaded, and tells the agent when to load one.
 ---
 
+## What is INDEX.md?
+
+**定义**：INDEX.md 是 journal 的 dashboard 和唯一入口点。它不是目录列表，而是状态信号面板——一眼看清 journal 的当前状态。
+
+**Role**：
+- **Entry point**：所有 journal 操作的起点。读到 INDEX.md 即了解整个 journal 的结构和状态。
+- **State dashboard**：经验摘要、专项工作、最近变更——三节编码了 journal 内"现在什么重要"的信号，不是"曾经发生过什么"的日志。
+- **Maintenance carrier**：协议声明行告知何时加载 skill，维护信号行提示何时触发维护。
+
+**Type Identification**：文件顶部包含 `> ⚠️ 本 journal 由 journaling 技能管理` 即为 journal 的 INDEX.md。此协议声明行是初始化时写入的，用于类型识别——区分 journal 的仪表盘和恰好同名的其他 INDEX.md 文件。
+
+**Relationships**：
+- `CLASSIFICATION.md` 定义目录规则——什么内容归哪个目录，由谁判断。
+- `TAGS.md` 定义受控词表——跨目录的标签体系，补充目录的主分类轴。
+- 三者构成 journal 的规则骨架：INDEX.md 是入口，CLASSIFICATION.md 是分类规则，TAGS.md 是标签规则。
+
+
 ## Design Principles
 
 These principles were derived from a real dashboard degradation event (2026-05-29), during which the INDEX.md transitioned from a signal-emitting cover to a chronological log. They explain why the sections below have the shape they do.

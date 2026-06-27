@@ -1,5 +1,10 @@
 # Maintenance
 
+## 目标
+
+本协议结束时，所有维护信号归零，规范过时项已更新，过期条目已归档，
+仪表盘无债务，维护备忘清零。下一个 session 从干净的仪表盘开始。
+
 Journal cleanup is not automatic. Trigger when the journal feels off.
 
 ## Trigger Signals
@@ -78,6 +83,9 @@ Phase 0 和 Phase 1 之间有一道关键边界：**P0 只回答"当前是什么
 > ⚠️ **Phase 0 不产生决策。** 如果你发现自己在 Phase 0 中说"这个应该放到 X 目录"或"这个 tag 应该合并"，你正在跨入 Phase 1。停下——先把数据收集完。Phase 1 会基于完整数据做判断。
 
 ---
+
+> ⚠️ **进入 Phase 1 前**：重读 Phase 0 快照数据（目录统计、staleness 标记、tag 列表），
+> 确认数据解读无误后再做分类/tags 决策。如果对某个标记有疑问，重新打开对应文件确认——不要依赖记忆或假设。
 
 > 基于 Phase 0 的快照，逐层审查规范。**依赖顺序**：先确定分类规则，再基于分类规则审查 tags。
 >
@@ -191,6 +199,9 @@ Phase 0 和 Phase 1 之间有一道关键边界：**P0 只回答"当前是什么
 
 > 基于 Phase 1 确认的规范执行重组。如果规范未变更，则按原有规则执行条目级别的重组（归档、移动、拆分）。
 
+> 本阶段所有操作均为加法——新位置先就位，原位置后清理。
+> 任何步骤中断只需继续执行，不会丢失数据。确认新文件正确后再清理旧位置。
+
 | # | Step | Description |
 |---|------|-------------|
 | 1 | **Extract surviving content** | Using the extraction checklist from Phase 0 Step 4, pull valid information units from files to be archived and write them into the reorganized structure (new files or enrich existing ones). Source files remain in place during extraction — they are still readable. |
@@ -198,7 +209,7 @@ Phase 0 和 Phase 1 之间有一道关键边界：**P0 只回答"当前是什么
 | 3 | **Reorganize structure** | Apply the classification structure from the confirmed CLASSIFICATION.md. Move entries between directories, rename directories if needed. Update INDEX.md links to their new paths BEFORE physically moving the files — the target paths are already determined by the Phase 1 reorganization plan. |
 | 4 | **Tag remediation** | Execute the tag decisions from Phase 1 Step 2: (a) register new tags in `<journal-root>/TAGS.md`; (b) merge synonyms — replace all occurrences with the canonical tag; (c) remove discarded tags from entry frontmatter. **After removal:** verify affected entries still have ≥1 tag, or follow the rules in TAGS.md. Report counts: registered X, merged Y, removed Z. |
 | 5 | **Trim 最近变更** | Cut to last 7 entries. The purpose is recency signal — "what happened in the last few sessions?" — not a chronological log. Older entries are findable via file system. |
-| 6 | **Collapse 专项工作** | Reduce to one line per domain. Encode current work scene in each line (not just "active"/"completed"). Completed milestones from domains with no active work → remove after 2‑session cooling period. Scene encoding format: `Domain — 📝 当前工作场景：简短描述 [→](link)`. |
+| 6 | **Collapse 专项工作** | Reduce to one line per domain. Encode current work scene in each line (not just "active"/"completed"). Completed milestones from domains with no active work → remove after 2‑session cooling period. Scene encoding format: `Domain — 📝 当前工作场景：简短描述 [→](link)`. 一行一域 + 场景编码——让下次 session 一眼看清各域状态。 |
 | 7 | **Split 经验摘要** | Tag each 经验摘要 entry as `enforcement` (reinforces a specific agent operating rule), `survival` (environment/tool trap not covered by persona/memory), or `axiom` (behavioral principle already in persona/memory). Remove axiom entries (de‑duplication: they are injected every turn already). Keep enforcement and survival entries. |
 | 8 | **Write / update CLASSIFICATION.md** | If Phase 1 modified the classification rules, ensure CLASSIFICATION.md is up to date and placed at journal root. If CLASSIFICATION.md was newly created, confirm it is complete (definitions, boundaries, cross‑domain rules). |
 

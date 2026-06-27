@@ -7,6 +7,23 @@
 > - 分类不适配（维护审计或日常感知）→ 通过此框架重新设计
 > - 手动触发——当前分类持续感觉"不对"
 
+
+## What is CLASSIFICATION.md?
+
+**定义**：CLASSIFICATION.md 是 journal 的目录规则手册——记录当前生效的分类规则：每个目录放什么、不放什么、如何判断。
+
+**Role**：
+- **Classification anchor**：日常写入时的目录分配依据——"这个内容属于哪个目录"由 CLASSIFICATION.md 中的规则回答。
+- **Evolution record**：分类规则随 journal 内容增长而演化。CLASSIFICATION.md 的变更历史记录了规则如何从种子结构逐步适配实际内容。
+- **Shared reference**：维护时 agent 读取 CLASSIFICATION.md 了解"当前规则是什么"，而不是依赖记忆。
+
+**Type Identification**：`# Classification` 标题 + `| 目录 | 放什么 | 不放什么 | 一句话判断 |` 四列快速参考表格。此表格是初始化时从模板写入的，用于区分 journal 的 CLASSIFICATION.md 和恰好同名的其他文件。
+
+**Relationships**：
+- `INDEX.md` 的协议声明行指向它（`分类规则 → CLASSIFICATION.md`）。
+- `TAGS.md` 提供跨目录的次分类轴——目录是主分类轴，标签是次分类轴。
+- 没有 CLASSIFICATION.md 时，4 目录种子结构是隐式分类。CLASSIFICATION.md 将其显式化。
+
 ---
 
 ## When to Design Classification

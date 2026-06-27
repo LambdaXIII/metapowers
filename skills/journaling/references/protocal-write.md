@@ -1,5 +1,16 @@
 # Writing Protocol
 
+## 定位
+
+本协议定义对 journal 条目进行内容操作——包括新建笔记、补充已有条目、更新 frontmatter。
+核心目标两条：
+- **内容就绪**：entry 有完整 frontmatter（title/summary/tags/last_update），body 可读
+- **索引同步**：INDEX.md 的最近变更反映新内容
+
+写得不完美没关系——维护协议兜底。关键是不打断主线工作。
+
+---
+
 Every journal entry must have YAML frontmatter and a markdown body.
 
 ---

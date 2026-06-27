@@ -7,6 +7,23 @@
 > - Reviewing tags during maintenance (Phase 1 Step 2)
 > - Redesigning TAGS.md when the current structure no longer fits
 
+
+## What is TAGS.md?
+
+**定义**：TAGS.md 是 journal 的受控词表（tag registry）——所有标签必须来自此文件。先注册后使用。
+
+**Role**：
+- **Tag registry**：合法的标签集合。不在 TAGS.md 中的标签视为不存在。
+- **Usage rules**：`## Rules` 节定义标签使用约束（如"每条至少选一个 tag"），随使用模式演化。
+- **Maintenance ground truth**：维护时 Phase 0 收集标签使用数据，Phase 1 审查 TAGS.md 是否仍然适配当前内容。
+
+**Type Identification**：`# Tags` 标题 + `## Tags` 节 + `| Tag | Meaning |` 表格。这些标识是初始化时从模板写入的，用于区分 journal 的 TAGS.md 和恰好同名的其他 tag 文件。
+
+**Relationships**：
+- `INDEX.md` 的协议声明行指向它（`标签系统 → TAGS.md`）。
+- `CLASSIFICATION.md` 定义目录（主分类轴），TAGS.md 定义跨目录标签（次分类轴）。
+- 标签不替代目录分类——它们提供额外的检索维度。
+
 ---
 
 ## When to Create a New Tag
@@ -113,6 +130,11 @@ As the tag list grows past ~15 entries, navigation becomes harder. Dimension gro
 ## TAGS.md Rules Design
 
 The `## Rules` section in TAGS.md defines journal-specific usage constraints. The initialization seed includes one default rule (`每条至少选一个 tag`). Add more as usage patterns emerge.
+
+### 约定标签（Seed Tags）
+
+种子模板中预置了一个约定标签 `imported`，含义为"从外部直接收录的文件，经过修改或自行编写的笔记不应再包含此标签"。
+此标签由导入协议（protocal-import）在收录时添加，由维护协议管理其生命周期。它不是内容分类标签，而是来源追踪标签。
 
 ### Common Rule Patterns
 

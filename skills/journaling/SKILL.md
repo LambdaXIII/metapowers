@@ -15,8 +15,8 @@ description: |
   - Browsing existing journal entries
   - Searching journal content
 metadata:
-  version: "4.1.0"
-  last_updated: "2026-06-26"
+  version: "4.3.0"
+  last_updated: "2026-06-27"
   author: "Ĉalio"
 ---
 
@@ -41,9 +41,11 @@ This skill defines how the journal works — the design concept (why), the cover
 - [Writing Protocol](references/protocal-write.md) — 写条目的工作流程：triage 判断、同 session 补充 vs 跨 session 补充、After Writing 更新 INDEX.md、Before Delivery 自检。
 - [Note Writing Guide](references/spec-note.md) — 条目格式指南：summary anchoring 三检查点、body 格式（一句一行/wikilink/过度泛化/context boundary）、粒度控制、4 种子目录分配、条目生命周期。
 - [Importing Protocol](references/protocal-import.md) — Bring existing external content into the journal: evaluation, copy, frontmatter, adjustment.
-- [Journal Initialization](references/protocal-init.md) — Create a new journal: directory structure, initial INDEX.md, discovery contract, bootstrap entry.
+- [Journal Initialization](references/protocal-init.md) — Create a new journal from scratch: three-phase protocol (locate root → init skeleton files → design discovery contract).
 - [Maintenance Protocol](references/protocal-maintenance.md) — Full maintenance cycle: Phase 0 scan, Phase 1 rule review, Phase 2 restructure, Phase 3 quality check, Phase 4 finalize. Trigger when dashboard signals or memo exceeds 10 items.
 - [Journal Standards Examples](examples/journal-standards/) — Reference examples of journal self-managed files: INDEX.example.md, CLASSIFICATION.example.md, TAGS.example.md.
+- [Templates](templates/seed/) — 初始化所需的种子文件模板（INDEX.md、CLASSIFICATION.md、TAGS.md）。
+
 - [Inbox](`inbox/README.md`) — Zero-friction staging area for unsure content. Requires only minimum frontmatter (title or date). Processed during maintenance.
 - [Classification Design Guide](references/design-classification.md) — Design your journal's own classification: when to customize, design process, verification.
 - [Classification System Examples](examples/classification-systems/) — Reference catalog of common real-world classification systems (PARA, Zettelkasten, Johnny Decimal, MOC/LYT, Evergreen, GTD, and journaling default). Each file starts with a summary for quick scanning.
