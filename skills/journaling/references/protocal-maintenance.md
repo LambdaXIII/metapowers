@@ -140,7 +140,7 @@ Phase 0 和 Phase 1 之间有一道关键边界：**P0 只回答"当前是什么
 > （信号不清晰、专项工作堆积、变更列表过长），审视当前 INDEX.md 的结构——
 > 哪些信号在下一页才出现、哪些信息需要滚动才能看到、
 > 哪些板块的噪声值超过了信号值。INDEX.md 的组织是自由演化的，没有固定模板。
-> 关于为特定项目创建独立的次级 INDEX（Dashboard），参见 `patterns/dashboard.md`。
+> 关于为特定项目创建独立的次级 INDEX（Dashboard），参见 `references/dashboard.md`。
 >
 ---
 

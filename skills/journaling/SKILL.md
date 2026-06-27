@@ -15,7 +15,7 @@ description: |
   - Browsing existing journal entries
   - Searching journal content
 metadata:
-  version: "4.3.0"
+  version: "4.3.1"
   last_updated: "2026-06-27"
   author: "Ĉalio"
 ---
@@ -37,7 +37,7 @@ This skill defines how the journal works — the design concept (why), the cover
 
 ## Linked Files
 
-- [INDEX.md Specification](references/spec-index.md) — INDEX.md 的核心规范：协议声明、设计原理、与自管理文件（CLASSIFICATION.md/TAGS.md）的关系。关于项目级次级 INDEX 的设计参考，见 `patterns/dashboard.md`。
+- [INDEX.md Specification](references/spec-index.md) — INDEX.md 的核心规范：协议声明、设计原理、与自管理文件（CLASSIFICATION.md/TAGS.md）的关系。关于项目级次级 INDEX 的设计参考，见 `references/dashboard.md`。
 - [Writing Protocol](references/protocal-write.md) — 写条目的工作流程：triage 判断、同 session 补充 vs 跨 session 补充、After Writing 更新 INDEX.md、Before Delivery 自检。
 - [Note Writing Guide](references/spec-note.md) — 条目格式指南：summary anchoring 三检查点、body 格式（一句一行/wikilink/过度泛化/context boundary）、粒度控制、4 种子目录分配、条目生命周期。
 - [Importing Protocol](references/protocal-import.md) — Bring existing external content into the journal: evaluation, copy, frontmatter, adjustment.
@@ -51,7 +51,7 @@ This skill defines how the journal works — the design concept (why), the cover
 - [Classification System Examples](examples/classification-systems/) — Reference catalog of common real-world classification systems (PARA, Zettelkasten, Johnny Decimal, MOC/LYT, Evergreen, GTD, and journaling default). Each file starts with a summary for quick scanning.
 - [Tag Design Guide](references/design-tags.md) — Tag creation, naming, registration, and lifecycle methodology. Consult when registering new tags or during tag maintenance.
 - [Frontmatter Specification](references/spec-frontmatter.md) — YAML format rules, required fields, recommended optional fields, custom field guidelines, and examples.
-- [Project Dashboard Pattern](patterns/dashboard.md) — 项目/领域级次级 INDEX 设计参考。和 INDEX.md 类比：提供聚焦一域的状态概览，作为 session 的次级路由入口。不是规范——从实际需求中生长。
+- [Project Dashboard Pattern](references/dashboard.md) — 项目/领域级次级 INDEX 设计参考。和 INDEX.md 类比：提供聚焦一域的状态概览，作为 session 的次级路由入口。不是规范——从实际需求中生长。
 ---
 
 ## How to Use This Skill
@@ -62,7 +62,7 @@ This skill uses progressive disclosure. Load the reference document matching you
 |----------|------|
 | **Creating a new journal from scratch** | **`references/protocal-init.md`** |
 | Writing/reviewing INDEX.md core spec and protocol declaration | `references/spec-index.md` |
-| Creating or reviewing a project-level dashboard (secondary INDEX) | `patterns/dashboard.md` |
+| Creating or reviewing a project-level dashboard (secondary INDEX) | `references/dashboard.md` |
 | Writing a journal entry (workflow: triage → supplement → update INDEX.md → self-check) | `references/protocal-write.md` |
 | Writing a journal entry (format: summary → body → granularity → directory → lifecycle) | `references/spec-note.md` |
 | **Importing existing content into the journal** | **`references/protocal-import.md`** |

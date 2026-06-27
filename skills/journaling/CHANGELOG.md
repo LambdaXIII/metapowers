@@ -1,6 +1,16 @@
 # Changelog
 
 
+## [4.3.1] — 2026-06-27
+
+> Base: v4.3.0. `patterns/` 目录合并至 `references/`，修正非标准技能结构。所有引用路径同步更新。
+
+### Changed
+- **`patterns/dashboard.md` → `references/dashboard.md`**: 移至标准 `references/` 目录。更新 SKILL.md、README.md、protocal-maintenance.md、spec-index.md 中全部引用路径。
+
+### Removed
+- **`patterns/` 目录**: 合并后删除。README.md 中原 `## patterns/ 目录` 节替换为合并说明。
+
 ## [4.3.0] — 2026-06-27
 
 > Base: v4.2.0. Import protocol redesigned from 6-step English procedure to full 3-phase Chinese protocol with REJECT/SUSPEND control flow. README expanded with design decisions #8-#12.
