@@ -72,6 +72,8 @@ Phase 0 和 Phase 1 之间有一道关键边界：**P0 只回答"当前是什么
 | 7 | **Collect tag data** | All entry frontmatter + `<journal-root>/TAGS.md` | Three raw lists: (a) tags used but not in TAGS.md; (b) synonymous tags (same meaning, different names); (c) one‑off tags (used only once, no clear category). Do not decide what to do yet — just list them. |
 | 8 | **Custom section audit** | INDEX.md | For any non-standard sections the agent has added to INDEX.md (e.g., self-regulation rules): assess whether they are still relevant, up-to-date, and anchored to valid journal entries. |
 | 9 | **Collect convention data** | `<journal-root>/CONVENTIONS.md` (if exists) | List of convention entries: pattern name, scope, file path, created date, self-check status. Report whether any convention's scope overlaps with other rules or is stale. |
+| 10 | **Scan archive/** | `<journal-root>/archive/` directory listing | Archive snapshot: all entries with file dates, tags (extracted from frontmatter or filename), and original directory source. Note entries archived in the current cycle by comparing file mtime to the last maintenance date. These are **protected**: they must not be hard-deleted in this cycle. |
+| 11 | **Check contract staleness** | Contract files found in common carrier locations (agent config dirs: RULES.md, AGENTS.md; project AGENTS.md; global agent config) — located by grepping for `index\.md\|journal-root\|写入操作.*journaling` (case-insensitive). | Contract staleness report: (a) path of each contract file found, (b) per-file line-by-line comparison with latest template across four dimensions — startup wording strength (第一步 + ⚠️), read-INDEX rationale specificity (maintenance signals / active works / experience traps / 信息盲区), write-operation scope completeness (includes 移动/归档/删除), spelling/grammar errors, (c) gap summary listing each dimension's pass/fail. |
 
 **Output of Phase 0**: A Journal Global Snapshot document containing:
 - Directory usage report (from Step 5)
@@ -82,6 +84,8 @@ Phase 0 和 Phase 1 之间有一道关键边界：**P0 只回答"当前是什么
 - Custom section audit (from Step 8)
 - Staleness tags + extraction checklists (from Steps 3‑4)
 - Convention status (from Step 9)
+- Archive snapshot (from Step 10)
+- Contract staleness report (from Step 11)
 
 > ⚠️ **Phase 0 不产生决策。** 如果你发现自己在 Phase 0 中说"这个应该放到 X 目录"或"这个 tag 应该合并"，你正在跨入 Phase 1。停下——先把数据收集完。Phase 1 会基于完整数据做判断。
 
@@ -110,6 +114,22 @@ Phase 1 是一个完整的认知链：先理解现状、再设计方案、然后
 **输出**：三规则现状笔记——各规则的覆盖情况和潜在问题清单。
 
 > **格式审查**：除内容审查外，对每份存在的规则文件，加载对应的 skill 规范文件（`references/design-classification.md` / `references/design-tags.md` / `references/spec-conventions.md`），对照文件格式要求逐项检查。即使技能规范中格式约束不多，也必须重新阅读确认——避免跨版本格式漂移。发现格式不符 → 标记为 P1-S3 变更清单中的 UPDATE。
+
+
+> **合约审查**：Phase 0 Step 11 的合约过期报告列出各合约与最新模板的差异。对每个差异按以下标准判断：
+> +- 启动措辞强度不足（缺少「第一步」+ ⚠️ + 价值说明）→ 标记 P1-S3 变更清单 UPDATE
+> +- 读 INDEX 理由不具体（仍用「获取全局背景知识」等泛泛表述）→ 标记 P1-S3 UPDATE
+> +- 写操作范围不完整（举例缺移动/归档/删除）→ 标记 P1-S3 UPDATE
+> +- 拼写或语法错误 → 标记 P1-S3 FIX
+> +- 合约完全匹配最新模板 → 无操作，报告「合约已是最新」
+
+> **Archive 审查**：Phase 0 Step 10 的 archive 快照列出所有已归档条目。对每个条目判断：
+> - **恢复**（内容仍有活跃参考价值）→ 标记移回对应目录，注意同步更新其原始目录中的交叉引用
+> - **保留**（仍在冷却期或仍有历史参考价值）→ 不动
+> - **可硬删除**（非本轮 P2-S3 新移入、确认无用、无交叉引用）→ 标记
+>
+> **冷却保护**：标记为“可硬删除”的条目必须已存在于 archive/ 中超过当前维护周期（对照 Phase 0 Step 10 记录的“本轮新 archive 条目”列表，禁止将本轮新移入的条目标记为可硬删除）。
+
 
 #### P1-S2: 设计目标组织方式
 
@@ -177,12 +197,16 @@ Tag 决策中使用 Tag Worthiness Criteria：
 |---|------|-------------|
 | 1 | **Update rule files first** | 按 P1-S3 的变更清单修改/创建/销毁三规则文件。CLASSIFICATION.md、TAGS.md、CONVENTIONS.md 全部先就位。 |
 | 2 | **Extract surviving content** | Using the extraction checklist from Phase 0 Step 4, pull valid information units from files to be archived and write them into the reorganized structure (new files or enrich existing ones). Source files remain in place during extraction — they are still readable. |
+> **Archive protection rule**: Entries moved to archive/ in this step are NOT eligible for hard deletion in the current maintenance cycle. They must survive at least until the next full maintenance cycle before hard deletion is considered (Phase 1 archive review will mark candidates, Phase 2 Step 9 will execute).
+
 | 3 | **Archive** | All `fully stale` + `partially stale` files → move to `archive/` (create this directory if it does not yet exist). Partially stale files go whole — their original stays intact as history. By this point, surviving content has already been extracted. |
 | 4 | **Reorganize structure** | Apply the classification structure from the confirmed CLASSIFICATION.md. Move entries between directories, rename directories if needed. Update INDEX.md links to their new paths BEFORE physically moving the files — the target paths are already determined by the Phase 1 reorganization plan. |
 | 5 | **Tag remediation** | Execute the tag decisions from Phase 1 P1-S3: (a) register new tags in TAGS.md; (b) merge synonyms — replace all occurrences with the canonical tag; (c) remove discarded tags from entry frontmatter. **After removal:** verify affected entries still have ≥1 tag, or follow the rules in TAGS.md. Report counts: registered X, merged Y, removed Z. |
 | 6 | **Trim 最近变更** | Cut to last 7 entries. The purpose is recency signal — "what happened in the last few sessions?" — not a chronological log. Older entries are findable via file system. |
 | 7 | **Collapse 专项工作** | Reduce to one line per domain. Encode current work scene in each line (not just "active"/"completed"). Completed milestones from domains with no active work → remove after 2‑session cooling period. Scene encoding format: `Domain — 📝 当前工作场景：简短描述 [→](link)`. 一行一域 + 场景编码——让下次 session 一眼看清各域状态. |
 | 8 | **Split 经验摘要** | Tag each 经验摘要 entry as `enforcement` (reinforces a specific agent operating rule), `survival` (environment/tool trap not covered by persona/memory), or `axiom` (behavioral principle already in persona/memory). Remove axiom entries (de‑duplication: they are injected every turn already). Keep enforcement and survival entries. |
+| 9 | **Execute archive cleanup** | Hard-delete only entries marked for hard deletion in Phase 1. Before deletion: (a) verify each matches the Phase 1 mark list exactly — no entry that was not explicitly marked, (b) confirm none were archived in the current cycle — cross-check against Phase 0 Step 10’s protected list. After deletion: report count of deleted entries and retained entries. |
+
 
 > **"Extract first, archive later" logic**: Source files stay in place while extraction runs — no interruption‑safety checklist needed. After extraction is confirmed (new files written and verified), the archival move is safe. The original files enter `archive/` intact, preserving complete history alongside the extracted content.
 
