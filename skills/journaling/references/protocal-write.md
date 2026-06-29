@@ -57,6 +57,20 @@ Do not worry about redundancy, overlap, or contradictions between the two entrie
 These are resolved during maintenance (see `references/protocal-maintenance.md`).
 Split now, merge later.
 
+---
+
+## Before Writing: Check Journal Rules
+
+Journal 可能在 `<journal-root>` 下有三份规则文件：CLASSIFICATION.md（目录分类规则）、
+TAGS.md（标签注册表）、CONVENTIONS.md（设计模式实例注册）。
+加载其中存在的文件。对于每份：
+
+- **CLASSIFICATION.md** — 确定目标目录。条目所属目录须符合分类规则。不存在时使用默认种子目录（inbox/ experience/ knowledge/ active_works/），按 `spec-note.md` 的目录分配指南判断。
+- **TAGS.md** — frontmatter 中所有 tag 必须来自已注册列表。如需使用未注册 tag，先在 TAGS.md 中注册。不存在时使用种子 tag 集。
+- **CONVENTIONS.md** — 检查当前条目是否命中任何 convention 的 scope。命中 → 执行该 convention 定义的写入感知步骤。未命中或文件不存在 → 跳过。
+
+此步骤在规格确认之后、实际写入之前执行——三规则确定基线，在此基础上落笔。
+
 ## Frontmatter (Required)
 
 Every journal entry must have YAML frontmatter. See `references/spec-frontmatter.md` for full format specification, syntax rules, data types, and field ordering.
