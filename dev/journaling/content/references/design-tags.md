@@ -4,7 +4,7 @@
 >
 > Use this reference when:
 > - Registering a new tag (naming + format)
-> - Reviewing tags during maintenance (Phase 1 Step 2)
+> - Reviewing tags during maintenance (P1-S3 确认三规则变更)
 > - Redesigning TAGS.md when the current structure no longer fits
 
 
@@ -20,7 +20,6 @@
 **Type Identification**：`# Tags` 标题 + `## Tags` 节 + `| Tag | Meaning |` 表格。这些标识是初始化时从模板写入的，用于区分 journal 的 TAGS.md 和恰好同名的其他 tag 文件。
 
 **Relationships**：
-- `INDEX.md` 的协议声明行指向它（`标签系统 → TAGS.md`）。
 - `CLASSIFICATION.md` 定义目录（主分类轴），TAGS.md 定义跨目录标签（次分类轴）。
 - 标签不替代目录分类——它们提供额外的检索维度。
 
@@ -92,7 +91,7 @@ As the tag list grows past ~15 entries, navigation becomes harder. Dimension gro
 
 - **Don't add dimensions upfront.** Start with a flat list. Dimensions are a navigation aid, not a structural requirement.
 - **Add when** scanning the flat list becomes noticeably harder than scanning grouped sections — typically ~15+ tags.
-- **Re-evaluate during maintenance** — Phase 1 Step 2c checks if the current dimensional structure still fits usage patterns.
+- **Re-evaluate during maintenance** — P1-S3 checks if the current dimensional structure still fits usage patterns.
 
 ### Format with Dimensions
 

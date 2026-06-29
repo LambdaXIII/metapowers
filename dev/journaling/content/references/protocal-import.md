@@ -114,30 +114,21 @@
 
 > 无法发现有效关联：内容与 journal 中已有条目无关联点——向用户说明情况，由用户提供关联信息或决定是否强制收录。
 
-### P2-S3: 判断目录归属
-确定文件应放入 journal 中的哪个目录。
+### P2-S3: 检查 Journal Rules
 
-1. **用户明确指定** → 按用户指定目录放入。目录不存在则创建。
-2. **其他情况** → 读取 INDEX.md 和 CLASSIFICATION.md 中的目录规则，按规则判断归属
-3. **以上无法确定** → 放入 `inbox/`（保守目录，优先于猜错）
+Journal 可能在 `<journal-root>` 下有三份规则文件：CLASSIFICATION.md、TAGS.md、CONVENTIONS.md。
+加载其中存在的文件。对于每份：
 
-> 目录归属判断不依赖 import 协议自定义的优先级——分类规则由 INDEX.md 和 CLASSIFICATION.md 定义。
-
-### P2-S4: 提炼 Tags
-
-检查文件是否已有 frontmatter，对照 `references/spec-frontmatter.md` 验证：
-
-- **已有有效 frontmatter** → tags 已在其中，无需修改。记录此文件的标签用于后续步骤
-- **无效或没有 frontmatter** → 确定文件需要的标签：
-
-  1. 文件是否为从外部收录的源文件？是 → 增加 `imported` tag
-  2. 根据内容提炼其他适用标签
-  3. 所有标签必须来自 TAGS.md 中已注册的标签——不在列表中的标签不能使用
+- **CLASSIFICATION.md** — 确定目录归属。遵守分类规则。无法确定 → 放入 `inbox/`。
+- **TAGS.md** — 标签全部来自已注册列表。新 tag 先注册。不存在时使用种子集。
+- **CONVENTIONS.md** — 检查 scope。命中 → 记录操作，P3 一并处理。不存在 → 跳过。
 
 `imported` tag 的含义："从外部直接收录的文件，经过修改或自行编写的笔记不应再包含此标签"。
 ---
 
 ## P3: 执行
+
+> 若 P2-S3 记录了额外操作，在对应步骤中执行。
 
 顺序执行。此阶段**开始操作文件**（复制、写入、修改）。
 ### P3-S1: 复制文件

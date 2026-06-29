@@ -24,10 +24,6 @@ INDEX.md must be:
 
 **Type Identification**：文件顶部包含 `> ⚠️ 本 journal 由 journaling 技能管理` 即为 journal 的 INDEX.md。此协议声明行是初始化时写入的，用于类型识别——区分 journal 的仪表盘和恰好同名的其他 INDEX.md 文件。
 
-**Relationships**：
-- `CLASSIFICATION.md` 定义目录规则——什么内容归哪个目录，由谁判断。
-- `TAGS.md` 定义受控词表——跨目录的标签体系，补充目录的主分类轴。
-- 三者构成 journal 的规则骨架：INDEX.md 是入口，CLASSIFICATION.md 是分类规则，TAGS.md 是标签规则。
 
 
 ## Design Principles
@@ -52,7 +48,6 @@ Each principle's rationale is embedded in the sections they govern. If you encou
 Top of file. Five items:
 - **Skill association**: `> ⚠️ 本 journal 由 `journaling` 技能管理`
 - **Read/write rule**: 读 INDEX.md 不需要加载 skill；写入或维护时必须加载 journaling skill
-- **Self-management reference**: `> 分类规则 → \`CLASSIFICATION.md\` · 标签系统 → \`TAGS.md\``. Links to the journal's classification rules and tag registry. CLASSIFICATION.md exists only when the journal has evolved beyond the seed structure — when absent, the 4‑directory seed is the implicit classification. TAGS.md always exists after initialization.
 - **Maintenance trigger reminders** (dynamic snapshot + action hint): After each maintenance Phase 1, rewrite this line to reflect the current state. Format: `维护信号：<signals found>`. Example: `维护信号：经验摘要含 axiom(2) · 最近变更 9/7 · 维护备忘 12/10 · active_works/ 积灰`. An empty line = no signals. When 2+ signals are at threshold or memo exceeds 10 items, consider running a full maintenance pass — load journaling skill → `references/protocal-maintenance.md`.
 - **Journal root** (optional, recorded during initialization): `> Journal root: <path>`. Used for multi-session discovery verification.
 
@@ -62,7 +57,7 @@ Top of file. Five items:
 
 INDEX.md 的具体组织由每个 journal 自行演化，没有固定的章节模板。从协议声明开始，随着条目增加逐渐自然生长出适合自己项目的结构。
 
-如果 INDEX.md 在当前组织方式下感觉不够用（信号不清晰、专项工作堆积、变更列表过长），参见 `references/protocal-maintenance.md` Phase 1 Step 1 中的 Dashboard 组织审查步骤。
+如果 INDEX.md 在当前组织方式下感觉不够用（信号不清晰、专项工作堆积、变更列表过长），参见 `references/protocal-maintenance.md` P1-S2（设计目标组织方式）中的 Pattern 选择维度。
 
-关于为特定项目/领域创建独立的次级 INDEX，参见 `references/dashboard.md`。
+关于为特定项目/领域创建独立的次级 INDEX，参见 `references/patterns/dashboard.md`。
 

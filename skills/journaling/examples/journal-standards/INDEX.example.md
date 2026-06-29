@@ -2,7 +2,6 @@
 
 > ⚠️ 本 journal 由 `journaling` 技能管理
 > 读此文件不需要加载 skill · 写入或维护时必须加载 journaling
-> 分类规则 → `CLASSIFICATION.md` · 标签系统 → `TAGS.md`
 > 维护信号：经验摘要含 axiom(3) · 最近变更 8/7 · 维护备忘 6/10
 
 跨项目全局笔记。我记的，我用的。

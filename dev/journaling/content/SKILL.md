@@ -15,9 +15,8 @@ description: |
   - Browsing existing journal entries
   - Searching journal content
 metadata:
-  version: "4.3.1"
-  last_updated: "2026-06-27"
-  author: "Ĉalio"
+  version: "4.5.1"
+  last_updated: "2026-06-29"
 ---
 
 # Journaling
@@ -37,12 +36,13 @@ This skill defines how the journal works — the design concept (why), the cover
 
 ## Linked Files
 
-- [INDEX.md Specification](references/spec-index.md) — INDEX.md 的核心规范：协议声明、设计原理、与自管理文件（CLASSIFICATION.md/TAGS.md）的关系。关于项目级次级 INDEX 的设计参考，见 `references/dashboard.md`。
+- [INDEX.md Specification](references/spec-index.md) — INDEX.md 的核心规范：协议声明、设计原理、与自管理文件（CLASSIFICATION.md/TAGS.md）的关系。关于项目级次级 INDEX 的设计参考，见 `references/patterns/dashboard.md`。
 - [Writing Protocol](references/protocal-write.md) — 写条目的工作流程：triage 判断、同 session 补充 vs 跨 session 补充、After Writing 更新 INDEX.md、Before Delivery 自检。
 - [Note Writing Guide](references/spec-note.md) — 条目格式指南：summary anchoring 三检查点、body 格式（一句一行/wikilink/过度泛化/context boundary）、粒度控制、4 种子目录分配、条目生命周期。
 - [Importing Protocol](references/protocal-import.md) — Bring existing external content into the journal: evaluation, copy, frontmatter, adjustment.
 - [Journal Initialization](references/protocal-init.md) — Create a new journal from scratch: three-phase protocol (locate root → init skeleton files → design discovery contract).
-- [Maintenance Protocol](references/protocal-maintenance.md) — Full maintenance cycle: Phase 0 scan, Phase 1 rule review, Phase 2 restructure, Phase 3 quality check, Phase 4 finalize. Trigger when dashboard signals or memo exceeds 10 items.
+- [Discovery Contract Design Guide](references/design-discovery-contract.md) — 发现合约设计的系统化方法：载体清查、过滤评估、推荐方案、用户呈报。在 `protocal-init.md` Phase 3 执行期间加载。
+- [Maintenance Protocol](references/protocal-maintenance.md) — Full maintenance cycle: Phase 0 scan → Phase 1 review-design-settle-plan (3 parallel rules) → Phase 2 rules-first then restructure → Phase 3 bidirectional verification → Phase 4 finalize. Trigger when dashboard signals or memo exceeds 10 items.
 - [Journal Standards Examples](examples/journal-standards/) — Reference examples of journal self-managed files: INDEX.example.md, CLASSIFICATION.example.md, TAGS.example.md.
 - [Templates](templates/seed/) — 初始化所需的种子文件模板（INDEX.md、CLASSIFICATION.md、TAGS.md）。
 
@@ -51,7 +51,10 @@ This skill defines how the journal works — the design concept (why), the cover
 - [Classification System Examples](examples/classification-systems/) — Reference catalog of common real-world classification systems (PARA, Zettelkasten, Johnny Decimal, MOC/LYT, Evergreen, GTD, and journaling default). Each file starts with a summary for quick scanning.
 - [Tag Design Guide](references/design-tags.md) — Tag creation, naming, registration, and lifecycle methodology. Consult when registering new tags or during tag maintenance.
 - [Frontmatter Specification](references/spec-frontmatter.md) — YAML format rules, required fields, recommended optional fields, custom field guidelines, and examples.
-- [Project Dashboard Pattern](references/dashboard.md) — 项目/领域级次级 INDEX 设计参考。和 INDEX.md 类比：提供聚焦一域的状态概览，作为 session 的次级路由入口。不是规范——从实际需求中生长。
+- [Project Dashboard Pattern](references/patterns/dashboard.md) — 项目/领域级次级 INDEX 设计参考。和 INDEX.md 类比：提供聚焦一域的状态概览，作为 session 的次级路由入口。不是规范——从实际需求中生长。
+
+- [Conventions Specification](references/spec-conventions.md) — CONVENTIONS.md 的设计原则与操作建议。描述 convention 机制的三条核心原则、文件格式、与各协议的关系。
+- [Conventions Template](templates/seed/CONVENTIONS.md) — CONVENTIONS.md 种子模板。最小化格式参考，在维护中首次创建时使用。
 ---
 
 ## How to Use This Skill
@@ -61,8 +64,10 @@ This skill uses progressive disclosure. Load the reference document matching you
 | Scenario | Load |
 |----------|------|
 | **Creating a new journal from scratch** | **`references/protocal-init.md`** |
+| **Designing the discovery contract for a new journal** | **`references/design-discovery-contract.md`** |
 | Writing/reviewing INDEX.md core spec and protocol declaration | `references/spec-index.md` |
-| Creating or reviewing a project-level dashboard (secondary INDEX) | `references/dashboard.md` |
+| Creating or maintaining journal conventions (design pattern instances) | `references/spec-conventions.md` |
+| Creating or reviewing a project-level dashboard (secondary INDEX) | `references/patterns/dashboard.md` |
 | Writing a journal entry (workflow: triage → supplement → update INDEX.md → self-check) | `references/protocal-write.md` |
 | Writing a journal entry (format: summary → body → granularity → directory → lifecycle) | `references/spec-note.md` |
 | **Importing existing content into the journal** | **`references/protocal-import.md`** |

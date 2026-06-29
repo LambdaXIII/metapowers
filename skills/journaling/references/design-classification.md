@@ -20,7 +20,6 @@
 **Type Identification**：`# Classification` 标题 + `| 目录 | 放什么 | 不放什么 | 一句话判断 |` 四列快速参考表格。此表格是初始化时从模板写入的，用于区分 journal 的 CLASSIFICATION.md 和恰好同名的其他文件。
 
 **Relationships**：
-- `INDEX.md` 的协议声明行指向它（`分类规则 → CLASSIFICATION.md`）。
 - `TAGS.md` 提供跨目录的次分类轴——目录是主分类轴，标签是次分类轴。
 - 没有 CLASSIFICATION.md 时，4 目录种子结构是隐式分类。CLASSIFICATION.md 将其显式化。
 

@@ -41,9 +41,10 @@ The maintenance framework follows a strict data‑first sequence:
 
 ```
 Phase 0: Scan          — 收集数据，不做判断
-Phase 1: Rule Review   — 基于扫描结果审查规范（分类规则 → tags）
-Phase 2: Restructure   — 基于确认后的规范重组条目
-Phase 3: Quality Check — 验证重组质量
+Phase 1: Review → Design → Settle → Plan
+                       — 带着三规则审查现状、设计目标组织方式、确认三规则变更、制定重组计划
+Phase 2: Execute       — 先改三规则，再重组条目
+Phase 3: Quality Check — 双向检验：规则微调 + 条目合规
 Phase 4: Finalize      — 记录并关闭维护
 ```
 
@@ -61,7 +62,7 @@ Phase 0 和 Phase 1 之间有一道关键边界：**P0 只回答"当前是什么
 
 | # | Step | Input | Output |
 |---|------|-------|--------|
-| 0 | **Read maintenance memo** | `.maintenance-memo.md` at journal root | Prioritized list of pre‑reported issues. These become additional scan targets — they don't replace the systematic scan (Steps 1‑8) but ensure nothing that was noticed during daily work gets forgotten. |
+| 0 | **Read maintenance memo** | `.maintenance-memo.md` at journal root | Prioritized list of pre‑reported issues. These become additional scan targets — they don't replace the systematic scan (Steps 1‑9) but ensure nothing that was noticed during daily work gets forgotten. |
 | 1 | **File‑level scan** | Full file list + directory tree | Anomaly log: non‑markdown files, misplaced entries, directories not in the current classification, entries with contradictions between their content and their directory. |
 | 2 | **Group by topic** | All files | Per‑topic thread summary (3‑5 lines: background + current state + key files). |
 | 3 | **Mark staleness** | Per file | State tags: `fully stale`（内容已过时或无当前项目关联） / `partially stale`（部分信息仍有效、部分已过时） / `still valid`（内容当前仍准确）。这些是推荐性标签——agent 根据 journal 自身情况和内容性质自行判定。标签仅描述状态，所标记内容的处置由 Phase 2 决定。 |
@@ -70,6 +71,7 @@ Phase 0 和 Phase 1 之间有一道关键边界：**P0 只回答"当前是什么
 | 6 | **Collect dashboard signal data** | INDEX.md (all sections) | Per‑section raw data: number of lines per domain in 专项工作, entry count in 最近变更, number of 经验摘要 entries with their current enforcement/survival/axiom tags (if tagged). |
 | 7 | **Collect tag data** | All entry frontmatter + `<journal-root>/TAGS.md` | Three raw lists: (a) tags used but not in TAGS.md; (b) synonymous tags (same meaning, different names); (c) one‑off tags (used only once, no clear category). Do not decide what to do yet — just list them. |
 | 8 | **Custom section audit** | INDEX.md | For any non-standard sections the agent has added to INDEX.md (e.g., self-regulation rules): assess whether they are still relevant, up-to-date, and anchored to valid journal entries. |
+| 9 | **Collect convention data** | `<journal-root>/CONVENTIONS.md` (if exists) | List of convention entries: pattern name, scope, file path, created date, self-check status. Report whether any convention's scope overlaps with other rules or is stale. |
 
 **Output of Phase 0**: A Journal Global Snapshot document containing:
 - Directory usage report (from Step 5)
@@ -79,147 +81,132 @@ Phase 0 和 Phase 1 之间有一道关键边界：**P0 只回答"当前是什么
 - Tag raw lists (from Step 7)
 - Custom section audit (from Step 8)
 - Staleness tags + extraction checklists (from Steps 3‑4)
+- Convention status (from Step 9)
 
 > ⚠️ **Phase 0 不产生决策。** 如果你发现自己在 Phase 0 中说"这个应该放到 X 目录"或"这个 tag 应该合并"，你正在跨入 Phase 1。停下——先把数据收集完。Phase 1 会基于完整数据做判断。
 
 ---
 
-> ⚠️ **进入 Phase 1 前**：重读 Phase 0 快照数据（目录统计、staleness 标记、tag 列表），
-> 确认数据解读无误后再做分类/tags 决策。如果对某个标记有疑问，重新打开对应文件确认——不要依赖记忆或假设。
+### Phase 1: Review → Design → Settle → Plan
 
-> 基于 Phase 0 的快照，逐层审查规范。**依赖顺序**：先确定分类规则，再基于分类规则审查 tags。
->
-> 两条规范的依赖链：
->
-> ```
-> CLASSIFICATION.md（分类规则）
->      ↓ 确定后
-> Tags（基于分类规则的上下文）
-> ```
+> ⚠️ **进入 Phase 1 前**：重读 Phase 0 快照数据（目录统计、staleness 标记、tag 列表、convention 状态），
+> 确认数据解读无误后再做决策。如果对某个标记有疑问，重新打开对应文件确认——不要依赖记忆或假设。
 
-#### Step 1: Review Classification Rules
+Phase 1 是一个完整的认知链：先理解现状、再设计方案、然后确认规则、最后制定执行计划。**不碰文件。**
 
-**Input**: Phase 0 Step 5 (directory usage stats) + current `CLASSIFICATION.md` (if exists)
+三份规则文件平等并列——CLASSIFICATION.md、TAGS.md、CONVENTIONS.md 同为制度文件，不设先后依赖顺序。
 
-**Questions to answer**:
+#### P1-S1: 带着三规则审查现状
 
-1. **覆盖性**：当前分类规则是否覆盖了所有现有内容？
-   - 有没有内容不属于任何已定义目录？
-   - 如果有，是需要调整规则，还是创建新目录？
+将 CLASSIFICATION.md、TAGS.md、CONVENTIONS.md 作为透镜，解读 Phase 0 快照。
 
-2. **一致性**：规则是否与实际使用一致？
-   - CLASSIFICATION.md 说 `experience/` 只放个人经验，但目录里有 40% 的外部研究——这是规则被忽略了，还是规则本身不适配？
-   - 目录名和实际内容的"气味"是否一致？
+**不决策**——只建立"当前规则视角下的全貌"。
 
-3. **正交性**：是否有两条规则经常被同时适用？
-   - 某条内容可以合理地放在两个目录 -> 是需要合并目录，还是跨域内容应该用链接/MOC 处理？
+对每份规则：
+- **CLASSIFICATION.md**（存在时）：覆盖性（是否覆盖所有内容）、一致性（与实际使用是否一致）、正交性（是否有重叠）、健康度（空目录/拥挤目录）
+- **TAGS.md**（存在时）：注册列表的完整度、使用模式、维度结构是否合理
+- **CONVENTIONS.md**（存在时）：scope 是否仍然有效、是否有 stale 或冲突的 convention
 
-4. **健康度**：Phase 0 Step 5 报告的健康度数据
-   - 空目录（0‑2 条）：是否需要合并？
-   - 拥挤目录（>20 条）：是否需要拆分？如果拆，往哪个方向？
-   - 不在 CLASSIFICATION.md 的非正式目录：是否应该被正式接纳？
+**输出**：三规则现状笔记——各规则的覆盖情况和潜在问题清单。
 
-**决策框架**：
+> **格式审查**：除内容审查外，对每份存在的规则文件，加载对应的 skill 规范文件（`references/design-classification.md` / `references/design-tags.md` / `references/spec-conventions.md`），对照文件格式要求逐项检查。即使技能规范中格式约束不多，也必须重新阅读确认——避免跨版本格式漂移。发现格式不符 → 标记为 P1-S3 变更清单中的 UPDATE。
 
-| 情况 | 行动 |
-|------|------|
-| 4 个问题都回答"正常"或"在预期内" | 确认当前规则继续有效。不修改 CLASSIFICATION.md。 |
-| 任何一个问题回答"有问题" | 加载 `references/design-classification.md`，走 Step 1‑5 流程，基于 Phase 0 的数据设计修订方案。 |
-| CLASSIFICATION.md 不存在 | 加载 `references/design-classification.md`，走 Step 1‑5 流程，基于 Phase 0 的数据设计一份分类方案并写入。 |
-| 沿袭默认种子结构（初始化时的 4 目录）但从未写 CLASSIFICATION.md | 评估默认结构是否仍然适配。如果适配，正式写入 CLASSIFICATION.md 确认；如果不适配，走设计流程修订。 |
+#### P1-S2: 设计目标组织方式
 
-**Output**: 
-- **确认不变** → `CLASSIFICATION.md` 保持原样
-- **需要修订** → 更新 `CLASSIFICATION.md`（新的目录定义、边界规则、跨域处理策略）
-- **新建** → 写入 `CLASSIFICATION.md`
+从"想要什么结构"出发。同时评估三个维度，不做先后假设：
 
-> ⚠️ **分类规则修订是重大操作。** 一个经过深思熟虑的分类方案不应该在每次维护时都改。只有在覆盖性、一致性、正交性或健康度出现明确信号时才触发修订。如果你在犹豫"要不要改"，默认不改——等到下次维护时如果信号仍然存在，再改。
+- **目录结构**：当前分类规则是否支撑理想结构？需要新增/合并/拆分目录？
+- **Pattern 选择**：是否需要一个特定项目/领域的次级 INDEX（Dashboard）？当前的 INDEX.md 组织是否满足信号需求？如果 INDEX.md 感觉不够用（信号不清晰、专项工作堆积、变更列表过长），审视当前结构——哪些板块的噪声值超过信号值。
+- **标签体系**：当前的标签结构和注册列表是否覆盖了所有内容类别？维度分组是否仍然合适？
+- **Convention 需求**：是否需要创建/更新/销毁某条 convention？
 
->
-> **Dashboard 组织审查**：如果 INDEX.md 当前的组织方式感觉不够用
-> （信号不清晰、专项工作堆积、变更列表过长），审视当前 INDEX.md 的结构——
-> 哪些信号在下一页才出现、哪些信息需要滚动才能看到、
-> 哪些板块的噪声值超过了信号值。INDEX.md 的组织是自由演化的，没有固定模板。
-> 关于为特定项目创建独立的次级 INDEX（Dashboard），参见 `references/dashboard.md`。
->
----
+引用参考：分类审查四维框架见 `references/design-classification.md`。Dashboard 模式参考 `references/patterns/dashboard.md`。标签设计方法论见 `references/design-tags.md`。Convention 规范见 `references/spec-conventions.md`。
 
-#### Step 2: Review Tags + Registry
+**输出**：理想组织方式设计方案。
 
-**Input**: Phase 0 Step 7 (tag raw lists) + confirmed CLASSIFICATION.md from Step 1
+#### P1-S3: 确认三规则变更
 
-**Three‑phase decision process**:
+将设计方案落实到三规则的具体修改内容。
 
-**Phase 2a: Handle unregistered tags**
+对每份规则，确定需要做什么（CREATE / UPDATE / DELETE）：
+- **CLASSIFICATION.md**：规则变更内容
+- **TAGS.md**：新 tag 注册 / 合并 / 移除；维度调整
+- **CONVENTIONS.md**：新增 / 更新 / 销毁 convention 条目
 
-对 Phase 0 Step 7 列出的未注册 tag，使用 Tag Worthiness Criteria 决定：
-
+Tag 决策中使用 Tag Worthiness Criteria：
 | 判定 | 行动 |
 |------|------|
-| 值得保留 | 注册到 `<journal-root>/TAGS.md` |
-| 是已注册 tag 的同义词 | 合并——将所有出现替换为正式 tag，不在 registry 中创建新条目 |
+| 值得保留 | 注册到 TAGS.md |
+| 是已注册 tag 的同义词 | 合并——将所有出现替换为正式 tag |
 | 不值得保留 | 从所有条目的 frontmatter 中移除 |
-| 模糊但常用 | 保留但注册——有些模糊但高频的 tag 是有效的跨切面工具 |
+| 模糊但常用 | 保留但注册 |
 
-**Overlap note**: 一个 tag 可能出现在多个列表中（如：未注册 + 单次 + 同义词）。决策优先级：值得保留 → 注册；同义词 → 合并；不值得保留且非同义词 → 移除，无论使用次数。
+**输出**：三规则变更清单（每项指定 CREATE / UPDATE / DELETE）。不碰文件。
 
-**Vague‑but‑common branch**: tags like `misc`, `general`, `notes` are never worth keeping — remove from all entries regardless of frequency.
+#### P1-S4: 制定重组计划
 
-**Phase 2b: Handle synonymous tags**
+将变更清单映射为完整的条目重组操作序列。
 
-对于 Phase 0 发现的同义 tag 组，确定 canonical tag（正式名称）。合并指令（tag A → tag B）交给 Phase 2 执行。
+指定：
+1. 规则文件修改顺序（P2-S1 顺序）
+2. 条目重组顺序（按目录、按标签、按 convention）
+3. 特殊处理（需要提取的内容、需要特别关注的文件）
 
-**Phase 2c: Registry health check**
+**输出**：Phase 2 执行计划。
 
-| 检查项 | 标准 |
-|--------|------|
-| TAGS.md 中的 tag 是否还有活跃条目使用？ | 零使用 → 从 TAGS.md 移除（但不必从已归档条目中删除，因为他们不会再被搜索） |
-| 是否有新的内容类别需要新的 tag？ | 基于 Phase 0 的 topic 分组判断——如果一个 cluster 有 3+ 条目且没有合适的已有 tag，创建新 tag |
-| TAGS.md 结构是否仍然合理？ | 如果已使用维度分类（activity/domain/meta/project 等），当前的维度是否仍然覆盖使用模式？如果出现大量维度外的 tag，考虑是否需要新增维度 |
-
-**Output**:
-- 注册/合并/移除/保留的 tag 清单
-- Registry 更新内容
-- Phase 2 的 tag remediation 指令
-
----
-
-**End of Phase 1 — two specifications are now confirmed:**
+**End of Phase 1 — three sets of rules are now confirmed:**
 
 | 规范 | 状态 |
 |------|------|
 | Classification rules (CLASSIFICATION.md) | ✅ 确认不变 / ✅ 已修订 |
 | Tag registry (TAGS.md) | ✅ 确认 / ✅ 已维护 |
+| Conventions (CONVENTIONS.md) | ✅ 确认不变 / ✅ 已修订 / ✅ 不涉及 |
 
-如果两条都没有任何变更，**仍然可以进入 Phase 2**——Phase 2 不只是执行变更，它也处理条目级别的重组（按旧规则搬文件、归档、清理）。
+如果三项都没有任何变更，**仍然可以进入 Phase 2**——Phase 2 不只是执行变更，它也处理条目级别的重组（按现有规则搬文件、归档、清理）。
 
 ---
 
-### Phase 2: Restructure — Apply the Confirmed Rules
+### Phase 2: Execute — Apply the Confirmed Rules
 
-> 基于 Phase 1 确认的规范执行重组。如果规范未变更，则按原有规则执行条目级别的重组（归档、移动、拆分）。
+> 先改三规则文件，再重组条目。规则就位后，所有操作基于新规则。
 
 > 本阶段所有操作均为加法——新位置先就位，原位置后清理。
 > 任何步骤中断只需继续执行，不会丢失数据。确认新文件正确后再清理旧位置。
 
 | # | Step | Description |
 |---|------|-------------|
-| 1 | **Extract surviving content** | Using the extraction checklist from Phase 0 Step 4, pull valid information units from files to be archived and write them into the reorganized structure (new files or enrich existing ones). Source files remain in place during extraction — they are still readable. |
-| 2 | **Archive** | All `fully stale` + `partially stale` files → move to `archive/` (create this directory if it does not yet exist). Partially stale files go whole — their original stays intact as history. By this point, surviving content has already been extracted. |
-| 3 | **Reorganize structure** | Apply the classification structure from the confirmed CLASSIFICATION.md. Move entries between directories, rename directories if needed. Update INDEX.md links to their new paths BEFORE physically moving the files — the target paths are already determined by the Phase 1 reorganization plan. |
-| 4 | **Tag remediation** | Execute the tag decisions from Phase 1 Step 2: (a) register new tags in `<journal-root>/TAGS.md`; (b) merge synonyms — replace all occurrences with the canonical tag; (c) remove discarded tags from entry frontmatter. **After removal:** verify affected entries still have ≥1 tag, or follow the rules in TAGS.md. Report counts: registered X, merged Y, removed Z. |
-| 5 | **Trim 最近变更** | Cut to last 7 entries. The purpose is recency signal — "what happened in the last few sessions?" — not a chronological log. Older entries are findable via file system. |
-| 6 | **Collapse 专项工作** | Reduce to one line per domain. Encode current work scene in each line (not just "active"/"completed"). Completed milestones from domains with no active work → remove after 2‑session cooling period. Scene encoding format: `Domain — 📝 当前工作场景：简短描述 [→](link)`. 一行一域 + 场景编码——让下次 session 一眼看清各域状态。 |
-| 7 | **Split 经验摘要** | Tag each 经验摘要 entry as `enforcement` (reinforces a specific agent operating rule), `survival` (environment/tool trap not covered by persona/memory), or `axiom` (behavioral principle already in persona/memory). Remove axiom entries (de‑duplication: they are injected every turn already). Keep enforcement and survival entries. |
-| 8 | **Write / update CLASSIFICATION.md** | If Phase 1 modified the classification rules, ensure CLASSIFICATION.md is up to date and placed at journal root. If CLASSIFICATION.md was newly created, confirm it is complete (definitions, boundaries, cross‑domain rules). |
+| 1 | **Update rule files first** | 按 P1-S3 的变更清单修改/创建/销毁三规则文件。CLASSIFICATION.md、TAGS.md、CONVENTIONS.md 全部先就位。 |
+| 2 | **Extract surviving content** | Using the extraction checklist from Phase 0 Step 4, pull valid information units from files to be archived and write them into the reorganized structure (new files or enrich existing ones). Source files remain in place during extraction — they are still readable. |
+| 3 | **Archive** | All `fully stale` + `partially stale` files → move to `archive/` (create this directory if it does not yet exist). Partially stale files go whole — their original stays intact as history. By this point, surviving content has already been extracted. |
+| 4 | **Reorganize structure** | Apply the classification structure from the confirmed CLASSIFICATION.md. Move entries between directories, rename directories if needed. Update INDEX.md links to their new paths BEFORE physically moving the files — the target paths are already determined by the Phase 1 reorganization plan. |
+| 5 | **Tag remediation** | Execute the tag decisions from Phase 1 P1-S3: (a) register new tags in TAGS.md; (b) merge synonyms — replace all occurrences with the canonical tag; (c) remove discarded tags from entry frontmatter. **After removal:** verify affected entries still have ≥1 tag, or follow the rules in TAGS.md. Report counts: registered X, merged Y, removed Z. |
+| 6 | **Trim 最近变更** | Cut to last 7 entries. The purpose is recency signal — "what happened in the last few sessions?" — not a chronological log. Older entries are findable via file system. |
+| 7 | **Collapse 专项工作** | Reduce to one line per domain. Encode current work scene in each line (not just "active"/"completed"). Completed milestones from domains with no active work → remove after 2‑session cooling period. Scene encoding format: `Domain — 📝 当前工作场景：简短描述 [→](link)`. 一行一域 + 场景编码——让下次 session 一眼看清各域状态. |
+| 8 | **Split 经验摘要** | Tag each 经验摘要 entry as `enforcement` (reinforces a specific agent operating rule), `survival` (environment/tool trap not covered by persona/memory), or `axiom` (behavioral principle already in persona/memory). Remove axiom entries (de‑duplication: they are injected every turn already). Keep enforcement and survival entries. |
 
 > **"Extract first, archive later" logic**: Source files stay in place while extraction runs — no interruption‑safety checklist needed. After extraction is confirmed (new files written and verified), the archival move is safe. The original files enter `archive/` intact, preserving complete history alongside the extracted content.
 
-> **Dashboard updates happen in Phase 2, not Phase 4.** File moves (Step 3) immediately invalidate all dashboard links pointing to moved files. Update INDEX.md links BEFORE moving files — otherwise the dashboard enters a broken‑link state between Phase 2 and Phase 4.
+> **Dashboard updates happen in Phase 2, not Phase 4.** File moves (Step 4) immediately invalidate all dashboard links pointing to moved files. Update INDEX.md links BEFORE moving files — otherwise the dashboard enters a broken‑link state between Phase 2 and Phase 4.
 
 ---
 
-### Phase 3: Quality Check
+### Phase 3: Quality Check — Bidirectional Verification
+
+双向检验：规则与条目互相校正。
+
+**Step 1: Review process → micro‑adjust rules**
+
+回顾 Phase 2 执行过程——是规则不合理导致执行困难，还是执行偏差？
+
+- 目录归属是否有模糊边界 → CLASSIFICATION.md 是否需要微调？
+- 标签分配是否不自然 → TAGS.md 维度是否需要调整？
+- convention scope 是否覆盖不全或有冲突 → CONVENTIONS.md 是否需要修正？
+
+如需调整，直接修改对应规则文件。规则文件始终反映"我实际希望条目遵循的规则"。
+
+**Step 2: Verify entries against finalized rules**
+
+以最终确认的三规则为基准验证：
 
 | # | Dimension | Description |
 |---|-----------|-------------|
@@ -227,16 +214,15 @@ Phase 0 和 Phase 1 之间有一道关键边界：**P0 只回答"当前是什么
 | 2 | **Content overlap** | Topic overlap or near‑duplication across notes. |
 | 3 | **Broken links** | References pointing to archived content. Distinguish two cases: migrated to new location → fix the link; archived without extracting key points → decide whether to pull them back. Check any custom section tables first — they are often the most link‑dense parts of INDEX.md. |
 | 4 | **Tag compliance** | After remediation, scan all entries: every tag must appear in `<journal-root>/TAGS.md`. Verify each entry follows the rules defined in TAGS.md. Flag any violators. |
+| 5 | **Convention compliance** | Check that convention entries referenced in configs/dashboards are up-to-date with their CONVENTIONS.md definitions. No scope drift. |
 
 ---
 
 ### Phase 4: Finalize
 
-| # | Step | Description |
-|---|------|-------------|
-| 1 | **Verify entry points** | Re‑check `INDEX.md` — all links resolve, 专项 work section is clean, 最近变更 is trimmed, 经验摘要 is de‑duplicated. Confirm no broken references were introduced. |
-| 2 | **Update Protocol Declaration signal line** | Rewrite the `维护信号` line in INDEX.md Protocol Declaration to reflect the current maintenance snapshot. Examples: `维护信号：经验摘要含 axiom(2) · 最近变更 9/7 · 维护备忘 12/10`. This makes maintenance signals visible at a glance in the next session startup without requiring a full dashboard scan. |
-| 3 | **Record restructuring** | Append a restructuring record to `INDEX.md` 最近变更. Include: what phases ran, what rules changed (if any), count of files moved/tags fixed/types corrected. |
+| 1 | **重写 INDEX.md** | 加载 `references/spec-index.md`，按当前技能规范完全重写 INDEX.md。保留 Phase 2 已更新的内容（已修剪的最近变更、已折叠的专项工作、已去重的经验摘要、已修复的链接），但格式和结构严格遵循 spec。不增量修补——重写确保跨版本一致性。 |
+| 2 | **Update Protocol Declaration signal line** | Rewrite the `维护信号` line in INDEX.md Protocol Declaration to reflect the current maintenance snapshot. Examples: `维护信号：经验摘要含 axiom(2) · 最近变更 9/7 · 维护备忘 12/10 · active_works/ 积灰`. Includes convention status if relevant. This makes maintenance signals visible at a glance in the next session startup without requiring a full dashboard scan. |
+| 3 | **Record restructuring** | Append a restructuring record to `INDEX.md` 最近变更. Include: what phases ran, what rules changed (if any), count of files moved/tags fixed/types corrected, and any convention changes. |
 | 4 | **Clear maintenance memo** | If `.maintenance-memo.md` exists and was read in Phase 0, clear its contents (or delete the file). All accumulated issues have been addressed through the full maintenance cycle — an empty or absent memo resets the accumulation counter for the next daily‑use cycle. |
 
 ---
@@ -247,9 +233,11 @@ Phase 0 和 Phase 1 之间有一道关键边界：**P0 只回答"当前是什么
 
 - **Rule review without data**: Never start Phase 1 without a Phase 0 snapshot. The snapshot is the foundation — without it, Phase 1 decisions are based on memory and impression, not evidence.
 
-- **Simultaneous rule + tag decisions**: Phase 1 Steps 1‑3 are sequential for a reason. Changing classification first, then adjusting types, then reviewing tags prevents rework (a tag decision made under old classification rules may become invalid after the rules change).
+- **Editing rules and entries at the same time**: Phase 2 is designed as "rules first, entries second." If you modify a rule file mid‑entry‑restructuring, you may need to backtrack. Complete P2-S1 fully before entering P2-S2.
 
-- **Custom section tables are link‑dense**: any custom tables added to INDEX.md (self-regulation rules, etc.) are the highest‑risk area for broken links after restructuring. Each table row may reference 2‑3 journal files. Check these first in Phase 3 Step 3.
+- **Only one‑directional quality check**: Phase 3 is bidirectional. After adjusting entries, always return to the rules to confirm they still reflect reality. A rule that no entry follows is worse than no rule.
+
+- **Custom section tables are link‑dense**: any custom tables added to INDEX.md (self-regulation rules, etc.) are the highest‑risk area for broken links after restructuring. Each table row may reference 2‑3 journal files. Check these first in Phase 3 Step 2.
 
 - **Large‑file extraction fog**: Files >500 lines (e.g., 896‑line architecture dumps) make the "what to extract" decision hard. If no clear unique insight survives beyond what's already in other files, the correct decision is to not extract — the archive preserves the original for future reference.
 
@@ -257,7 +245,7 @@ Phase 0 和 Phase 1 之间有一道关键边界：**P0 只回答"当前是什么
 
 - **Dashboard‑link staleness**: Phase 2 file moves immediately break dashboard links. Update INDEX.md links BEFORE moving files — not in Phase 4. The dashboard is the sole entry point for the next session; broken links mean the agent starts with invalid references.
 
-- **Classification over‑revision**: A classification scheme that changes every maintenance pass is worse than a flawed but stable one. Phase 1 Step 1 has a built‑in bias toward "confirm unchanged" — only revise when there is clear evidence of mismatch. If you are unsure, defer to the next maintenance cycle. The criteria are designed to be conservative.
+- **Classification over‑revision**: A classification scheme that changes every maintenance pass is worse than a flawed but stable one. Phase 1 has a built‑in bias toward "confirm unchanged" — only revise when there is clear evidence of mismatch. If you are unsure, defer to the next maintenance cycle. The criteria are designed to be conservative.
 
 ---
 
@@ -297,9 +285,5 @@ Phase 0 和 Phase 1 之间有一道关键边界：**P0 只回答"当前是什么
 - Code blocks: edit tool's fuzzy matching may catch adjacent lines. Mitigate by reading affected regions after the edit.
 - Deferred updates: "I'll rename the file later when structure stabilizes" — this leaves a dead link. Either rename now or don't promise. No mid‑ground.
 - Partial updates: It's easy to update the first two mentions and miss the third. The enumeration step prevents this — work from a complete list, not memory.
-
----
-
-## Skill Graduation
 
 Experience entries that are validated, generalized, reusable, and non‑project‑specific can become skills during maintenance. Manual, not automatic.
