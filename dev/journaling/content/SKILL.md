@@ -9,7 +9,7 @@ description: |
   - 维护 / 整理 journal
   - 将讨论中确认的设计决策写入 journal 文件
 metadata:
-  version: "4.8.0"
+  version: "4.8.1"
   last_updated: "2026-06-29"
 ---
 
