@@ -1,6 +1,68 @@
 # Changelog
 
 
+## [4.5.0] — 2026-06-29
+
+> Base: v4.4.0. 新增 CONVENTIONS 机制——可选设计模式实例注册，联通 patterns/ 设计参考和 protocol/ 操作流程。
+
+### Added
+- **`references/spec-conventions.md`**: CONVENTIONS.md 的设计原则与操作建议。三条核心原则（不重复技能规范、不与技能冲突、参考 spec-note 风格）和各协议关系。
+- **`templates/seed/CONVENTIONS.md`**: 最小化种子模板，供维护中首次创建时参考格式。
+
+### Changed
+- **`protocal-write.md`**: 新增 "Before Writing: Check Journal Conventions" 节——写入前最后一步加载 CONVENTIONS.md（若存在），检查是否命中 scope。
+- **`protocal-import.md`**: 新增 P2-S5 "检查 Journal Conventions"——P3 执行前加载 CONVENTIONS.md。P3 入口增加 convention 后续操作提示。
+- **`SKILL.md`**: Linked Files 和场景表新增 spec-conventions.md 和 templates/seed/CONVENTIONS.md 条目。
+- **`SKILL-DESIGN.md`**: 新增决策 #13 CONVENTIONS 机制。
+
+## [4.5.1] — 2026-06-29
+
+> Base: v4.5.0. 维护协议重设计——五阶段结构对齐新流程，三规则平等对待，涟漪修正 11 文件。
+
+### Changed
+- **`protocal-maintenance.md`**: 五阶段重设计。Phase 1 改为审查→设计→定规→计划四步（P1-S1/2/3/4，三规则平等参考），P1-S1 新增格式审查；Phase 2 执行先改三规则再改条目（P2-S1→S8）；Phase 3 双向质量检验（P3-S1 回顾微调 + P3-S2 条目验证）；Phase 4 Step 1 改为 INDEX.md 全量重写（按 spec）。Phase 0 新增 Step 9 收集 convention 数据。
+- **`protocal-write.md`**: "Before Writing: Check Journal Conventions" 改写为 "Before Writing: Check Journal Rules"，三规则平等提及+各自要求。
+- **`protocal-import.md`**: P2-S3/S4/S5 合并为统一 P2-S3 "检查 Journal Rules"，三规则平等加载。
+- **`spec-index.md`**: 移除 "Relationships" 节和 "Self-management reference" 子弹。修复 "Recommended Organization" 中旧 Phase 引用。
+- **`templates/seed/INDEX.md`**: 移除 self-management reference 行。
+- **`examples/journal-standards/INDEX.example.md`**: 同上移除 self-management reference 行。
+- **`protocal-init.md`**: 发现链图示更新，移除 INDEX.md 对 CLASSIFICATION/TAGS 的引用。
+- **`design-tags.md`**: 维护引用更新为 P1-S3。移除 "INDEX.md 的协议声明行指向它" 过时关系表述。
+- **`design-classification.md`**: 移除 "INDEX.md 的协议声明行指向它" 过时关系表述。
+- **`spec-conventions.md`**: "最后一步加载" → "与其他规则文件一起前置加载"，协议关系表同步更新。
+- **`SKILL.md`**: Linked Files 维护协议描述更新，版本号 4.5.0 → 4.5.1。
+
+- **`SKILL-DESIGN.md`**: 决策 #2 重写（新五阶段）、新增决策 #14（三规则平等）/ #15（设计目标先行）/ #16（双向检查）/ #17（跨版本防格式漂移）。决策 #13 描述微调（与 #14 对齐）。
+## [4.4.0] — 2026-06-29
+
+> Base: v4.3.2. Phase 3 设计发现合约拆分为两层——协议保留"方案讨论"概览（载体类型、核心任务），详细发现流程独立为新参考文件。
+
+### Added
+- **`references/design-discovery-contract.md`**: 发现合约设计的系统化四步流程——Step 1 清查 / Step 2 评估 / Step 3 推荐 / Step 4 呈报。含三类注入机制清查清单、三问题过滤评估表（带示例）、推荐方案构成模板、用户呈报模板。
+
+### Changed
+- **`protocal-init.md` Phase 3**: `### 合约发现流程`（完整 Step 1-4）→ `### 方案讨论`（载体概览 + 核心任务概述 + 引用链接）。`### 回退方案` 整理为有序列表。
+- **SKILL.md**: Linked Files 和场景表新增 `references/design-discovery-contract.md` 条目。
+- **SKILL-DESIGN.md 决策 #7**: Phase 3 演化记录从"替换"更新为"协议流与参考分离"。
+
+## [4.3.2] — 2026-06-29
+
+> Base: v4.3.1. 修正上一版本的错误合并——`patterns/` 不应是独立顶层目录，应是 `references/` 的子目录。还原 dashboard 的推荐模式定位。
+
+### Added
+- **`references/patterns/dashboard.md`**: 恢复 `references/patterns/` 子目录结构。dashboard 作为推荐模式（非硬规范）存放在此。
+
+### Changed
+- **SKILL.md 引用路径**: `references/dashboard.md` → `references/patterns/dashboard.md`（Linked Files 两处 + 场景表一处）。
+- **SKILL-DESIGN.md `patterns/` 节**: 从"已合并至 references/"重写为"references/patterns/ 子目录设计说明"。
+- **protocal-maintenance.md、spec-index.md 引用路径**: `references/dashboard.md` → `references/patterns/dashboard.md`。
+
+### Removed
+- **`references/dashboard.md`**: 扁平位置的 dashboard 参考文件已移除（移至 `references/patterns/`）。
+
+
+
+
 ## [4.3.1] — 2026-06-27
 
 > Base: v4.3.0. `patterns/` 目录合并至 `references/`，修正非标准技能结构。所有引用路径同步更新。
@@ -8,7 +70,6 @@
 ### Changed
 - **`patterns/dashboard.md` → `references/dashboard.md`**: 移至标准 `references/` 目录。更新 SKILL.md、README.md、protocal-maintenance.md、spec-index.md 中全部引用路径。
 
-### Removed
 - **`patterns/` 目录**: 合并后删除。README.md 中原 `## patterns/ 目录` 节替换为合并说明。
 
 ## [4.3.0] — 2026-06-27
