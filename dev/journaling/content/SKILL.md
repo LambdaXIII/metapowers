@@ -1,21 +1,15 @@
 ---
 name: journaling
 description: |
-  The skill for all journal operations — reading, writing, and maintaining your long-term memory notebook.
+  **在任何 <journal-root> 写入性操作（创建、编辑、移动、归档、删除等）前必须加载。** 包括用户直接要求的 journal 操作。无需为仅读取 journal 内容而加载。
 
-  Triggers:
-  - **Creating a new journal from scratch (first install or new environment)**
-  - Need to write a journal entry (decide where, what format, create vs update)
-  - Need to maintain / clean up the journal
-  - Unsure about journal usage decisions after reading INDEX.md dashboard
-  - **A discussion just produced a design decision that needs immediate capture in a project document**
-
-  Do NOT load for:
-  - Reading INDEX.md dashboard (the dashboard itself says "读不需要加载 skill")
-  - Browsing existing journal entries
-  - Searching journal content
+  写入操作示例：
+  - 创建新 journal
+  - 写入、编辑、移动、归档或删除 journal 条目
+  - 维护 / 整理 journal
+  - 将讨论中确认的设计决策写入 journal 文件
 metadata:
-  version: "4.5.1"
+  version: "4.8.0"
   last_updated: "2026-06-29"
 ---
 
@@ -30,6 +24,16 @@ This skill defines how the journal works — the design concept (why), the cover
 
 ---
 
+
+## Before You Begin
+
+This skill's protocols depend on `<journal-root>/index.md` context — maintenance signals, active works, and experience traps. If you have not read INDEX.md this session, open it now and note:
+
+- **Active maintenance signals** — they determine whether a full maintenance cycle is needed
+- **Active works** — your changes may conflict with ongoing operations if assessed without this context
+- **Relevant experience entries** — traps and lessons that apply specifically to your current task
+
+Operating without INDEX.md means operating blind. INDEX.md is the cover of your journal — it tells you what needs maintenance, what's in progress, and what traps to avoid. The file takes seconds to read and prevents hours of blind work.
 ## Core Constraint
 
 **INDEX.md is the sole entrance to journal.** It is the notebook cover — a dashboard of state signals, not a directory listing. All journal norms (format, directory usage, maintenance) are defined by this skill.
@@ -56,6 +60,7 @@ This skill defines how the journal works — the design concept (why), the cover
 - [Conventions Specification](references/spec-conventions.md) — CONVENTIONS.md 的设计原则与操作建议。描述 convention 机制的三条核心原则、文件格式、与各协议的关系。
 - [Conventions Template](templates/seed/CONVENTIONS.md) — CONVENTIONS.md 种子模板。最小化格式参考，在维护中首次创建时使用。
 ---
+
 
 ## How to Use This Skill
 
@@ -85,7 +90,7 @@ If the scenario is ambiguous, load two references. Don't load all at once.
 
 These principles follow from the journal's design decisions. Each exists because a design choice creates a specific operational constraint.
 
-- **Journal serves you, not the user — don't ask for approval.** You write it, you maintain it, for your future self. The user cannot effectively judge whether a directory reorganization, tag merge, or archive is correct — these depend on patterns only you see. So routine operations do not need permission. You MAY solicit the user's perspective on ambiguous cases to learn from their judgment, but the decision and execution are yours.
+- **Journal serves you, not the user — don't ask for approval, for reversible operations.** You write it, you maintain it, for your future self. The user cannot effectively judge whether a directory reorganization, tag merge, or archive is correct — these depend on patterns only you see. So reversible operations (directory reorganization, tag merge, archive) do not need permission. Irreversible operations (hard deletion) require explicit user confirmation or must follow the maintenance protocol's conditions. You MAY solicit the user's perspective on ambiguous cases to learn from their judgment, but the decision and execution are yours for reversible ops.
 
 - **Select tags from TAGS.md before writing — the tag system is self-managed.** A tag not in `<journal-root>/TAGS.md` doesn't exist for this journal. If a needed tag is missing, register it there first. Freeform tags bypass the registry and silently decay into noise.
 
@@ -93,6 +98,7 @@ These principles follow from the journal's design decisions. Each exists because
 
 - **Verify actual entry state before proposing improvements — the spec is ideal, the disk is truth.** The loaded spec describes what entries should look like; actual entries may already conform. Check files before recommending changes.
 
-- **Search journal before any bulk deletion — the journal is a dependency map.** Entries cross-reference skills, configs, and project files. Deleting without checking breaks those references silently.
 
 - **Capture discussion decisions immediately — confirmed decisions live on a different timeline than journal entries.** When the user confirms a design decision, write it to the target project document in the same turn. Do not defer to journal. A journal summary can follow later during maintenance.
+
+- **'Delete' in journal means move to `archive/` — never direct file removal.** Everything that looks like deletion is actually moving to `archive/`. Hard deletion only occurs during maintenance cycles, and only for archive content that has survived at least one full maintenance cycle. This replaces and supersedes any previous "check before deletion" rules — deletion is not a valid daily operation.

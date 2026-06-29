@@ -1,7 +1,54 @@
 # Changelog
 
 
-## [4.5.0] — 2026-06-29
+
+
+## [4.8.0] — 2026-06-29
+
+> Base: v4.7.0. 合约同步——合约内容随技能版本迭代自动同步，防止已部署合约停滞在旧版。
+
+### Added
+- **已有合约检测**：`design-discovery-contract.md` 新增「已有合约的检测」节——初始化时先检测是否已有合约，按四维度比对最新模板，支持三种结果分支（有差异→更新建议 / 匹配→报告最新 / 未找到→正常流程）
+- **合约合规检查**：`protocal-maintenance.md` Phase 0 新增 Step 11 合约过期扫描 + Phase 1 P1-S1 新增合约审查维度（启动措辞强度/读 INDEX 理由具体性/写操作范围完整性/拼写语法，共四个维度五种判定标准）
+- **有意冗余的显式注释**：`design-discovery-contract.md` Step 3 新增冗余说明——contract 与 INDEX.md 协议声明行的重叠是设计选择
+
+### Changed
+- **design-discovery-contract.md Step 3**：新增格式适配声明——合约模板的 `>` 是展示格式非强制要求，实际写入需适配载体格式；从零创建时使用模板格式
+- **protocal-init.md Phase 3**：新增「合约已存在的情况」分支——不重复设计，按四维度评估是否需要更新
+
+## [4.7.0] — 2026-06-29
+
+> Base: v4.6.0. Description 重写为约束行格式 + 正文新增信息依赖声明。
+
+### Added
+- **信息依赖声明**：SKILL.md 正文 "Before You Begin" 节——声明技能协议依赖 INDEX.md 上下文（维护信号、活跃工作区、经验陷阱），用信息缺口驱动而非命令
+- **INDEX.md 价值行**：seed 模板新增"跳过意味着在信息盲区中操作"行
+- **spec-index.md Protocol Declaration 第六项**：Value self-description（可选推荐）
+
+### Changed
+- **SKILL.md description 重写**：从枚举场景式（Triggers + Do NOT load）改为约束行格式——"在任何写入性操作前必须加载" + 写入操作示例。移除对 reading 的错误声称
+- **design-discovery-contract.md Step 3、protocal-init.md Phase 3 回退方案**：启动指令从「首先读取」强化为「第一步」+ ⚠️ + 价值说明
+
+### Removed
+- **description 中的 Do NOT load for 段**：被约束行中的「无需为仅读取 journal 内容而加载」负边界取代
+- **description 中的 Triggers 枚举段**：被「写入操作示例」取代（从白名单降级为澄清示例）
+
+## [4.6.0] — 2026-06-29
+
+> Base: v4.5.1. 删除操作重新定义为 archive——journal 中不存在直接删除，所有删除行为实际是 mv to archive/。
+
+### Added
+- **"删除即归档"原则**：删除操作重新定义为 `mv to archive/`，禁止直接删除 journal 文件。Operating Principles 新增此原则，旧 "Search before bulk deletion" 移除。
+
+### Changed
+- **"不请求许可"原则收紧**：仅可逆操作（archive、tag merge、reorganization）不需要审批。不可逆操作（hard deletion）需用户确认或遵守维护协议条件。
+- **protocal-maintenance.md**: Phase 0 新增 Step 10 扫描 archive/；Phase 1 P1-S1 新增 archive 审查维度（恢复/保留/可硬删除三判定 + 冷却保护）；Phase 2 P2-S3 入口新增保护声明（本轮新 archive 内容禁止硬删除）；Phase 2 新增 P2-S9 执行 archive 清理。
+- **protocal-init.md Phase 3 回退方案、design-discovery-contract.md Step 3 推荐方案**：写入操作增加举例（移动、修改、编写、删除等）。
+- **templates/seed/INDEX.md、spec-index.md**: 协议声明行同步扩展。
+
+### Fixed
+- **inbox/README.md**: 处理节奏 "已过期/无用 → 删除" 改为 "→ 移入 archive"。
+
 
 > Base: v4.4.0. 新增 CONVENTIONS 机制——可选设计模式实例注册，联通 patterns/ 设计参考和 protocol/ 操作流程。
 

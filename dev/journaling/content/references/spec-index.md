@@ -45,12 +45,13 @@ Each principle's rationale is embedded in the sections they govern. If you encou
 ## Protocol Declaration (Required)
 
 
-Top of file. Five items:
+Top of file. Protocol declaration items:
 - **Skill association**: `> ⚠️ 本 journal 由 `journaling` 技能管理`
-- **Read/write rule**: 读 INDEX.md 不需要加载 skill；写入或维护时必须加载 journaling skill
+- **Read/write rule**: 读 INDEX.md 不需要加载 skill；写入或维护时（含任何写入、移动、删除操作）必须加载 journaling skill
 - **Maintenance trigger reminders** (dynamic snapshot + action hint): After each maintenance Phase 1, rewrite this line to reflect the current state. Format: `维护信号：<signals found>`. Example: `维护信号：经验摘要含 axiom(2) · 最近变更 9/7 · 维护备忘 12/10 · active_works/ 积灰`. An empty line = no signals. When 2+ signals are at threshold or memo exceeds 10 items, consider running a full maintenance pass — load journaling skill → `references/protocal-maintenance.md`.
 - **Journal root** (optional, recorded during initialization): `> Journal root: <path>`. Used for multi-session discovery verification.
 
+- **Value self-description** (optional, recommended): `> INDEX.md 包含维护信号、活跃工作区、经验陷阱——跳过意味着在信息盲区中操作` — tells agents WHY reading INDEX.md is worth their attention, not just when.
 ---
 
 ## Recommended Organization
