@@ -13,7 +13,7 @@
 
 1. **搜索已有合约**：在以下常见载体路径下用 grep 搜索合约特征文本（不区分大小写 `case: false`）：
    `index\.md|journal-root|写入操作.*journaling|读取.*INDEX`
-   搜索范围：agent 配置目录（`.omp/agent/RULES.md`、`.omp/agent/AGENTS.md`、`.omp/agent/APPEND_SYSTEM.md`）> 项目根 AGENTS.md > 用户目录 `.agents/` > 全局默认路径。由近及远——agent 配置目录中的载体优先级最高。
+   搜索范围：agent 运行时配置文件（如 AGENTS.md、RULES.md 等，按注入优先级从高到低）> 项目根配置文件 > 用户级配置目录 > 全局默认路径。由近及远——注入优先级越高的载体越优先。
 
 2. **如果找到合约内容** → 读取并与本文件 Step 3 的最新合约模板逐项比对：
 
