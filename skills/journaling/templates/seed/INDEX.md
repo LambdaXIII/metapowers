@@ -1,7 +1,13 @@
-> ⚠️ 本 journal 由 `journaling` 技能管理
-> 读此文件不需要加载 skill · 写入或维护时（含任何写入、移动、删除操作）必须加载 journaling
-> 维护信号：（空）
-> INDEX.md 包含维护信号、活跃工作区、经验陷阱——跳过意味着在信息盲区中操作
+## 协议声明
+
+- ⚠️ 本 journal 由 `journaling` 技能管理
+- 读此文件不需要加载 skill · 写入或维护时（含移动、归档、删除操作）必须加载 journaling
+- 个性化规则：[CLASSIFICATION.md]（目录分类）· [TAGS.md]（标签注册）· [CONVENTIONS.md]（约定特例）
+- 维护信号：（空）
+
+---
+
+# Journal
 
 ## 经验摘要
 *（随真实经验积累自然生长，无需预填充）*
