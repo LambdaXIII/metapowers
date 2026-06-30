@@ -95,6 +95,33 @@ This skill uses progressive disclosure. Load the reference document matching you
 | Writing or checking entry frontmatter format | **`references/spec-frontmatter.md`** |
 If the scenario is ambiguous, load two references. Don't load all at once.
 
+## Scripts
+
+The `scripts/` directory contains zero-dependency convenience tools for common journal operations. All tools are dual-version (Python 3.8+ and Node.js 18+ ESM), with identical behavior across versions. Run `script.py --help` or `script.mjs --help` for complete usage.
+
+| Script | When to use |
+|--------|-------------|
+| `frontmatter` | Read, validate, update, or replace YAML frontmatter in journal entries. Use `get` to extract fields, `check` for format compliance, `update` for field-level merges, `replace` for full frontmatter swaps. |
+| `check-links` | Extract all links from journal markdown files, verify target existence, and report broken links, orphan files, inbound references, and reference rankings. Use during maintenance Phase 3 dim3 (broken links) or any time you need to know "who links to this file." |
+
+**Key usage patterns**:
+
+```bash
+# Check all links in the journal — full report with summary, broken links, orphan files
+python scripts/check-links.py INDEX.md
+
+# Check links focused on a single file — outbound links + who references it
+python scripts/check-links.py INDEX.md --file active_works/note.md
+
+# Validate frontmatter format across all entries
+python scripts/frontmatter.py check experience/*.md knowledge/*.md
+
+# Batch-update last_update after maintenance
+python scripts/frontmatter.py update *.md --data '{"last_update":"2026-06-30"}'
+```
+
+Scripts are convenience utilities — the agent can perform all operations manually using file tools (`grep`, `read`, `test -f`). Scripts provide faster, more reliable results for bulk operations.
+
 ---
 
 ## Operating Principles

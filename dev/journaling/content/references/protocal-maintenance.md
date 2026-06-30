@@ -75,6 +75,8 @@ Phase 0 和 Phase 1 之间有一道关键边界：**P0 只回答"当前是什么
 | 10 | **Scan archive/** | `<journal-root>/archive/` directory listing | Archive snapshot: all entries with file dates, tags (extracted from frontmatter or filename), and original directory source. Note entries archived in the current cycle by comparing file mtime to the last maintenance date. These are **protected**: they must not be hard-deleted in this cycle. |
 | 11 | **Check contract staleness** | Contract files found in common carrier locations (agent config dirs: RULES.md, AGENTS.md; project AGENTS.md; global agent config) — located by grepping for `index\.md\|journal-root\|写入操作.*journaling` (case-insensitive). | Contract staleness report: (a) path of each contract file found, (b) per-file line-by-line comparison with latest template across four dimensions — startup wording strength (第一步 + ⚠️), read-INDEX rationale specificity (maintenance signals / active works / experience traps / 信息盲区), write-operation scope completeness (includes 移动/归档/删除), spelling/grammar errors, (c) gap summary listing each dimension's pass/fail. |
 
+> 💡 `scripts/frontmatter check --journal-root <path>` can validate tag registration for all entries in one command. The raw tag lists (a) unregistered, (b) synonymous, (c) one-off still need manual analysis — the script validates format compliance (YAML list format, boolean casing, custom field naming), not semantic tag categories.
+
 **Output of Phase 0**: A Journal Global Snapshot document containing:
 - Directory usage report (from Step 5)
 - Topic summaries (from Step 2)
@@ -236,7 +238,7 @@ Tag 决策中使用 Tag Worthiness Criteria：
 |---|-----------|-------------|
 | 1 | **Logical conflicts** | Contradictions between note contents. |
 | 2 | **Content overlap** | Topic overlap or near‑duplication across notes. |
-| 3 | **Broken links** | References pointing to archived content. Distinguish two cases: migrated to new location → fix the link; archived without extracting key points → decide whether to pull them back. Check any custom section tables first — they are often the most link‑dense parts of INDEX.md. |
+| 3 | **Broken links** | References pointing to archived content. Distinguish two cases: migrated to new location → fix the link; archived without extracting key points → decide whether to pull them back. Check any custom section tables first — they are often the most link‑dense parts of INDEX.md. 💡 `scripts/check-links.py INDEX.md` can scan all broken links, orphan files, and reference rankings in one command. Use `--file <path>` for per-file inbound/outbound inspection. |
 | 4 | **Tag compliance** | After remediation, scan all entries: every tag must appear in `<journal-root>/TAGS.md`. Verify each entry follows the rules defined in TAGS.md. Flag any violators. |
 | 5 | **Convention compliance** | Check that convention entries referenced in configs/dashboards are up-to-date with their CONVENTIONS.md definitions. No scope drift. |
 

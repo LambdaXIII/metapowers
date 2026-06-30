@@ -1,4 +1,19 @@
 # Changelog
+
+## [Unreleased]
+
+### Added
+- **`scripts/check-links.py` + `scripts/check-links.mjs`**: Journal 链接检查双版本脚本——提取全部 markdown/wikilink 链接、检查目标存在性、分析入链/出链关系。零第三方依赖，纯只读。两版本 API、行为、输出格式完全一致。支持 --absolute / --relative-to / --file 聚焦 / --journal-root 手动指定等选项。
+- **`scripts/README.md`**: 新增 `## check-links` 章节——快速开始、命令参考、输出格式说明、支持的链接格式、常用场景、错误处理、限制说明。
+
+### Fixed
+- **`scripts/check-links.py` + `check-links.mjs`**: 修复 wikilink 路径解析——markdown 链接相对于源文件目录，wikilink 相对于 journal-root（Obsidian 规范）。新增 `link_type`/`journal_root` 参数到 `link_resolve`/`linkResolve`，双版本同步修改。
+
+### Changed
+- **`content/SKILL.md`**: 新增 `## Scripts` 节——列出 frontmatter/check-links 脚本用途、关键用法场景示例。
+- **`content/references/protocal-maintenance.md`**: P3-S2-dim3 追加 check-links 内联提醒，P0-S7 表后追加 frontmatter check 提醒。
+- **`content/scripts/README.md`**: 追加 check-links 使用场景（4 种）和最佳实践（6 条），文件清单更新为含 check-links 文件。
+- **`SKILL-DESIGN.md`**: 新增决策 #23——脚本引导的三层披露设计（SKILL.md 节 + 协议内联网格 + README 完整指南）。
 ## [4.9.0] — 2026-06-30
 
 > Base: v4.8.1. 表述优化——术语统一、优先级澄清、INDEX.md 格式规范化。

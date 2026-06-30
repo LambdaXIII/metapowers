@@ -279,3 +279,13 @@ references/
 ```
 
 - [`references/patterns/dashboard.md`](references/patterns/dashboard.md) — 项目/领域级次级 INDEX 设计参考。提供创建信号的判断依据和内容组织示例，不是硬性规范。
+
+### 23. 脚本引导——独立章节披露 + 协议步骤内联网格
+
+技能附带两套脚本（`frontmatter` 和 `check-links`，双版本 Python/JS），在技能文档中采用三层引导：
+
+- **SKILL.md Scripts 节**：在 agent 每次加载技能时可见的位置列出所有脚本、用途、关键用法。这是首次接触入口。
+- **维护协议关键步骤内联网格提示**：在 P3-S2-dim3（断链检查）和 P0-S7（标签数据收集）的步骤描述末尾追加 `💡` 脚本引用。不替代手动操作说明——脚本始终是可选便利设施。
+- **scripts/README.md 完整指南**：在脚本目录内提供使用场景、最佳实践、命令参考和输出格式说明。作为运行时 agent 查阅的完整文档。
+
+**原因**：SKILL.md 是 agent 每次加载技能时的初始阅读范围，把脚本列在可见节确保 agent 知道它们存在。维护协议的步骤表是 agent 执行到具体步骤时的上下文——在此追加脚本提醒比在主文件中写"做 X 时记得用脚本"更精准。scripts/README.md 提供独立于技能主文档的完整参考，避免 SKILL.md 膨胀。
