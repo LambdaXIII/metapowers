@@ -189,14 +189,29 @@ metapowers/
 
 发布由用户发起，暂无自动触发机制。流程如下：
 
-```bash
-# 发布技能 <name>：先删后拷，确保无残留
-rm -rf skills/<name>/
-cp -r dev/<name>/content/ skills/<name>/
-```
+1. **检查分支与状态** — 确认当前在 `dev` 分支，且工作树干净（无未提交的修改）。
+2. **拷贝快照** — 先删后拷，确保无残留：
 
-**为什么「先删后拷」而非直接覆盖**：直接 `cp -r` 覆盖不会删除目标目录中已从源目录移除的文件，导致发布包残留过时内容。先 `rm -rf` 再 `cp -r` 确保发布包与 content/ 完全一致。
+   ```bash
+   rm -rf skills/<name>/
+   cp -r dev/<name>/content/ skills/<name>/
+   ```
 
+   **为什么先删后拷**：直接 `cp -r` 覆盖不会删除目标目录中已从源目录移除的文件，导致发布包残留过时内容。先 `rm -rf` 再 `cp -r` 确保发布包与 content/ 完全一致。
+
+3. **独立提交** — 在 `dev` 上单独提交发布快照。与开发 commit 分离，commit message 标注版本号：
+
+   ```bash
+   git add skills/<name>/
+   git commit -m "release(<skill-name>): v<major>.<minor>.<patch> snapshot"
+   ```
+
+4. **合并到 main** — 切到 `main` 合并 `dev`，保留分支历史。禁止 squash：
+
+   ```bash
+   git checkout main
+   git merge dev --no-ff
+   ```
 
 ### 3.3 新建技能
 
