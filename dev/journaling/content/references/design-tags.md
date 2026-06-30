@@ -4,7 +4,7 @@
 >
 > Use this reference when:
 > - Registering a new tag (naming + format)
-> - Reviewing tags during maintenance (P1-S3 确认三规则变更)
+> - Reviewing tags during maintenance (P1-S3 确认个性化规则文件变更)
 > - Redesigning TAGS.md when the current structure no longer fits
 
 

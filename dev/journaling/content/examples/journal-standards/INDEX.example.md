@@ -1,8 +1,13 @@
-# Index
+## 协议声明
 
-> ⚠️ 本 journal 由 `journaling` 技能管理
-> 读此文件不需要加载 skill · 写入或维护时必须加载 journaling
-> 维护信号：经验摘要含 axiom(3) · 最近变更 8/7 · 维护备忘 6/10
+- ⚠️ 本 journal 由 `journaling` 技能管理
+- 读此文件不需要加载 skill · 写入或维护时必须加载 journaling
+- 个性化规则：[CLASSIFICATION.md]（目录分类）· [TAGS.md]（标签注册）· [CONVENTIONS.md]（约定特例）
+- 维护信号：经验摘要含 axiom(3) · 最近变更 8/7 · 维护备忘 6/10
+
+---
+
+# Index
 
 跨项目全局笔记。我记的，我用的。
 

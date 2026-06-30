@@ -1,4 +1,26 @@
 # Changelog
+## [4.9.0] — 2026-06-30
+
+> Base: v4.8.1. 表述优化——术语统一、优先级澄清、INDEX.md 格式规范化。
+
+### Added
+- SKILL.md 新增 `## Journal` 节，描述 journal 笔记库的结构要素，锚定术语"INDEX"、"个性化规则文件"
+- INDEX.md 协议声明区新增个性化规则文件指引——三文件链接 + 用途标注，作为必含内容
+- 术语"个性化规则文件"正式定义为 CLASSIFICATION.md、TAGS.md、CONVENTIONS.md 的统称
+- CONVENTIONS.md 的优先级规则明确：存在时覆盖其他两份规则文件
+- SKILL-DESIGN.md 新增 Decision #15：INDEX.md 协议声明使用标题节而非引用块
+
+### Changed
+- INDEX.md 协议声明区格式从 `>` 引用块改为 `## 协议声明` 标题 + 列表（含旧版兼容锚点）
+- SKILL.md 顶部 intro 拆分为"journaling 技能的价值"与"Journal 的结构"两层，区分清晰
+- spec-conventions.md "不冲突"原则改为"允许偏离，需说明理由"
+- 全文"三规则/自管理文件/制度文件"等零散称呼统一为"个性化规则文件"
+- patterns/dashboard.md ASCII 图中节点名称随 INDEX.md 格式同步更新
+- 联动更新 15 个文件：spec-index.md、protocal-init.md、protocal-maintenance.md、protocal-write.md、protocal-import.md、spec-conventions.md、design-tags.md、design-discovery-contract.md、templates/seed/INDEX.md、examples/journal-standards/INDEX.example.md、examples/README.md、SKILL-DESIGN.md、CHANGELOG.md
+
+### Removed
+- 移除"三份规则文件平等并列，不设先后依赖顺序"的表述——已由个性化规则文件概念和优先级设计替代
+
 
 
 
