@@ -116,8 +116,8 @@
 
 ### P2-S3: 检查 Journal Rules
 
-Journal 可能在 `<journal-root>` 下有三份规则文件：CLASSIFICATION.md、TAGS.md、CONVENTIONS.md。
-加载其中存在的文件。对于每份：
+Journal 在 `<journal-root>` 下有个性化规则文件——CLASSIFICATION.md、TAGS.md、CONVENTIONS.md。
+加载其中存在的文件。CONVENTIONS.md 存在时，其内容优先级高于其他两份。对于每份：
 
 - **CLASSIFICATION.md** — 确定目录归属。遵守分类规则。无法确定 → 放入 `inbox/`。
 - **TAGS.md** — 标签全部来自已注册列表。新 tag 先注册。不存在时使用种子集。

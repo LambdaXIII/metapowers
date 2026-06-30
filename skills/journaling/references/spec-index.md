@@ -20,9 +20,9 @@ INDEX.md must be:
 **Role**：
 - **Entry point**：所有 journal 操作的起点。读到 INDEX.md 即了解整个 journal 的结构和状态。
 - **State dashboard**：经验摘要、专项工作、最近变更——三节编码了 journal 内"现在什么重要"的信号，不是"曾经发生过什么"的日志。
-- **Maintenance carrier**：协议声明行告知何时加载 skill，维护信号行提示何时触发维护。
+- **Maintenance carrier**：协议声明节告知何时加载 skill，维护信号项提示何时触发维护。
 
-**Type Identification**：文件顶部包含 `> ⚠️ 本 journal 由 journaling 技能管理` 即为 journal 的 INDEX.md。此协议声明行是初始化时写入的，用于类型识别——区分 journal 的仪表盘和恰好同名的其他 INDEX.md 文件。
+**Type Identification**：文件顶部为 `## 协议声明` 节（新版），或包含 `> ⚠️ 本 journal 由 journaling 技能管理`（旧版，下一个维护周期自动转换为新版）。此协议声明是初始化时写入的，用于类型识别——区分 journal 的仪表盘和恰好同名的其他 INDEX.md 文件。
 
 
 
@@ -42,16 +42,15 @@ These principles were derived from a real dashboard degradation event (2026-05-2
 Each principle's rationale is embedded in the sections they govern. If you encounter a rule whose "why" is unclear, trace it back to this table. These principles shape INDEX.md's design. The specific organization format is not mandated — your INDEX.md evolves with your journal.
 
 ---
-## Protocol Declaration (Required)
+## 协议声明（必含）
 
-
-Top of file. Protocol declaration items:
-- **Skill association**: `> ⚠️ 本 journal 由 `journaling` 技能管理`
-- **Read/write rule**: 读 INDEX.md 不需要加载 skill；写入或维护时（含任何写入、移动、删除操作）必须加载 journaling skill
-- **Maintenance trigger reminders** (dynamic snapshot + action hint): After each maintenance Phase 1, rewrite this line to reflect the current state. Format: `维护信号：<signals found>`. Example: `维护信号：经验摘要含 axiom(2) · 最近变更 9/7 · 维护备忘 12/10 · active_works/ 积灰`. An empty line = no signals. When 2+ signals are at threshold or memo exceeds 10 items, consider running a full maintenance pass — load journaling skill → `references/protocal-maintenance.md`.
-- **Journal root** (optional, recorded during initialization): `> Journal root: <path>`. Used for multi-session discovery verification.
-
-- **Value self-description** (optional, recommended): `> INDEX.md 包含维护信号、活跃工作区、经验陷阱——跳过意味着在信息盲区中操作` — tells agents WHY reading INDEX.md is worth their attention, not just when.
+文件顶部。以 `## 协议声明` 标题开始，以下内容以列表形式依次列出：
+- ⚠️ 本 journal 由 `journaling` 技能管理
+- 个性化规则：[CLASSIFICATION.md]（目录分类）· [TAGS.md]（标签注册）· [CONVENTIONS.md]（约定特例）
+- 维护信号：<signal snapshot>（例：经验摘要含 axiom(2) · 最近变更 9/7 · 维护备忘 12/10 · active_works/ 积灰）
+- Journal root（可选，初始化时记录）
+- 价值自述（可选，推荐）
+- 读此文件不需要加载 skill · 写入或维护时（含任何写入、移动、删除操作）必须加载 journaling
 ---
 
 ## Recommended Organization

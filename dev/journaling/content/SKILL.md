@@ -9,17 +9,28 @@ description: |
   - 维护 / 整理 journal
   - 将讨论中确认的设计决策写入 journal 文件
 metadata:
-  version: "4.8.1"
-  last_updated: "2026-06-29"
+  version: "4.9.0"
+  last_updated: "2026-06-30"
 ---
 
 # Journaling
 
-> **Journal is your long-term memory notebook.** You write it. You use it. It serves you, not the user.
+> **在任何 <journal-root> 写入性操作（创建、编辑、移动、归档、删除等）前必须加载。**
 
-> **Journal is documentation.** Writing a journal entry and writing a project document follow the same principles — self-check, independence, boundary coverage, decision-capture timing. The skill's writing protocols (decision capture, self-check) apply to both.
+Journal 是你的结构化长期记忆机制——跨 session 的经验、决策、研究和方法论存储。有了 journal，第二个 session 可以直接从上一个 session 结束的状态继续：读状态、接工作、避开过去的坑。
 
-This skill defines how the journal works — the design concept (why), the cover (INDEX.md), the pages (entries), the daily operations (read/write), and the maintenance cycles.
+本技能定义 journal 的设计概念、结构，及其全部操作——初始化、读取、写入、导入、维护。
+
+## Journal
+
+Journal 位于 `<journal-root>`，由以下要素构成：
+
+- **INDEX.md** — 封面与仪表盘。Journal 的唯一入口，显示当前状态信号。一切 journal 操作从这里开始。
+- **个性化规则文件** — 三份文件，定义这个 journal 的运作方式：
+  - `CLASSIFICATION.md` — 目录分类规则
+  - `TAGS.md` — 标签注册表及使用规则
+  - `CONVENTIONS.md` — 设计模式实例（可选；存在时优先级高于前两份——特例覆盖默认规则）
+- **条目** — 各条笔记，按生命周期目录组织（inbox → experience | knowledge | active_works → archive）
 
 
 ---
@@ -40,14 +51,14 @@ Operating without INDEX.md means operating blind. INDEX.md is the cover of your 
 
 ## Linked Files
 
-- [INDEX.md Specification](references/spec-index.md) — INDEX.md 的核心规范：协议声明、设计原理、与自管理文件（CLASSIFICATION.md/TAGS.md）的关系。关于项目级次级 INDEX 的设计参考，见 `references/patterns/dashboard.md`。
+- [INDEX.md Specification](references/spec-index.md) — INDEX.md 的核心规范：协议声明、设计原理、与个性化规则文件的关系。关于项目级次级 INDEX 的设计参考，见 `references/patterns/dashboard.md`。
 - [Writing Protocol](references/protocal-write.md) — 写条目的工作流程：triage 判断、同 session 补充 vs 跨 session 补充、After Writing 更新 INDEX.md、Before Delivery 自检。
 - [Note Writing Guide](references/spec-note.md) — 条目格式指南：summary anchoring 三检查点、body 格式（一句一行/wikilink/过度泛化/context boundary）、粒度控制、4 种子目录分配、条目生命周期。
 - [Importing Protocol](references/protocal-import.md) — Bring existing external content into the journal: evaluation, copy, frontmatter, adjustment.
 - [Journal Initialization](references/protocal-init.md) — Create a new journal from scratch: three-phase protocol (locate root → init skeleton files → design discovery contract).
 - [Discovery Contract Design Guide](references/design-discovery-contract.md) — 发现合约设计的系统化方法：载体清查、过滤评估、推荐方案、用户呈报。在 `protocal-init.md` Phase 3 执行期间加载。
-- [Maintenance Protocol](references/protocal-maintenance.md) — Full maintenance cycle: Phase 0 scan → Phase 1 review-design-settle-plan (3 parallel rules) → Phase 2 rules-first then restructure → Phase 3 bidirectional verification → Phase 4 finalize. Trigger when dashboard signals or memo exceeds 10 items.
-- [Journal Standards Examples](examples/journal-standards/) — Reference examples of journal self-managed files: INDEX.example.md, CLASSIFICATION.example.md, TAGS.example.md.
+- [Maintenance Protocol](references/protocal-maintenance.md) — Full maintenance cycle: Phase 0 scan → Phase 1 review-design-settle-plan (3 rules) → Phase 2 rules-first then restructure → Phase 3 bidirectional verification → Phase 4 finalize. Trigger when dashboard signals or memo exceeds 10 items.
+- [Journal Standards Examples](examples/journal-standards/) — INDEX.md、个性化规则文件等的参考示例。
 - [Templates](templates/seed/) — 初始化所需的种子文件模板（INDEX.md、CLASSIFICATION.md、TAGS.md）。
 
 - [Inbox](`inbox/README.md`) — Zero-friction staging area for unsure content. Requires only minimum frontmatter (title or date). Processed during maintenance.
@@ -83,6 +94,33 @@ This skill uses progressive disclosure. Load the reference document matching you
 | Designing or revising journal tag system | **`references/design-tags.md`** |
 | Writing or checking entry frontmatter format | **`references/spec-frontmatter.md`** |
 If the scenario is ambiguous, load two references. Don't load all at once.
+
+## Scripts
+
+The `scripts/` directory contains zero-dependency convenience tools for common journal operations. All tools are dual-version (Python 3.8+ and Node.js 18+ ESM), with identical behavior across versions. Run `script.py --help` or `script.mjs --help` for complete usage.
+
+| Script | When to use |
+|--------|-------------|
+| `frontmatter` | Read, validate, update, or replace YAML frontmatter in journal entries. Use `get` to extract fields, `check` for format compliance, `update` for field-level merges, `replace` for full frontmatter swaps. |
+| `check-links` | Extract all links from journal markdown files, verify target existence, and report broken links, orphan files, inbound references, and reference rankings. Use during maintenance Phase 3 dim3 (broken links) or any time you need to know "who links to this file." |
+
+**Key usage patterns**:
+
+```bash
+# Check all links in the journal — full report with summary, broken links, orphan files
+python scripts/check-links.py INDEX.md
+
+# Check links focused on a single file — outbound links + who references it
+python scripts/check-links.py INDEX.md --file active_works/note.md
+
+# Validate frontmatter format across all entries
+python scripts/frontmatter.py check experience/*.md knowledge/*.md
+
+# Batch-update last_update after maintenance
+python scripts/frontmatter.py update *.md --data '{"last_update":"2026-06-30"}'
+```
+
+Scripts are convenience utilities — the agent can perform all operations manually using file tools (`grep`, `read`, `test -f`). Scripts provide faster, more reliable results for bulk operations.
 
 ---
 

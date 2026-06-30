@@ -51,11 +51,11 @@ INDEX : journal = Dashboard : project/domain
 
 ```
 INDEX.md
-├── Protocol Declaration
+├── 协议声明
 ├── 经验摘要         ← 全局跨域信号
 ├── 专项工作           ← 一行一域，含 Project-A [→](active_works/project-a/dashboard.md)
 ├── 最近变更
-└── 自管理规则（可选）
+└── 个性化规则文件
 
 active_works/project-a/dashboard.md  ← 次级入口
 ├── 当前状态

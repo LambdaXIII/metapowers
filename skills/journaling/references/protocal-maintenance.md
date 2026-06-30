@@ -42,8 +42,8 @@ The maintenance framework follows a strict data‑first sequence:
 ```
 Phase 0: Scan          — 收集数据，不做判断
 Phase 1: Review → Design → Settle → Plan
-                       — 带着三规则审查现状、设计目标组织方式、确认三规则变更、制定重组计划
-Phase 2: Execute       — 先改三规则，再重组条目
+                       — 带着个性化规则文件审查现状、设计目标组织方式、确认规则变更、制定重组计划
+Phase 2: Execute       — 先改规则文件，再重组条目
 Phase 3: Quality Check — 双向检验：规则微调 + 条目合规
 Phase 4: Finalize      — 记录并关闭维护
 ```
@@ -75,6 +75,8 @@ Phase 0 和 Phase 1 之间有一道关键边界：**P0 只回答"当前是什么
 | 10 | **Scan archive/** | `<journal-root>/archive/` directory listing | Archive snapshot: all entries with file dates, tags (extracted from frontmatter or filename), and original directory source. Note entries archived in the current cycle by comparing file mtime to the last maintenance date. These are **protected**: they must not be hard-deleted in this cycle. |
 | 11 | **Check contract staleness** | Contract files found in common carrier locations (agent config dirs: RULES.md, AGENTS.md; project AGENTS.md; global agent config) — located by grepping for `index\.md\|journal-root\|写入操作.*journaling` (case-insensitive). | Contract staleness report: (a) path of each contract file found, (b) per-file line-by-line comparison with latest template across four dimensions — startup wording strength (第一步 + ⚠️), read-INDEX rationale specificity (maintenance signals / active works / experience traps / 信息盲区), write-operation scope completeness (includes 移动/归档/删除), spelling/grammar errors, (c) gap summary listing each dimension's pass/fail. |
 
+> 💡 `scripts/frontmatter check --journal-root <path>` can validate tag registration for all entries in one command. The raw tag lists (a) unregistered, (b) synonymous, (c) one-off still need manual analysis — the script validates format compliance (YAML list format, boolean casing, custom field naming), not semantic tag categories.
+
 **Output of Phase 0**: A Journal Global Snapshot document containing:
 - Directory usage report (from Step 5)
 - Topic summaries (from Step 2)
@@ -98,9 +100,9 @@ Phase 0 和 Phase 1 之间有一道关键边界：**P0 只回答"当前是什么
 
 Phase 1 是一个完整的认知链：先理解现状、再设计方案、然后确认规则、最后制定执行计划。**不碰文件。**
 
-三份规则文件平等并列——CLASSIFICATION.md、TAGS.md、CONVENTIONS.md 同为制度文件，不设先后依赖顺序。
+CLASSIFICATION.md、TAGS.md、CONVENTIONS.md 统称个性化规则文件。CONVENTIONS.md 可选；存在时优先级高于其他两份——特例覆盖默认规则。
 
-#### P1-S1: 带着三规则审查现状
+#### P1-S1: 带着个性化规则文件审查现状
 
 将 CLASSIFICATION.md、TAGS.md、CONVENTIONS.md 作为透镜，解读 Phase 0 快照。
 
@@ -111,7 +113,7 @@ Phase 1 是一个完整的认知链：先理解现状、再设计方案、然后
 - **TAGS.md**（存在时）：注册列表的完整度、使用模式、维度结构是否合理
 - **CONVENTIONS.md**（存在时）：scope 是否仍然有效、是否有 stale 或冲突的 convention
 
-**输出**：三规则现状笔记——各规则的覆盖情况和潜在问题清单。
+**输出**：个性化规则文件现状笔记——各规则的覆盖情况和潜在问题清单。
 
 > **格式审查**：除内容审查外，对每份存在的规则文件，加载对应的 skill 规范文件（`references/design-classification.md` / `references/design-tags.md` / `references/spec-conventions.md`），对照文件格式要求逐项检查。即使技能规范中格式约束不多，也必须重新阅读确认——避免跨版本格式漂移。发现格式不符 → 标记为 P1-S3 变更清单中的 UPDATE。
 
@@ -144,9 +146,9 @@ Phase 1 是一个完整的认知链：先理解现状、再设计方案、然后
 
 **输出**：理想组织方式设计方案。
 
-#### P1-S3: 确认三规则变更
+#### P1-S3: 确认个性化规则文件变更
 
-将设计方案落实到三规则的具体修改内容。
+将设计方案落实到个性化规则文件的具体修改内容。
 
 对每份规则，确定需要做什么（CREATE / UPDATE / DELETE）：
 - **CLASSIFICATION.md**：规则变更内容
@@ -161,7 +163,7 @@ Tag 决策中使用 Tag Worthiness Criteria：
 | 不值得保留 | 从所有条目的 frontmatter 中移除 |
 | 模糊但常用 | 保留但注册 |
 
-**输出**：三规则变更清单（每项指定 CREATE / UPDATE / DELETE）。不碰文件。
+**输出**：个性化规则文件变更清单（每项指定 CREATE / UPDATE / DELETE）。不碰文件。
 
 #### P1-S4: 制定重组计划
 
@@ -188,14 +190,14 @@ Tag 决策中使用 Tag Worthiness Criteria：
 
 ### Phase 2: Execute — Apply the Confirmed Rules
 
-> 先改三规则文件，再重组条目。规则就位后，所有操作基于新规则。
+> 先改规则文件，再重组条目。文件就位后，所有操作基于新规则。
 
 > 本阶段所有操作均为加法——新位置先就位，原位置后清理。
 > 任何步骤中断只需继续执行，不会丢失数据。确认新文件正确后再清理旧位置。
 
 | # | Step | Description |
 |---|------|-------------|
-| 1 | **Update rule files first** | 按 P1-S3 的变更清单修改/创建/销毁三规则文件。CLASSIFICATION.md、TAGS.md、CONVENTIONS.md 全部先就位。 |
+| 1 | **Update rule files first** | 按 P1-S3 的变更清单修改/创建/销毁个性化规则文件。CLASSIFICATION.md、TAGS.md、CONVENTIONS.md 全部先就位。 |
 | 2 | **Extract surviving content** | Using the extraction checklist from Phase 0 Step 4, pull valid information units from files to be archived and write them into the reorganized structure (new files or enrich existing ones). Source files remain in place during extraction — they are still readable. |
 > **Archive protection rule**: Entries moved to archive/ in this step are NOT eligible for hard deletion in the current maintenance cycle. They must survive at least until the next full maintenance cycle before hard deletion is considered (Phase 1 archive review will mark candidates, Phase 2 Step 9 will execute).
 
@@ -230,13 +232,13 @@ Tag 决策中使用 Tag Worthiness Criteria：
 
 **Step 2: Verify entries against finalized rules**
 
-以最终确认的三规则为基准验证：
+以最终确认的个性化规则文件为基准验证：
 
 | # | Dimension | Description |
 |---|-----------|-------------|
 | 1 | **Logical conflicts** | Contradictions between note contents. |
 | 2 | **Content overlap** | Topic overlap or near‑duplication across notes. |
-| 3 | **Broken links** | References pointing to archived content. Distinguish two cases: migrated to new location → fix the link; archived without extracting key points → decide whether to pull them back. Check any custom section tables first — they are often the most link‑dense parts of INDEX.md. |
+| 3 | **Broken links** | References pointing to archived content. Distinguish two cases: migrated to new location → fix the link; archived without extracting key points → decide whether to pull them back. Check any custom section tables first — they are often the most link‑dense parts of INDEX.md. 💡 `scripts/check-links.py INDEX.md` can scan all broken links, orphan files, and reference rankings in one command. Use `--file <path>` for per-file inbound/outbound inspection. |
 | 4 | **Tag compliance** | After remediation, scan all entries: every tag must appear in `<journal-root>/TAGS.md`. Verify each entry follows the rules defined in TAGS.md. Flag any violators. |
 | 5 | **Convention compliance** | Check that convention entries referenced in configs/dashboards are up-to-date with their CONVENTIONS.md definitions. No scope drift. |
 
@@ -245,7 +247,7 @@ Tag 决策中使用 Tag Worthiness Criteria：
 ### Phase 4: Finalize
 
 | 1 | **重写 INDEX.md** | 加载 `references/spec-index.md`，按当前技能规范完全重写 INDEX.md。保留 Phase 2 已更新的内容（已修剪的最近变更、已折叠的专项工作、已去重的经验摘要、已修复的链接），但格式和结构严格遵循 spec。不增量修补——重写确保跨版本一致性。 |
-| 2 | **Update Protocol Declaration signal line** | Rewrite the `维护信号` line in INDEX.md Protocol Declaration to reflect the current maintenance snapshot. Examples: `维护信号：经验摘要含 axiom(2) · 最近变更 9/7 · 维护备忘 12/10 · active_works/ 积灰`. Includes convention status if relevant. This makes maintenance signals visible at a glance in the next session startup without requiring a full dashboard scan. |
+| 2 | **Update Protocol Declaration signal line** | Rewrite INDEX.md 协议声明节中的维护信号项 to reflect the current maintenance snapshot. Examples: `维护信号：经验摘要含 axiom(2) · 最近变更 9/7 · 维护备忘 12/10 · active_works/ 积灰`. Includes convention status if relevant. This makes maintenance signals visible at a glance in the next session startup without requiring a full dashboard scan. |
 | 3 | **Record restructuring** | Append a restructuring record to `INDEX.md` 最近变更. Include: what phases ran, what rules changed (if any), count of files moved/tags fixed/types corrected, and any convention changes. |
 | 4 | **Clear maintenance memo** | If `.maintenance-memo.md` exists and was read in Phase 0, clear its contents (or delete the file). All accumulated issues have been addressed through the full maintenance cycle — an empty or absent memo resets the accumulation counter for the next daily‑use cycle. |
 
