@@ -15,8 +15,8 @@ description: |
   - 已有真实用户反馈数据 → 用反馈比模拟更准
   - 只改了几个错别字或格式 → 不需要完整的推演流程
 metadata:
-  version: "1.4.0"
-  last_updated: "2026-07-08"
+  version: "1.5.0"
+  last_updated: "2026-07-19"
   author: "xiii_1991"
   license: "MIT"
 ---
@@ -49,23 +49,23 @@ Rehearsal 就是强制切除"设计者知识"——假装不知道，走一遍�
 
 **阅读通用论述文档并按照其中的流程进行推演：**
 
-→ [rehearsal-guide.md](references/rehearsal-guide.md) — 含推演方法的完整阐述（原理、三元素、四步流程、打分维度）和场景分流路由表。
+→ [rehearsal-guide.md](references/rehearsal-guide.md) — 含推演方法的完整阐述（原理、三元素、四步流程、评估维度）和场景特化参考索引。
 
 ## 参考文件
 
 **必读入口：**
 
-- [rehearsal-guide.md](references/rehearsal-guide.md) — 通用论述，完整方法 + 场景路由表
+- [rehearsal-guide.md](references/rehearsal-guide.md) — 通用论述，完整方法 + 场景特化参考
 
-**场景文档（载体匹配时必读）：**
+**场景文档（按需参考）：**
 
-- [doc-guide-rehearsal.md](references/scenarios/doc-guide-rehearsal.md) — 文档/指南的推演操作指导
-- [design-doc-rehearsal.md](references/scenarios/design-doc-rehearsal.md) — 设计方法论文档的推演操作指导
-- [knowledge-base-rehearsal.md](references/scenarios/knowledge-base-rehearsal.md) — 知识库推演操作指导
-- [prompt-instruction-rehearsal.md](references/scenarios/prompt-instruction-rehearsal.md) — 提示词/指令集的推演操作指导
-- [interaction-rehearsal.md](references/scenarios/interaction-rehearsal.md) — 交互流程的推演操作指导
-- [api-design-rehearsal.md](references/scenarios/api-design-rehearsal.md) — API 接口契约的推演操作指导
-- [logic-chain-rehearsal.md](references/scenarios/logic-chain-rehearsal.md) — 逻辑链路的推演操作指导
+- [文档/指南质量验证推演](references/scenarios/doc-guide-rehearsal.md) — 单文档推演 + 全流程跨文档推演，五维度评估标准
+- [设计方法论文档验证推演](references/scenarios/design-doc-rehearsal.md) — 四维验证框架：逻辑正确、线索清晰、前后一致、可复现深刻理解
+- [多场景知识库验证推演](references/scenarios/knowledge-base-rehearsal.md) — 多角色×多路径推演，适配决策树分支消费模式
+- [提示词/指令集推演](references/scenarios/prompt-instruction-rehearsal.md) — 双维度推演（内容表达层 + 逻辑执行层），委派推演机制
+- [交互流程推演](references/scenarios/interaction-rehearsal.md) — 操作链路的首次可执行性、困惑点密度、放弃率预估维度
+- [API 设计推演](references/scenarios/api-design-rehearsal.md) — 命名一致性、默认值合理性、错误信息可操作性、缺失端点覆盖维度
+- [逻辑链路推演](references/scenarios/logic-chain-rehearsal.md) — 控制流正确性、边界条件覆盖、状态一致性等维度
 
 **按需参考：**
 
