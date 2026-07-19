@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## [1.6.0] - 2026-07-19
+
+### Changed
+
+- 重写 description 以修复加载失败问题——原 description 的核心名「推演 / rehearsal」仅出现在「何时不使用」的反向语境里（"不需要完整的推演流程"、"用 logic-chain-rehearsal"），字符命中伴随劝退语义；首句动词「写完」是作者完成时态而非用户提问用语；场景枚举过窄且以「写完 X」预设产状；反向条件稀释正向匹配面；缺失 agent 自问触发维度。导致多处实际场景下（包括用户明确说「推演」时）不加载。
+- 新 description 结构：首句一句话精简定义（「推演(rehearsal)：以客体身份通读检查交付物的方法。」），枚举 12 类交付物覆盖广板，列出用户触发语（中文+英文双语动词清单）与 agent 自问触发语两条触发路径，仅保留一条反向条件。
+- SKILL.md 正文新增「触发条件」节——description 的展开版，含合触发 / 不合触发 / 边界判定三层。原 description 的「何时不使用」迁入正文，纠正「纯代码逻辑验证 → 用 logic-chain-rehearsal」的反向误导（logic-chain-rehearsal 是本技能 references 下的场景文档而非另一技能；混合文档+代码场景仍触发）。
+- SKILL-DESIGN.md 追加「description 作为加载器匹配面」设计原则，避免未来重写再走偏。
+
+
 ## [1.5.0] - 2026-07-19
 
 ### Changed
