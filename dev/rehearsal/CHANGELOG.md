@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.6.1] - 2026-07-22
+
+### Fixed
+
+- plan-rehearsal.md 清空补充新增「状态传递假设」清除项——4e 中列为高频错误但清空工具中缺失的隐知识清除项（缺陷级发现的自修复）
+- plan-rehearsal.md 链路段将「边读边执行」洞察转化为逐帧跟阶段的可操作检查指令——随机选非起始步骤验证上下文独立性
+
+### Changed
+
+- rehearsal-guide.md 路由表 plan-rehearsal 条目从全列 9 维简化为 3 项核心维度 + 计数，与其他条目的信息密度一致
+- SKILL.md 参考列表 plan-rehearsal 条目同步简化
+
+
 
 ## [1.6.0] - 2026-07-19
 

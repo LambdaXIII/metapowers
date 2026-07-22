@@ -16,8 +16,8 @@ description: |
 
   仅修改错别字、错标点、纯格式调整时不触发。
 metadata:
-  version: "1.6.0"
-  last_updated: "2026-07-19"
+  version: "1.6.1"
+  last_updated: "2026-07-22"
   author: "xiii_1991"
   license: "MIT"
 ---
@@ -77,6 +77,7 @@ Rehearsal 就是强制切除"设计者知识"——假装不知道，走一遍�
 - [交互流程推演](references/scenarios/interaction-rehearsal.md) — 操作链路的首次可执行性、困惑点密度、放弃率预估维度
 - [API 设计推演](references/scenarios/api-design-rehearsal.md) — 命名一致性、默认值合理性、错误信息可操作性、缺失端点覆盖维度
 - [逻辑链路推演](references/scenarios/logic-chain-rehearsal.md) — 控制流正确性、边界条件覆盖、状态一致性等维度
+- [计划文档推演](references/scenarios/plan-rehearsal.md) — 执行路径完整性、依赖可见性、异常覆盖等 9 项评估维度
 
 **按需参考：**
 
@@ -98,7 +99,8 @@ rehearsal/
     │   ├── prompt-instruction-rehearsal.md
     │   ├── interaction-rehearsal.md
     │   ├── api-design-rehearsal.md
-    │   └── logic-chain-rehearsal.md
+    │   ├── logic-chain-rehearsal.md
+    │   └── plan-rehearsal.md
     └── supplementary/
         ├── batch-execution.md
         └── defect-taxonomy.md
