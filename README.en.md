@@ -23,7 +23,7 @@
 
 ## Background
 
-AI agents acquire domain expertise through **skills** — a SKILL.md file and a few reference documents are enough to give an agent mastery of prompt design, deep research, knowledge distillation, and more.
+AI agents acquire domain expertise through **skills** — a SKILL.md file and a few reference documents are enough to give an agent mastery of prompt design, deep research, skill exposition, and more.
 
 But skill quality varies wildly. Some skills are filled with the designer's inner monologue instead of executable instructions. Some bump a major version over a typo fix. Some have design intent scattered across chat sessions, impossible to trace.
 
@@ -33,7 +33,7 @@ metapowers solves these problems — it provides a set of battle-tested **univer
 
 ## Features
 
-- **6 production-grade skills** — covering prompt design, deep research, knowledge distillation, skill testing, entity search, and long-term memory
+- **6 production-grade skills** — covering prompt design, deep research, skill exposition, skill testing, entity search, and long-term memory
 - **Development/release separation** — `dev/` is the workshop, `skills/` is the showroom; design docs never ship to runtime
 - **Design anchoring** — every skill has a SKILL-DESIGN.md recording design intent and key tradeoffs, preventing architectural drift
 - **Strict documentation discipline** — skill content is unambiguous, self-contained, and never depends on conversation context
@@ -55,7 +55,7 @@ Or install individual skills:
 ```bash
 npx skills add LambdaXIII/metapowers --skill agent-prompt-design
 npx skills add LambdaXIII/metapowers --skill skill-quick-test
-npx skills add LambdaXIII/metapowers --skill skill-distillator
+npx skills add LambdaXIII/metapowers --skill skill-exposition
 npx skills add LambdaXIII/metapowers --skill web-deep-research
 npx skills add LambdaXIII/metapowers --skill web-entity-search
 npx skills add LambdaXIII/metapowers --skill journaling
@@ -73,9 +73,9 @@ A methodology for designing agent system prompts. Covers structure design, conte
 
 Rapid skill validation through parallel sub-agent reasoning. ISTQB six-step test design + capability simulation + strict isolation discipline.
 
-### skill-distillator
+### skill-exposition
 
-Distills skill execution documents into human-readable methodology documents. Five-stage transformation pipeline with automatic skill type detection and adaptive conversion strategies.
+Turns a skill (or selected aspects of it, or multiple skills) into human-readable exposition that lets people learn the skill by reading. Expands guidance on exposition cognition (extraction, traps, organization); document engineering gets effect-level mentions only.
 
 ### web-deep-research
 

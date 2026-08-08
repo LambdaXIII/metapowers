@@ -23,7 +23,7 @@
 
 ## 背景
 
-AI Agent 通过「技能」（Skill）获取领域专长——一份 SKILL.md 文件 + 几个参考文档，就能让 Agent 掌握系统提示词设计、深度研究、知识蒸馏等能力。
+AI Agent 通过「技能」（Skill）获取领域专长——一份 SKILL.md 文件 + 几个参考文档，就能让 Agent 掌握系统提示词设计、深度研究、技能阐述等能力。
 
 但技能的质量参差不齐。有的技能写满设计者的内心独白而非可执行指令，有的技能改了几行错别字就升一个大版本，有的技能的设计意图散落在每次对话中无从追溯。
 
@@ -33,7 +33,7 @@ metapowers 解决这些问题——它提供一套经过验证的**通用技能*
 
 ## 功能特性
 
-- **6 个生产级技能** —— 覆盖提示词设计、深度研究、知识蒸馏、技能测试、实体搜索、长期记忆
+- **6 个生产级技能** —— 覆盖提示词设计、深度研究、技能阐述、技能测试、实体搜索、长期记忆
 - **开发与发布分离** —— `dev/` 是工地，`skills/` 是展厅；设计文档不随技能分发
 - **设计锚定制度** —— 每个技能一份 SKILL-DESIGN.md，记录设计意图和关键取舍，防止架构漂移
 - **严格的文档纪律** —— 技能内容零歧义、自包含、不依赖会话上下文
@@ -55,7 +55,7 @@ npx skills add LambdaXIII/metapowers -g # 推荐全局安装
 ```bash
 npx skills add LambdaXIII/metapowers --skill agent-prompt-design
 npx skills add LambdaXIII/metapowers --skill skill-quick-test
-npx skills add LambdaXIII/metapowers --skill skill-distillator
+npx skills add LambdaXIII/metapowers --skill skill-exposition
 npx skills add LambdaXIII/metapowers --skill web-deep-research
 npx skills add LambdaXIII/metapowers --skill web-entity-search
 npx skills add LambdaXIII/metapowers --skill journaling
@@ -72,9 +72,9 @@ Agent 系统提示词设计方法论。覆盖结构设计、内容编写、工�
 
 通过子代理并行推演快速验证技能可用性。ISTQB 六步测试设计 + 能力模拟 + 隔离铁律。
 
-### skill-distillator
+### skill-exposition
 
-将技能的执行文档蒸馏为人类可读的方法论文档。五阶段转化流水线，自动识别技能类型并适配转换策略。
+将技能（或其中指定的某些方面、或多个技能）转化为人类可读的说明文，让人类通过阅读学会这项技能。展开指导阐述认知（梳理、陷阱、组织），文档工程只给效果目标。
 
 ### web-deep-research
 
