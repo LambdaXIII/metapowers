@@ -61,7 +61,13 @@ skills-lock.json
 .quick-tests/
 test-space/
 
+# 本地工作 tracker（讨论/实施期间）
+.scratch/
+
 # 其他
 .tree/
 .pi/
 .codegraph/
+
+
+*.bak
