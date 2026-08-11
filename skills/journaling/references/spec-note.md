@@ -68,9 +68,9 @@ Free markdown. Guidelines:
 
 ## Directory Assignment
 
-Entries are placed in one of four default directories. Additional directories may be added during maintenance as the journal grows.
+The four directories below are the seed structure — a starting point, not a fixed taxonomy. Your journal's classification may evolve beyond them: the authoritative directory list is `<journal-root>/CLASSIFICATION.md`, which grows through maintenance as content demands. The seed directories are the baseline before that evolution.
 
-### Default Directories
+### Seed Directories
 
 | Directory | When |
 |-----------|------|
