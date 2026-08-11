@@ -1,6 +1,8 @@
 # Changelog
 
-## [Unreleased]
+## [4.10.0] — 2026-08-11
+
+> Base: v4.9.0. 新增 check-links 脚本 + 维护协议四节重构 + 元语境渗漏清理 + 分类启发性修正。
 
 ### Added
 - **`scripts/check-links.py` + `scripts/check-links.mjs`**: Journal 链接检查双版本脚本——提取全部 markdown/wikilink 链接、检查目标存在性、分析入链/出链关系。零第三方依赖，纯只读。两版本 API、行为、输出格式完全一致。支持 --absolute / --relative-to / --file 聚焦 / --journal-root 手动指定等选项。
@@ -18,21 +20,11 @@
 - **`content/SKILL.md`**: Linked Files 维护协议描述同步——"默认值可调整"→"执行路径可调整"（"默认值"字样随元语境清理从正文移除）。
 - **`content/references/protocal-write.md`**: Maintenance Signals 节旧阶段引用（Phase 0 Step 0）→ 指向维护协议扫描阶段（新四阶段结构）。
 - **`content/references/spec-note.md` 目录分配启发性修正**：Directory Assignment 引言翻转——第一认知从"条目放在四个默认目录之一"改为"四个目录是种子结构、起点而非固定分类法；权威目录列表是 `<journal-root>/CLASSIFICATION.md`，随维护演化；种子目录是演化前的基线"；标题 "Default Directories" → "Seed Directories"。内容未动，仅语气调整（强化"分类可演化"暗示，弱化"固定分法"暗示）。
-- **`content/references/protocal-maintenance.md` 元语境渗漏清理**：删除全部"作者现身"句——"供你理解""帮助你跳出框架""设计它的目的是让你""你可以根据笔记库的实际情况调整""供你参考。它们是启发，不是清单"等。作者语境不再泄漏进正文；约束层次改由结构（操作规范/推荐流程/补充论述分区）与措辞（必须/禁止 vs 陈述句）传达。
-- **`content/references/protocal-maintenance.md` 维护完成形态重构**：重构为两点——INDEX 可用性 + 维护信息清零。术语泛化：维护信号 → 维护纪录 → **笔记库维护信息**（汇集日常工作中发现的待处理问题，主要来源 `.maintenance-memo.md`）。
-- **`content/references/protocal-maintenance.md` INDEX 幻影行泛化**："INDEX 中的幻影行"（具体检查技巧）→ "INDEX 的重要性"（引导入口作用 + 最终可用性）；"摸底不依赖 INDEX 展示"并入"怎样跳出框架"的独立判断姿态。
-- **`content/references/protocal-maintenance.md` 推演修复（8 项）**：写入 journal 明确为更新到相应规范文件；细粒度收尾补收尾闭环；交付检查改"见相关参考"；相关参考补三个链接；扫描阶段 memo 术语统一为"维护备忘"并补位置与存在性；对比检查补基线来源；流程一览补衔接句；设计阶段补规范仍适用则直接进入重组。
-- **`content/SKILL.md`**: Linked Files 维护协议描述同步——"默认值可调整"→"执行路径可调整"；删除规则同步"不删除任何文件"硬性规范。
-- **`content/references/protocal-write.md`**: Maintenance Signals 节旧阶段引用（Phase 0 Step 0）→ 指向维护协议扫描阶段。
-- **`content/references/spec-note.md` 目录分配启发性修正**："默认目录"→"种子目录"，第一认知改为分类可演化、权威目录列表是 `<journal-root>/CLASSIFICATION.md`。
 
 ### Removed
 - **维护触发信号机制**：旧版维护信号（dashboard staleness / tag sprawl / memo accumulation 等）与 compound signals 优先级判定整体移除
 - **"一些值得借鉴的整理思路"节**：改名联动/临时产物/维护备忘价值三个条目拆散为独立小节，"供你参考。它们是启发，不是清单"随节消失
 - **"维护备忘的价值"小节**：并入"笔记库维护信息"（核心洞察保留：日常积累往往比一次扫描更能暴露长期问题）
-- 维护触发信号机制：旧版维护信号与 compound signals 优先级判定整体移除
-- "一些值得借鉴的整理思路"节：条目拆散为独立小节
-- "维护备忘的价值"小节：并入"笔记库维护信息"
 
 ### Fixed
 - **`scripts/check-links.py` + `check-links.mjs`**: 修复 wikilink 路径解析——markdown 链接相对于源文件目录，wikilink 相对于 journal-root（Obsidian 规范）。新增 `link_type`/`journal_root` 参数到 `link_resolve`/`linkResolve`，双版本同步修改。

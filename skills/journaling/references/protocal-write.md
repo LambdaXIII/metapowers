@@ -101,7 +101,7 @@ This is a lightweight heuristic — one quick scan, not deep reading. Skip for `
 
 ### Maintenance Signals
 
-If you notice a non-urgent issue during writing — stale INDEX.md lines, a misclassified entry, an unregistered tag, fragmenting topics — append a one-line note to `<journal-root>/.maintenance-memo.md`. One issue per line. The file doesn't exist until you first write to it. During the next maintenance cycle, these notes become the first thing processed (Phase 0 Step 0).
+If you notice a non-urgent issue during writing — stale INDEX.md lines, a misclassified entry, an unregistered tag, fragmenting topics — append a one-line note to `<journal-root>/.maintenance-memo.md`. One issue per line. The file doesn't exist until you first write to it. During the next maintenance cycle, these notes become the first thing processed (see the scan phase of the maintenance protocol).
 
 ---
 
