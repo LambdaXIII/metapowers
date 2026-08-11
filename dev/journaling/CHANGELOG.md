@@ -6,14 +6,36 @@
 - **`scripts/check-links.py` + `scripts/check-links.mjs`**: Journal 链接检查双版本脚本——提取全部 markdown/wikilink 链接、检查目标存在性、分析入链/出链关系。零第三方依赖，纯只读。两版本 API、行为、输出格式完全一致。支持 --absolute / --relative-to / --file 聚焦 / --journal-root 手动指定等选项。
 - **`scripts/README.md`**: 新增 `## check-links` 章节——快速开始、命令参考、输出格式说明、支持的链接格式、常用场景、错误处理、限制说明。
 
-### Fixed
-- **`scripts/check-links.py` + `check-links.mjs`**: 修复 wikilink 路径解析——markdown 链接相对于源文件目录，wikilink 相对于 journal-root（Obsidian 规范）。新增 `link_type`/`journal_root` 参数到 `link_resolve`/`linkResolve`，双版本同步修改。
-
 ### Changed
 - **`content/SKILL.md`**: 新增 `## Scripts` 节——列出 frontmatter/check-links 脚本用途、关键用法场景示例。
 - **`content/references/protocal-maintenance.md`**: P3-S2-dim3 追加 check-links 内联提醒，P0-S7 表后追加 frontmatter check 提醒。
 - **`content/scripts/README.md`**: 追加 check-links 使用场景（4 种）和最佳实践（6 条），文件清单更新为含 check-links 文件。
 - **`SKILL-DESIGN.md`**: 新增决策 #23——脚本引导的三层披露设计（SKILL.md 节 + 协议内联网格 + README 完整指南）。
+- **`content/references/protocal-maintenance.md` 元语境渗漏清理**：删除全部"作者现身"句——"供你理解""帮助你跳出框架""设计它的目的是让你""你可以根据笔记库的实际情况调整""供你参考。它们是启发，不是清单"等。作者语境（写作要求、设计意图、态度、许可、对文本的自我定位）不再泄漏进正文；约束层次改由结构（操作规范/推荐流程/补充论述分区）与措辞（必须/禁止 vs 陈述句）传达。判定依据：正文中是否有作者的声音。
+- **`content/references/protocal-maintenance.md` 维护完成形态重构**：重构为两点——INDEX 可用性（引导入口作用 + 维护后展示最新状态）+ 维护信息清零。后续术语泛化：维护信号 → 维护纪录 → **笔记库维护信息**（汇集日常工作中发现的待处理问题，主要来源 `.maintenance-memo.md`，不限于其他渠道）。
+- **`content/references/protocal-maintenance.md` INDEX 幻影行泛化**："INDEX 中的幻影行"（具体检查技巧）→ "INDEX 的重要性"（引导入口作用 + 最终可用性，叙述柔和化）；"摸底不依赖 INDEX 展示"并入"怎样跳出框架"的独立判断姿态。
+- **`content/references/protocal-maintenance.md` 推演修复（8 项）**：设计阶段与操作规范红线"写入 journal"明确为"更新到相应的规范文件（CLASSIFICATION.md / TAGS.md / CONVENTIONS.md）"；细粒度收尾补收尾闭环（更新 INDEX 反映新状态、清除维护信息中已解决的问题）；交付检查"即读取/写入协议"改为"见相关参考"；相关参考补 protocal-write/spec-note/spec-frontmatter 三个链接；扫描阶段 memo 术语统一为"维护备忘"并补位置（`<journal-root>`）与存在性（如不存在则跳过）；对比检查补基线来源（如维护前的文件清单快照）；流程一览补衔接句"重组与细粒度收尾是设计确认后的执行部分"；设计阶段补"若规范仍适合现状，确认后直接进入重组"。
+- **`content/SKILL.md`**: Linked Files 维护协议描述同步——"默认值可调整"→"执行路径可调整"（"默认值"字样随元语境清理从正文移除）。
+- **`content/references/protocal-write.md`**: Maintenance Signals 节旧阶段引用（Phase 0 Step 0）→ 指向维护协议扫描阶段（新四阶段结构）。
+- **`content/references/spec-note.md` 目录分配启发性修正**：Directory Assignment 引言翻转——第一认知从"条目放在四个默认目录之一"改为"四个目录是种子结构、起点而非固定分类法；权威目录列表是 `<journal-root>/CLASSIFICATION.md`，随维护演化；种子目录是演化前的基线"；标题 "Default Directories" → "Seed Directories"。内容未动，仅语气调整（强化"分类可演化"暗示，弱化"固定分法"暗示）。
+- **`content/references/protocal-maintenance.md` 元语境渗漏清理**：删除全部"作者现身"句——"供你理解""帮助你跳出框架""设计它的目的是让你""你可以根据笔记库的实际情况调整""供你参考。它们是启发，不是清单"等。作者语境不再泄漏进正文；约束层次改由结构（操作规范/推荐流程/补充论述分区）与措辞（必须/禁止 vs 陈述句）传达。
+- **`content/references/protocal-maintenance.md` 维护完成形态重构**：重构为两点——INDEX 可用性 + 维护信息清零。术语泛化：维护信号 → 维护纪录 → **笔记库维护信息**（汇集日常工作中发现的待处理问题，主要来源 `.maintenance-memo.md`）。
+- **`content/references/protocal-maintenance.md` INDEX 幻影行泛化**："INDEX 中的幻影行"（具体检查技巧）→ "INDEX 的重要性"（引导入口作用 + 最终可用性）；"摸底不依赖 INDEX 展示"并入"怎样跳出框架"的独立判断姿态。
+- **`content/references/protocal-maintenance.md` 推演修复（8 项）**：写入 journal 明确为更新到相应规范文件；细粒度收尾补收尾闭环；交付检查改"见相关参考"；相关参考补三个链接；扫描阶段 memo 术语统一为"维护备忘"并补位置与存在性；对比检查补基线来源；流程一览补衔接句；设计阶段补规范仍适用则直接进入重组。
+- **`content/SKILL.md`**: Linked Files 维护协议描述同步——"默认值可调整"→"执行路径可调整"；删除规则同步"不删除任何文件"硬性规范。
+- **`content/references/protocal-write.md`**: Maintenance Signals 节旧阶段引用（Phase 0 Step 0）→ 指向维护协议扫描阶段。
+- **`content/references/spec-note.md` 目录分配启发性修正**："默认目录"→"种子目录"，第一认知改为分类可演化、权威目录列表是 `<journal-root>/CLASSIFICATION.md`。
+
+### Removed
+- **维护触发信号机制**：旧版维护信号（dashboard staleness / tag sprawl / memo accumulation 等）与 compound signals 优先级判定整体移除
+- **"一些值得借鉴的整理思路"节**：改名联动/临时产物/维护备忘价值三个条目拆散为独立小节，"供你参考。它们是启发，不是清单"随节消失
+- **"维护备忘的价值"小节**：并入"笔记库维护信息"（核心洞察保留：日常积累往往比一次扫描更能暴露长期问题）
+- 维护触发信号机制：旧版维护信号与 compound signals 优先级判定整体移除
+- "一些值得借鉴的整理思路"节：条目拆散为独立小节
+- "维护备忘的价值"小节：并入"笔记库维护信息"
+
+### Fixed
+- **`scripts/check-links.py` + `check-links.mjs`**: 修复 wikilink 路径解析——markdown 链接相对于源文件目录，wikilink 相对于 journal-root（Obsidian 规范）。新增 `link_type`/`journal_root` 参数到 `link_resolve`/`linkResolve`，双版本同步修改。
 ## [4.9.0] — 2026-06-30
 
 > Base: v4.8.1. 表述优化——术语统一、优先级澄清、INDEX.md 格式规范化。
