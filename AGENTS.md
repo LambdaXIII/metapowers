@@ -26,6 +26,8 @@ metapowers/
 │       ├── templates/
 │       ├── examples/
 │       └── scripts/
+├── docs/
+│   └── agents/                   # Agent 技能设施契约（见 §7）
 └── AGENTS.md                     # 本文件
 ```
 
@@ -33,6 +35,7 @@ metapowers/
 - **`skills/`**：只读的发布产出。仅在用户明确要求发布时，从 `content/` 干净复制。
 - **SKILL-DESIGN 和 CHANGELOG**：开发侧文档，位于 `dev/<name>/` 下——不随技能分发，不进入 `content/`。
 - **test-space/**：目录占位，gitignored。具体测试机制待后续规范。
+- **`docs/agents/`**：Agent 技能设施契约——issue tracker / triage labels / domain docs 的消费者规则（见 §7）。
 
 ### 技能内容结构（基线标准 + metapowers 追加）
 以下为技能 `content/` 目录的完整规范。标注「基线」的条目来自技能开放标准，「🔧 metapowers 追加」为本项目的额外硬性约束。
@@ -231,6 +234,14 @@ metapowers/
    touch dev/<name>/CHANGELOG.md
    ```
 4. 在项目 README 中新建对应条目
+
+### 3.4 Issue 追踪（GitHub）
+
+- 使用/审查技能时发现的问题（bug、歧义、改进点），**当场提交 GitHub issue**——问题描述与定位（`dev/<skill>/` 内文件与节）一步完成，不再另行记观察笔记、待维护时重新解读
+- 外部用户的技能反馈同样经 GitHub issue 流入，triage 整理（详见 `docs/agents/triage-labels.md`）
+- 维护时 `gh issue list` 拉取处理；修复与决策落 SKILL-DESIGN/CHANGELOG 后关闭 issue
+- 约定详见 `docs/agents/issue-tracker.md`
+
 ---
 
 ## 4. 技能规范
@@ -361,3 +372,13 @@ references/ 下参考文档的组织遵循以下通用原则：
 - **不编造**：问题描述、功能说明、测试结果必须真实。
 - **先计划后动手**：任何非平凡操作之前，必须先制定计划（目标、现状、步骤、验证方式）。
 - **文档先行**：在实现之前先写出设计文档。技能实现可以修改，但没有书面设计的实现无法被审查。
+
+---
+
+## 7. Agent skills 设施
+
+本仓库配置了 mattpocock 系列工程技能（to-tickets / triage / to-spec / domain-modeling 等）的运行设施，三件套的细节与消费者规则在 `docs/agents/*.md`：
+
+- **Issue tracker**：GitHub Issues（gh CLI）——技能问题当场提交（内部）与用户反馈（外部）双通道，时机见 §3.4。See `docs/agents/issue-tracker.md`
+- **Triage labels**：五角色标签（needs-triage 等）。See `docs/agents/triage-labels.md`
+- **Domain docs**：领域知识（决策+理由+术语）在 `dev/<skill>/SKILL-DESIGN.md`。See `docs/agents/domain.md`
