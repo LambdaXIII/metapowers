@@ -122,5 +122,3 @@ frontmatter 字段方案：选什么字段、各字段用途。字段格式语�
 | `journaling-default.md` | 4 目录种子（inbox/experience/knowledge/active_works）的完整定义，AI agent 日记的起点参考 |
 
 **免责说明**：示例（尤其 journaling-default）含旧设计残留断言（如"inbox 必须存在"）——inbox 存在与否由 journal 自行决定，示例仅作体系参考、不作规范。
-
-成熟的标签集合示例见 `../examples/journal-standards/`——作启发参考，不作为模板照抄。

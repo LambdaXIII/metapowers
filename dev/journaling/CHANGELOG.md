@@ -25,13 +25,13 @@
 - **元数据字段方案降级**: 字段规定从协议硬编码（Required fields 写死列表）降级为"推荐并预设"（种子 RULES.md 元数据字段板块），字段设计归 journal 规则；frontmatter.py check 脚本自定义字段集支持归 #8 单独处理。
 - **check-links 解析语义实现按 Link Convention 重写**: `[[foo]]` 库内按名搜索（多匹配报歧义）、`[[foo.md]]`/`[foo.md]` 相对当前文件 + 各自 fallback、`./`/`../` 前缀相对当前文件、路径无前缀相对 journal-root；链接输出新增 `status` 字段（internal/external/wrong/ambiguous），summary 新增 `wrong`/`ambiguous` 计数——双实现（py/mjs）逐字段一致。
 - **引用路径基准统一**: references/ 内文档互引用统一为相对当前文件（裸文件名或 `../` 前缀）——修复 protocal-maintenance 相关参考列表 dashboard 死链、design-index/script-tools/examples 悬空引用；SKILL.md 等根目录文档保持 `references/` 前缀（相对技能根）。
-- **journal-standards 示例与单文档模型对齐**: INDEX.example.md 协议声明删除个性化规则行、专项工作板块改项目状态、维护信号去旧概念；TAGS.example.md 补"现行模型位于规则文档标签板块"说明与种子数修正；examples/README.md 描述更新。
 - **spec-frontmatter.md 规则文档表述**: tags 来源/规则从 TAGS.md 改为规则文档标签板块；自定义字段约定记录位置改规则文档；示例节补充自定义标签先注册说明。
 
 ### Removed
 - **references/spec-conventions.md / design-classification.md / design-tags.md**: 内容并入 design-rules.md。
 - **templates/seed/CONVENTIONS.md / TAGS.md / CLASSIFICATION.md**: 并入 templates/seed/RULES.md。
 - **SKILL.md Inbox 条目 / Conventions Template 条目**: 种子不再预设 inbox 目录与 CONVENTIONS 模板。
+- **examples/journal-standards/**: 删除（INDEX/分类/标签示例——旧拆分模型残留，"standard"命名与"结构由 journal 自定"哲学冲突；示例价值由 design-rules 板块示例与 classification-systems 覆盖）。
 
 ### Fixed
 - **`scripts/check-links.py` 符号链接行为对齐**: Path.resolve() 全部替换为纯字符串规范化（不追踪符号链接，与 Node path.resolve() 对齐）——journal-root 本身为符号链接时保持用户路径视角；文件收集跳过符号链接文件（与 Node Dirent.isFile() 一致）；存在性检查保持跟随符号链接（指向存在即有效）；scripts/README.md 声明补充到文件收集层。

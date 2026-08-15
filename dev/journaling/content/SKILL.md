@@ -56,7 +56,6 @@ Operating without INDEX.md means operating blind. INDEX.md is the cover of your 
 - [Journal Initialization](references/protocal-init.md) — Create a new journal from scratch: four-phase protocol (locate root + check existing content → init skeleton files → design discovery contract → maintenance takeover if content exists).
 - [Discovery Contract Design Guide](references/design-discovery-contract.md) — 发现合约设计的系统化方法：载体清查、过滤评估、推荐方案、用户呈报。在 `references/protocal-init.md` Phase 3 执行期间加载。
 - [Maintenance Protocol](references/protocal-maintenance.md) — 笔记库整理与规范演化：概述 + 推荐流程（扫描 → 设计（设计优化 + 规则区检查）→ 重组 → 细粒度收尾，执行路径可调整）+ 操作规范（硬性底线）+ 补充论述（启发）。若觉得 journal 过于混乱（如写入时错误尝试过多），适当向用户建议启动维护。
-- [Journal Standards Examples](examples/journal-standards/) — INDEX.md、规则文档等的参考示例。
 - [Templates](templates/seed/) — 初始化所需的种子文件模板（INDEX.md、RULES.md）。
 
 - [Classification System Examples](examples/classification-systems/) — Reference catalog of common real-world classification systems (PARA, Zettelkasten, Johnny Decimal, MOC/LYT, Evergreen, GTD, and journaling default). Each file starts with a summary for quick scanning.
