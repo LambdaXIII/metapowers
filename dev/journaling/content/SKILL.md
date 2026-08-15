@@ -54,7 +54,7 @@ Operating without INDEX.md means operating blind. The file takes seconds to read
 - [Maintenance Protocol](references/protocal-maintenance.md) — 笔记库整理与规范演化：概述 + 推荐流程（扫描 → 设计（设计优化 + 规则区检查）→ 重组 → 细粒度收尾，执行路径可调整）+ 操作规范（硬性底线）+ 补充论述（启发）。若觉得 journal 过于混乱（如写入时错误尝试过多），适当向用户建议启动维护。
 - [Templates](templates/seed/) — 初始化所需的种子文件模板（INDEX.md、RULES.md）。
 
-- [Classification System Patterns](references/patterns/classification-systems/) — Reference catalog of common real-world classification systems (PARA, Zettelkasten, Johnny Decimal, MOC/LYT, Evergreen, GTD, and journaling default). Each file starts with a summary for quick scanning.
+- [Classification System Patterns](references/patterns/classification-systems/) — Reference catalog of common real-world classification systems (PARA, Zettelkasten, Johnny Decimal, MOC/LYT, Evergreen, GTD). Catalog overview in `classification-systems/about.md`; each file starts with a summary for quick scanning.
 - [Rule Design Guide](references/design-rules.md) — 规则设计方法（分类/标签/约定设计）、Pitfalls、建议的板块（含示例）。设计/修订规则内容时加载。
 - [Rules Specification](references/spec-rules.md) — RULES 机制规范层：规则编写的原则（含自包含且完备）、规则设计的建议（若干独立建议）。规范层入口。
 - [Frontmatter Specification](references/spec-frontmatter.md) — YAML format rules, seed field scheme (title/summary/tags/last_update), custom field guidelines, and examples.
