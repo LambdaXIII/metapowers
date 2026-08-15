@@ -48,7 +48,7 @@ A summary that accurately describes content but whose body is a shallow checklis
 Free markdown. Guidelines:
 - One sentence per line
 - Group paragraphs with blank lines
-- **Beware over-generalization**: A lesson learned in one project context is not universal truth. "某项目在 Y 约束下用 X" not "应该用 X 模式". A project tag is NOT enough — the body itself must name the constraints.
+- **Beware over-generalization**: A lesson learned in one project context is not universal truth. "某项目在 Y 约束下用 X" not "应该用 X 模式". Tags alone are NOT enough — the body itself must name the constraints.
 - **Context boundary**: If the content depends on a specific status, environment, or timeframe, name the conditions in the body so future readers know when this knowledge applies.
 
 ---

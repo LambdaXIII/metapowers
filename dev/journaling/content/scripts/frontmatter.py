@@ -434,27 +434,30 @@ def fm_merge(current, delta):
     return result
 
 
-def fm_validate(d, mode="full"):
+def fm_validate(d, mode="full", required_fields=None):
     """Validate a frontmatter dict against the field specification.
 
-    Interface: (d: dict, mode: str) -> list[str]
+    Interface: (d: dict, mode: str, required_fields: set|None) -> list[str]
     Behavior:
       mode="full": check required fields exist + type correctness for all fields
       mode="delta": only check fields present in d for type correctness
+      required_fields: field set required for full mode; None → seed default
+        (REQUIRED_FIELDS). Journal rules may define a different field set.
     Caller: check command, replace command (pre-write validation)
     Returns: list of error message strings; empty list = pass
     """
     errors = []
+    req = required_fields if required_fields is not None else REQUIRED_FIELDS
 
     # determine which fields to check
     if mode == "full":
-        fields_to_check = set(REQUIRED_FIELDS) | set(d.keys())
+        fields_to_check = set(req) | set(d.keys())
     else:  # delta
         fields_to_check = set(d.keys())
 
     # check required fields existence (full mode only)
     if mode == "full":
-        for field in REQUIRED_FIELDS:
+        for field in req:
             if field not in d or d[field] is None:
                 errors.append(f"missing required field: {field}")
 
@@ -466,7 +469,7 @@ def fm_validate(d, mode="full"):
         value = d[field]
 
         # validate field name format (lowercase-kebab-case for custom fields)
-        if field not in ORDERED_FIELDS and field not in REQUIRED_FIELDS:
+        if field not in ORDERED_FIELDS and field not in req:
             # custom field — must be lowercase-kebab-case
             if not re.match(r"^[a-z][a-z0-9]*(-[a-z0-9]+)*$", field):
                 errors.append(f"field name should be lowercase-kebab-case: {field}")
@@ -811,6 +814,12 @@ def parse_args(argv):
                 print("--journal-root requires a value", file=sys.stderr)
                 sys.exit(1)
             params["journal_root"] = argv[i]
+        elif arg == "--required-fields":
+            i += 1
+            if i >= len(argv):
+                print("--required-fields requires a value", file=sys.stderr)
+                sys.exit(1)
+            params["required_fields"] = {f.strip() for f in argv[i].split(",") if f.strip()}
         else:
             print(f"unknown option: {arg}", file=sys.stderr)
             sys.exit(1)
@@ -954,7 +963,7 @@ def cmd_check(params):
 
         # parse frontmatter
         data = fm_parse(fm_result["header_raw"])
-        errors = fm_validate(data, mode="full")
+        errors = fm_validate(data, mode="full", required_fields=params.get("required_fields"))
         results.append({
             "file": filepath,
             "errors": errors,
@@ -1063,7 +1072,7 @@ def cmd_replace(params):
     new_data = data_read(params["data_source"])
 
     # validate full required fields
-    errors = fm_validate(new_data, mode="full")
+    errors = fm_validate(new_data, mode="full", required_fields=params.get("required_fields"))
     if errors:
         for err in errors:
             print(f"{err}", file=sys.stderr)
@@ -1166,8 +1175,9 @@ HELP_CHECK = """USAGE: frontmatter check <target...>
 Validate frontmatter format compliance for one or more Markdown files.
 
 Checks performed:
-  - Required fields: title (non-empty string), summary (string),
-    tags (YAML list of strings), last_update (YYYY-MM-DD)
+  - Required fields (seed default): title (non-empty string), summary (string),
+    tags (YAML list of strings), last_update (YYYY-MM-DD) —
+    override with --required-fields when the journal rules define a different set
   - Optional fields type: status (string), author (string), date (YYYY-MM-DD)
   - Tags must be YAML list format (not inline/comma-separated)
   - Boolean values must be lowercase (true/false)
@@ -1178,7 +1188,9 @@ Exit codes:
   1 = at least one file has issues
 
 Options:
-  --journal-root <path>   Optional journal root (reserved)"""
+  --journal-root <path>   Optional journal root (reserved)
+  --required-fields <set> Comma-separated required field names
+                          (default: title,summary,tags,last_update)"""
 
 
 HELP_UPDATE = """USAGE: frontmatter update <target...> --data '<json>' | --file <path>
@@ -1210,14 +1222,17 @@ Required:
   --data '<json>'   JSON object with the new frontmatter
   --file <path>     Read replacement from a file (.md, .json, .yaml)
 
-The --data content must include all four required fields:
+The --data content must include all four seed required fields:
   title, summary, tags (YAML list), last_update (YYYY-MM-DD)
+  — override with --required-fields when the journal rules define a different set
 
 The body of the Markdown file is never modified.
 If the file has no frontmatter, one is created.
 
 Options:
-  --dry-run         Preview changes without writing to disk"""
+  --dry-run               Preview changes without writing to disk
+  --required-fields <set> Comma-separated required field names
+                          (default: title,summary,tags,last_update)"""
 
 
 def print_help(command=None):

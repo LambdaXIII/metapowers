@@ -35,13 +35,9 @@ Journal 位于 `<journal-root>`，由以下要素构成：
 
 ## Before You Begin
 
-This skill's protocols depend on `<journal-root>/INDEX.md` context — maintenance signals, active works, and experience traps. If you have not read INDEX.md this session, open it now and note:
+This skill's protocols depend on `<journal-root>/INDEX.md` context — the journal's current state and operating context (what's in progress, what needs attention, what you've learned before). INDEX.md is the cover of your journal. Its specific sections are defined by your journal's rules — the file is the authoritative view of your journal's state. If you have not read INDEX.md this session, open it now.
 
-- **Active maintenance signals** — they determine whether a full maintenance cycle is needed
-- **Active works** — your changes may conflict with ongoing operations if assessed without this context
-- **Relevant experience entries** — traps and lessons that apply specifically to your current task
-
-Operating without INDEX.md means operating blind. INDEX.md is the cover of your journal — it tells you what needs maintenance, what's in progress, and what traps to avoid. The file takes seconds to read and prevents hours of blind work.
+Operating without INDEX.md means operating blind. The file takes seconds to read and prevents hours of blind work.
 ## Core Constraint
 
 **INDEX.md is the sole entrance to journal.** It is the notebook cover — a dashboard of state signals, not a directory listing. 本技能定义写入/维护流程协议（怎么写入、怎么维护）；内容组织规范（目录、标签、INDEX 结构等）由 journal 规则定义。
@@ -50,7 +46,7 @@ Operating without INDEX.md means operating blind. INDEX.md is the cover of your 
 
 - [INDEX.md Specification](references/spec-index.md) — INDEX.md 的核心规范：唯一入口定位、协议声明、格式归属（由 journal 规则规范）。关于项目级次级 INDEX 的设计参考，见 `references/patterns/dashboard.md`。
 - [INDEX Design Reference](references/design-index.md) — INDEX 设计参考：常用板块建议、组织方式建议。设计自己的 INDEX 结构时加载。
-- [Writing Protocol](references/protocal-write.md) — 写条目的工作流程：4 步写入流程（判断是否值得写 → 读取 journal 规则 → 编写 frontmatter 与 body → 检查可发现链路）+ 额外说明（补充已有条目/交叉引用/维护信号/自检提醒）。
+- [Writing Protocol](references/protocal-write.md) — 写条目的工作流程：4 步写入流程（判断是否值得写 → 读取 journal 规则 → 编写 frontmatter 与 body → 检查可发现链路）+ 额外说明（补充已有条目/交叉引用/自检提醒）。
 - [Note Writing Guide](references/spec-note.md) — 条目格式指南：summary anchoring 三检查点、body 格式（一句一行/过度泛化/context boundary）、粒度控制、链接形态规范（Link Convention）。
 - [Importing Protocol](references/protocal-import.md) — Bring existing external content into the journal: evaluation, copy, frontmatter, adjustment.
 - [Journal Initialization](references/protocal-init.md) — Create a new journal from scratch: four-phase protocol (locate root + check existing content → init skeleton files → design discovery contract → maintenance takeover if content exists).
@@ -59,8 +55,9 @@ Operating without INDEX.md means operating blind. INDEX.md is the cover of your 
 - [Templates](templates/seed/) — 初始化所需的种子文件模板（INDEX.md、RULES.md）。
 
 - [Classification System Patterns](references/patterns/classification-systems/) — Reference catalog of common real-world classification systems (PARA, Zettelkasten, Johnny Decimal, MOC/LYT, Evergreen, GTD, and journaling default). Each file starts with a summary for quick scanning.
-- [Rule Design Guide](references/design-rules.md) — 规则设计方法论：规则设计的建议、规则编写的原则、Pitfalls、建议的板块（含示例）。设计/修订 journal 规则（分类/标签/约定）时加载。
-- [Frontmatter Specification](references/spec-frontmatter.md) — YAML format rules, required fields, recommended optional fields, custom field guidelines, and examples.
+- [Rule Design Guide](references/design-rules.md) — 规则设计方法（分类/标签/约定设计）、Pitfalls、建议的板块（含示例）。设计/修订规则内容时加载。
+- [Rules Specification](references/spec-rules.md) — RULES 机制规范层：规则编写的原则（含自包含且完备）、规则设计的建议（若干独立建议）。规范层入口。
+- [Frontmatter Specification](references/spec-frontmatter.md) — YAML format rules, seed field scheme (title/summary/tags/last_update), custom field guidelines, and examples.
 - [Project Dashboard Pattern](references/patterns/dashboard.md) — 项目/领域级次级 INDEX 设计参考。和 INDEX.md 类比：提供聚焦一域的状态概览，作为 session 的次级路由入口。不是规范——从实际需求中生长。
 - [Script Tools Guide](references/script-tools.md) — frontmatter/check-links 脚本工具完整指南：命令参考、输出格式、链接解析语义、符号链接行为。
 ---
@@ -82,7 +79,8 @@ This skill uses progressive disclosure. Load the reference document matching you
 | **Importing existing content into the journal** | **`references/protocal-import.md`** |
 | **Capturing a discussion decision immediately into a project document** | **Operating Rules below** |
 | Maintaining or cleaning up the journal | `references/protocal-maintenance.md` |
-| Designing or revising journal rules (classification/tags/conventions) | **`references/design-rules.md`** |
+| Designing or revising journal rules — 建议与编写原则 | **`references/spec-rules.md`** |
+| Designing rule content (classification/tags methods) | `references/design-rules.md` |
 | Researching classification patterns for a custom design | **`references/patterns/classification-systems/`** — read summaries, decide which to load |
 | Writing or checking entry frontmatter format | **`references/spec-frontmatter.md`** |
 If the scenario is ambiguous, load two references. Don't load all at once.
@@ -103,10 +101,10 @@ The `scripts/` directory contains zero-dependency convenience tools for common j
 python scripts/check-links.py INDEX.md
 
 # Check links focused on a single file — outbound links + who references it
-python scripts/check-links.py INDEX.md --file active_works/note.md
+python scripts/check-links.py INDEX.md --file path/to/note.md
 
 # Validate frontmatter format across all entries
-python scripts/frontmatter.py check experience/*.md knowledge/*.md
+python scripts/frontmatter.py check *.md
 
 # Batch-update last_update after maintenance
 python scripts/frontmatter.py update *.md --data '{"last_update":"2026-06-30"}'

@@ -52,8 +52,7 @@ Content that fails all three (quick-test results, build logs, transient findings
   - 同 session（刚写的笔记）：用 Summary Anchoring 的 scope 检查（见 `spec-note.md`）——新内容仍在原 summary 范围内？是 → 扩展原条目（范围扩大则更新 summary）；否 → 新建条目。范围还在形成中，不必过度思考。
   - 跨 session（旧笔记）：标准更严——必须是**直接扩展**且不改变原 summary：summary 不变 → 追加到原条目；summary 会变 → 新建条目，并在新条目中回链 `Related: [old entry title](path/to/old-entry.md)`。
   - 不要担心两条目间的冗余、重叠或矛盾——维护时解决（见 `protocal-maintenance.md`）。Split now, merge later.
-- **交叉引用（轻量启发）**：写 body 时扫描同目录/同标签条目，有明确关系（互补主题、矛盾发现、直接扩展）加 `Related:` 或 `See also:` 行——一次快速扫描，不是深读。
-- **维护信号**：写入时发现非紧急问题（INDEX 行过时、条目误分类、未注册标签、主题碎片化）→ 记入 journal 规则约定的维护信息位置；未约定位置时由维护协议自行扫描识别。维护周期扫描时处理。
+- **交叉引用（轻量启发）**：写 body 时扫描内容相近的既有条目（按 journal 规则定义的组织方式——如同目录、同标签），有明确关系（互补主题、矛盾发现、直接扩展）加 `Related:` 或 `See also:` 行——一次快速扫描，不是深读。
 - **INDEX 的重要性**：写入后 INDEX 应能反映新内容——价值陈述，非强制义务；INDEX 同步的具体规则由 journal 规则（INDEX 结构板块）定义。
 - **交付前自检（四问提醒）**——可执行性 / 独立性 / 边界覆盖 / 可复现性：
   1. **可执行性** — 一个新人读完后能直接实现/执行吗？

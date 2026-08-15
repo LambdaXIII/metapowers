@@ -83,7 +83,7 @@ frontmatter check <target...>
 验证 frontmatter 格式合规性。
 
 **检查项**：
-- 必填字段存在性：`title`（非空字符串）、`summary`（字符串）、`tags`（YAML list）、`last_update`（YYYY-MM-DD）
+- 种子预设字段存在性（默认字段集；journal 规则定义了不同字段集时用 `--required-fields` 指定）：`title`（非空字符串）、`summary`（字符串）、`tags`（YAML list）、`last_update`（YYYY-MM-DD）
 - 可选字段类型：`status`（字符串）、`author`（字符串）、`date`（YYYY-MM-DD）
 - tags 必须是 YAML list 格式（禁止内联 `[a, b]` 或逗号分隔）
 - 布尔值必须全小写（`true`/`false`，`True`/`False` 报错）
@@ -91,7 +91,7 @@ frontmatter check <target...>
 
 **退出码**：0 = 全部通过；1 = 至少一个文件有问题。
 
-**选项**：`--journal-root <path>`（可选，预留——当前版本不执行标签注册校验）。
+**选项**：`--journal-root <path>`（可选，预留——当前版本不执行标签注册校验）；`--required-fields <fields>`（逗号分隔，覆盖默认种子字段集——journal 规则定义了不同字段集时使用）。
 
 ### `update` — 合并写入
 
@@ -124,7 +124,7 @@ frontmatter replace <target> --data '<json>' | --file <path>
 
 **完全替换** frontmatter 内容——仅接受单文件目标。body 区不修改。
 
-`--data` 内容必须包含四个必填字段：`title`、`summary`、`tags`、`last_update`。
+`--data` 内容必须包含种子预设四字段：`title`、`summary`、`tags`、`last_update`（journal 规则定义了不同字段集时用 `--required-fields` 覆盖）。
 
 **选项**：`--dry-run` 预览变更，不写入文件。
 
@@ -144,7 +144,7 @@ frontmatter replace <target> --data '<json>' | --file <path>
 ### frontmatter 限制
 
 - **YAML 子集**：仅支持字符串、数字、布尔、null、列表、注释。不支持嵌套对象、锚点、别名、多行字符串展开（`|` 和 `>` 保留原始文本）。
-- **必填字段**：`replace` 要求 `--data` 包含所有四个必填字段，不可部分替换。
+- **字段集**：`replace` 默认要求 `--data` 包含种子预设四字段，不可部分替换；`--required-fields` 可指定 journal 规则定义的字段集。
 - **单文件目标**：`replace` 仅接受一个目标文件。
 - **JSON 数据格式**：`--data` 必须使用标准 JSON（双引号，无尾逗号）。复杂数据推荐用 `--file` 传递。
 - **get 的目标/字段区分**：`get` 通过启发式规则区分文件路径和字段名——含通配符、路径分隔符、文件扩展名的参数视为目标，其余视为字段名。
@@ -163,7 +163,7 @@ python check-links.py INDEX.md
 node check-links.mjs INDEX.md
 
 # 聚焦单文件的出链和入链
-python check-links.py INDEX.md --file active_works/note.md
+python check-links.py INDEX.md --file path/to/note.md
 
 # 从任意目录运行
 python check-links.py --journal-root .
@@ -244,7 +244,7 @@ check-links [options] <entry>
 
 **场景 1：维护周期 — 断链检查**
 
-维护收尾要求断链清零。全 journal 扫描：
+维护收尾时检查断链（目标清零）。全 journal 扫描：
 
 ```bash
 python check-links.py INDEX.md
@@ -264,7 +264,7 @@ python check-links.py INDEX.md
 **场景 2：日常查询 — "谁引用了这个文件"**
 
 ```bash
-python check-links.py INDEX.md --file active_works/note.md
+python check-links.py INDEX.md --file path/to/note.md
 ```
 
 输出中的 `referenced_by` 数组列出所有指向此文件的 journal 内文件。适用于：

@@ -537,16 +537,17 @@ function fmMerge(current, delta) {
  * @returns {string[]} List of error messages; empty = pass
  * @behavior Same as Python fm_validate
  */
-function fmValidate(d, mode = "full") {
+function fmValidate(d, mode = "full", requiredFields = null) {
   const errors = [];
+  const req = requiredFields !== null ? requiredFields : REQUIRED_FIELDS;
 
   const fieldsToCheck = mode === "full"
-    ? new Set([...REQUIRED_FIELDS, ...Object.keys(d)])
+    ? new Set([...req, ...Object.keys(d)])
     : new Set(Object.keys(d));
 
   // check required fields existence (full mode only)
   if (mode === "full") {
-    for (const field of REQUIRED_FIELDS) {
+    for (const field of req) {
       if (!(field in d) || d[field] === null || d[field] === undefined) {
         errors.push(`missing required field: ${field}`);
       }
@@ -558,7 +559,7 @@ function fmValidate(d, mode = "full") {
     const value = d[field];
 
     // validate field name format for custom fields
-    if (!ORDERED_FIELDS.includes(field) && !REQUIRED_FIELDS.has(field)) {
+    if (!ORDERED_FIELDS.includes(field) && !req.has(field)) {
       if (!/^[a-z][a-z0-9]*(-[a-z0-9]+)*$/.test(field)) {
         errors.push(`field name should be lowercase-kebab-case: ${field}`);
       }
@@ -909,6 +910,15 @@ function parseArgs(argv) {
         process.exit(1);
       }
       params.journal_root = argv[i];
+    } else if (arg === "--required-fields") {
+      i++;
+      if (i >= argv.length) {
+        process.stderr.write("--required-fields requires a value\n");
+        process.exit(1);
+      }
+      params.required_fields = new Set(
+        argv[i].split(",").map((f) => f.trim()).filter((f) => f.length > 0)
+      );
     } else {
       process.stderr.write(`unknown option: ${arg}\n`);
       process.exit(1);
@@ -1063,7 +1073,7 @@ function cmdCheck(params) {
 
     // parse and validate
     const data = fmParse(fmResult.header_raw);
-    const errors = fmValidate(data, "full");
+    const errors = fmValidate(data, "full", params.required_fields ?? null);
     results.push({ file: filepath, errors });
 
     if (errors.length > 0) {
@@ -1179,7 +1189,7 @@ function cmdReplace(params) {
   const newData = dataRead(params.data_source);
 
   // validate full required fields
-  const errors = fmValidate(newData, "full");
+  const errors = fmValidate(newData, "full", params.required_fields ?? null);
   if (errors.length > 0) {
     for (const err of errors) {
       process.stderr.write(`${err}\n`);
@@ -1284,8 +1294,9 @@ const HELP_CHECK = `USAGE: frontmatter check <target...>
 Validate frontmatter format compliance for one or more Markdown files.
 
 Checks performed:
-  - Required fields: title (non-empty string), summary (string),
-    tags (YAML list of strings), last_update (YYYY-MM-DD)
+  - Required fields (seed default): title (non-empty string), summary (string),
+    tags (YAML list of strings), last_update (YYYY-MM-DD) —
+    override with --required-fields when the journal rules define a different set
   - Optional fields type: status (string), author (string), date (YYYY-MM-DD)
   - Tags must be YAML list format (not inline/comma-separated)
   - Boolean values must be lowercase (true/false)
@@ -1296,7 +1307,9 @@ Exit codes:
   1 = at least one file has issues
 
 Options:
-  --journal-root <path>   Optional journal root (reserved)`;
+  --journal-root <path>   Optional journal root (reserved)
+  --required-fields <set> Comma-separated required field names
+                          (default: title,summary,tags,last_update)`;
 
 const HELP_UPDATE = `USAGE: frontmatter update <target...> --data '<json>' | --file <path>
 
@@ -1326,14 +1339,17 @@ Required:
   --data '<json>'   JSON object with the new frontmatter
   --file <path>     Read replacement from a file (.md, .json, .yaml)
 
-The --data content must include all four required fields:
+The --data content must include all four seed required fields:
   title, summary, tags (YAML list), last_update (YYYY-MM-DD)
+  — override with --required-fields when the journal rules define a different set
 
 The body of the Markdown file is never modified.
 If the file has no frontmatter, one is created.
 
 Options:
-  --dry-run         Preview changes without writing to disk`;
+  --dry-run               Preview changes without writing to disk
+  --required-fields <set> Comma-separated required field names
+                          (default: title,summary,tags,last_update)`;
 
 function printHelp(command) {
   if (!command) {

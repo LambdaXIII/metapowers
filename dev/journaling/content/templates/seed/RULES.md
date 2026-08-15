@@ -5,7 +5,6 @@
 > 本文件可自行组织为多文件形式，但本文件是技能绑定的唯一规则入口。
 > 本文件内容均为可改默认值，非技能强制——各板块可按 journal 实际需求增删改。
 > 写入/导入前必读本文件；读取笔记时不加载。
-> 本文件中的 `references/…` 路径指 journaling 技能的文档目录，非本 journal 内的路径。
 
 ## 分类
 
@@ -36,11 +35,11 @@
 
 ## INDEX 结构
 
-本 journal 的 INDEX 组织方式在此定义（板块选择、同步节奏、维护规则）；参考 `references/design-index.md` 获取设计启发。
+本 journal 的 INDEX 组织方式在此定义（板块选择、同步节奏、维护规则）。
 
 ## 笔记元数据字段
 
-> 推荐并预设的 frontmatter 字段方案（可增删改）；字段格式语法见 `references/spec-frontmatter.md`。
+> 推荐并预设的 frontmatter 字段方案（可增删改）。
 
 | 字段 | 用途 |
 |------|------|

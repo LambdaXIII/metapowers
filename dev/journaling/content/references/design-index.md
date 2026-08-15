@@ -37,5 +37,5 @@ INDEX 结构从简单开始自然生长——不预设板块，随条目增加�
 
 ## 被引用关系
 
-- journal 规则文档（RULES.md）的 INDEX 结构板块强烈建议参考本文
+- journal 规则文档——若设计 INDEX 结构板块（在规则文档中记录 INDEX 组织方式），可参考本文（记录组织方式的建议见 `spec-rules.md`）
 - `spec-index.md` 简单提及本文
