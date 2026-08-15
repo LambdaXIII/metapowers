@@ -26,6 +26,7 @@
 - **check-links 解析语义实现按 Link Convention 重写**: `[[foo]]` 库内按名搜索（多匹配报歧义）、`[[foo.md]]`/`[foo.md]` 相对当前文件 + 各自 fallback、`./`/`../` 前缀相对当前文件、路径无前缀相对 journal-root；链接输出新增 `status` 字段（internal/external/wrong/ambiguous），summary 新增 `wrong`/`ambiguous` 计数——双实现（py/mjs）逐字段一致。
 - **引用路径基准统一**: references/ 内文档互引用统一为相对当前文件（裸文件名或 `../` 前缀）——修复 protocal-maintenance 相关参考列表 dashboard 死链、design-index/script-tools/examples 悬空引用；SKILL.md 等根目录文档保持 `references/` 前缀（相对技能根）。
 - **spec-frontmatter.md 规则文档表述**: tags 来源/规则从 TAGS.md 改为规则文档标签板块；自定义字段约定记录位置改规则文档；示例节补充自定义标签先注册说明。
+- **分类体系目录迁移**: `examples/classification-systems/` → `references/patterns/classification-systems/`——分类体系是设计模式参考（与 patterns/dashboard 同性质）而非示例；目录内 README 与 examples/README 删除（README 非合法条目），examples/ 目录整体移除；design-rules/SKILL.md 引用路径同步更新。
 
 ### Removed
 - **references/spec-conventions.md / design-classification.md / design-tags.md**: 内容并入 design-rules.md。

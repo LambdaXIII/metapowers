@@ -58,7 +58,7 @@ Operating without INDEX.md means operating blind. INDEX.md is the cover of your 
 - [Maintenance Protocol](references/protocal-maintenance.md) — 笔记库整理与规范演化：概述 + 推荐流程（扫描 → 设计（设计优化 + 规则区检查）→ 重组 → 细粒度收尾，执行路径可调整）+ 操作规范（硬性底线）+ 补充论述（启发）。若觉得 journal 过于混乱（如写入时错误尝试过多），适当向用户建议启动维护。
 - [Templates](templates/seed/) — 初始化所需的种子文件模板（INDEX.md、RULES.md）。
 
-- [Classification System Examples](examples/classification-systems/) — Reference catalog of common real-world classification systems (PARA, Zettelkasten, Johnny Decimal, MOC/LYT, Evergreen, GTD, and journaling default). Each file starts with a summary for quick scanning.
+- [Classification System Patterns](references/patterns/classification-systems/) — Reference catalog of common real-world classification systems (PARA, Zettelkasten, Johnny Decimal, MOC/LYT, Evergreen, GTD, and journaling default). Each file starts with a summary for quick scanning.
 - [Rule Design Guide](references/design-rules.md) — 规则设计方法论：规则设计的建议、规则编写的原则、Pitfalls、建议的板块（含示例）。设计/修订 journal 规则（分类/标签/约定）时加载。
 - [Frontmatter Specification](references/spec-frontmatter.md) — YAML format rules, required fields, recommended optional fields, custom field guidelines, and examples.
 - [Project Dashboard Pattern](references/patterns/dashboard.md) — 项目/领域级次级 INDEX 设计参考。和 INDEX.md 类比：提供聚焦一域的状态概览，作为 session 的次级路由入口。不是规范——从实际需求中生长。
@@ -83,7 +83,7 @@ This skill uses progressive disclosure. Load the reference document matching you
 | **Capturing a discussion decision immediately into a project document** | **Operating Rules below** |
 | Maintaining or cleaning up the journal | `references/protocal-maintenance.md` |
 | Designing or revising journal rules (classification/tags/conventions) | **`references/design-rules.md`** |
-| Researching classification patterns for a custom design | **`examples/classification-systems/`** — read summaries, decide which to load |
+| Researching classification patterns for a custom design | **`references/patterns/classification-systems/`** — read summaries, decide which to load |
 | Writing or checking entry frontmatter format | **`references/spec-frontmatter.md`** |
 If the scenario is ambiguous, load two references. Don't load all at once.
 

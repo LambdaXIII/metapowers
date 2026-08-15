@@ -109,7 +109,7 @@ frontmatter 字段方案：选什么字段、各字段用途。字段格式语�
 
 ## 参考示例
 
-完整的分类体系示例见 `../examples/classification-systems/`（每个文件以摘要开头，先读摘要判断是否需要全文）：
+完整的分类体系参考见 `patterns/classification-systems/`（每个文件以摘要开头，先读摘要判断是否需要全文）：
 
 | 文件 | 一句话摘要 |
 |------|-----------|
@@ -121,4 +121,4 @@ frontmatter 字段方案：选什么字段、各字段用途。字段格式语�
 | `gtd-contexts.md` | 按使用场景分上下文（GTD Contexts），适合情境驱动型工作流 |
 | `journaling-default.md` | 4 目录种子（inbox/experience/knowledge/active_works）的完整定义，AI agent 日记的起点参考 |
 
-**免责说明**：示例（尤其 journaling-default）含旧设计残留断言（如"inbox 必须存在"）——inbox 存在与否由 journal 自行决定，示例仅作体系参考、不作规范。
+**免责说明**：参考体系（尤其 journaling-default）含旧设计残留断言（如"inbox 必须存在"）——inbox 存在与否由 journal 自行决定，参考体系仅作设计启发、不作规范。
