@@ -9,8 +9,8 @@ description: |
   - 维护 / 整理 journal
   - 将讨论中确认的设计决策写入 journal 文件
 metadata:
-  version: "5.0.0"
-  last_updated: "2026-08-15"
+  version: "5.0.1"
+  last_updated: "2026-08-16"
 ---
 
 # Journaling

@@ -93,13 +93,13 @@ def fm_read(filepath):
     Interface: (filepath: str) -> dict{header_raw, body, body_start_line}
     Behavior:
       - Frontmatter starts at line 0 with "---" and ends at the next "---" line.
-      - No opening "---" or no closing "---" → header_raw="", body=全文, body_start_line=0.
+      - No opening "---" or no closing "---" → header_raw="", body=entire file, body_start_line=0.
     Caller: data_read, command handlers
-    Edge cases (decision table):
-      - No "---" at all → header_raw="", body=全文, body_start_line=0
-      - First line not "---" → header_raw="", body=全文, body_start_line=0
-      - Opening "---" but no closing "---" → header_raw="", body=全文, body_start_line=0
-      - Valid frontmatter → header_raw=内容, body=之后内容, body_start_line=闭合行号+1
+    Edge cases:
+      - No "---" at all → header_raw="", body=entire file, body_start_line=0
+      - First line not "---" → header_raw="", body=entire file, body_start_line=0
+      - Opening "---" but no closing "---" → header_raw="", body=entire file, body_start_line=0
+      - Valid frontmatter → header_raw=header text, body=following text, body_start_line=closing delimiter line + 1
       - File is "---\\n---\\n" → header_raw="", body="", body_start_line=2
     """
     # reading file
@@ -145,7 +145,7 @@ def fm_parse(yaml_text):
     Behavior: State machine parser supporting strings, ints, floats, bools, null, lists, comments.
               Unsupported YAML constructs → error + exit.
     Caller: data_read, fm_read pipeline
-    Edge cases: see decision table in plan §2.1
+    Edge cases: empty input → {}; unsupported YAML → error.
     """
     if not yaml_text or yaml_text.strip() == "":
         return {}
@@ -171,7 +171,7 @@ def fm_parse(yaml_text):
 
         # check indentation — top-level keys must start at column 0
         if line and line[0] in (" ", "\t"):
-            # indented line not inside a list → likely a continuation we don't handle or error
+            # indented line not inside a list → unsupported YAML continuation; error
             print(f"parse error: line {i+1}: unexpected indentation: {stripped}", file=sys.stderr)
             sys.exit(1)
 
@@ -254,7 +254,7 @@ def _parse_scalar(value_str, line_num=0):
     """Infer and convert a scalar YAML value to the appropriate Python type.
 
     Interface: (value_str: str, line_num: int) -> Any
-    Behavior: type inference per decision table §2.1
+    Behavior: type inference
     Caller: fm_parse
     """
     s = value_str.strip()
@@ -271,10 +271,6 @@ def _parse_scalar(value_str, line_num=0):
     # uppercase/mixed-case booleans → string (not boolean)
     if s.lower() in ("true", "false"):
         return s
-
-    # null-like (already handled, but keep as string for other cases)
-    if s == "null" or s == "~":
-        return None
 
     # double-quoted string → strip quotes
     if s.startswith('"') and s.endswith('"') and len(s) >= 2:
@@ -539,7 +535,7 @@ def fmt_output(value, params):
     """Format command output based on command, file count, and field count.
 
     Interface: (value: Any, params: dict) -> str
-    Behavior: Output format matrix per plan §2.1.
+    Behavior: Output format matrix.
       params includes: command, file_count, field_count, fields, pretty
     Caller: command dispatch (get/check/update/replace)
     """
@@ -557,7 +553,7 @@ def fmt_output(value, params):
 
 
 def _fmt_get_output(value, params, pretty):
-    """Format get command output per the matrix.
+    """Format get command output.
 
     value can be:
       - single dict (1 file, 0+ fields)

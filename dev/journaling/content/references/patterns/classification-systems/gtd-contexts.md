@@ -72,7 +72,7 @@ status: "next"
 ## 改编要点
 
 - GTD contexts 可以和其他系统共存——如 PARA 处理内容分类，contexts 处理执行时机
-- 自定义上下文：根据你的实际场景调整（如设计师可能有 @design-tools, @research, @client-meeting）
+- 自定义上下文：按实际场景调整（如设计师可能有 @design-tools, @research, @client-meeting）
 - 精力标签（high/low energy）可以作为 context 的补充维度
 - 前端代码中的 context 字段需要维护——定期清理已不使用的上下文
 

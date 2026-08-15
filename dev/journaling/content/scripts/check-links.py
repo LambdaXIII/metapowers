@@ -22,7 +22,7 @@ from pathlib import Path
 
 # ── Constants ──────────────────────────────────────────────────────────
 
-# Patterns for link extraction (§3)
+# Patterns for link extraction
 # Standard markdown link: [text](target)
 RE_MD_LINK = re.compile(r"\[([^\]]*)\]\(([^)]+)\)")
 # Obsidian wikilink: [[target]] or [[target|text]]
@@ -66,7 +66,7 @@ def journal_discover(entry):
 
     Called by: main() — dispatch step 1.
     """
-    # Resolve entry to absolute path (§2 auto-discovery rule)
+    # Resolve entry to absolute path (auto-discovery rule)
     # _abspath_nofollow normalizes . and .. but does NOT follow symlinks — aligns with Node path.resolve()
     entry_path = _abspath_nofollow(entry)
 
@@ -74,7 +74,6 @@ def journal_discover(entry):
         print(f"{entry}: file not found", file=sys.stderr)
         sys.exit(1)
 
-    # Start directory: current directory for discovery
     # If entry is INDEX.md, start from its parent (the journal root)
     # If entry is a directory, start from that directory
     # If entry is a regular file, start from its parent directory
@@ -85,7 +84,7 @@ def journal_discover(entry):
     else:
         journal_root = os.path.dirname(entry_path)
 
-    # Walk upward looking for INDEX.md or index.md (§2 auto-discovery)
+    # Walk upward looking for INDEX.md or index.md (auto-discovery)
     current = journal_root
     while True:
         # Check exact case-insensitive matches only
@@ -124,7 +123,7 @@ def target_expand(journal_root):
     result = []
     journal_path = Path(journal_root)
 
-    # Recursive walk with .gitignore/style skip dirs (§8)
+    # Recursive walk with .gitignore/style skip dirs
     try:
         for dirpath_str, dirnames, filenames in os.walk(journal_root):
             dirpath = Path(dirpath_str)
@@ -171,16 +170,16 @@ def link_extract(content, file_path):
     """
     links = []
 
-    # Scan each line independently to get accurate line numbers (§3)
+    # Scan each line independently to get accurate line numbers
     for line_num, line in enumerate(content.split("\n"), start=1):
         # Extract standard markdown links: [text](target)
         for m in RE_MD_LINK.finditer(line):
             target = m.group(2).strip()
             text = m.group(1)
-            # Filter: skip URLs and pure anchors (§3 filtering)
+            # Filter: skip URLs and pure anchors (filtering)
             if _should_skip_target(target):
                 continue
-            # Strip #section suffix (§3)
+            # Strip #section suffix
             target = target.split("#")[0]
             links.append({
                 "target": target,
@@ -189,7 +188,7 @@ def link_extract(content, file_path):
                 "type": "markdown",
             })
 
-        # Extract wikilinks: [[target]] or [[target|text]] (§3 type B)
+        # Extract wikilinks: [[target]] or [[target|text]]
         for m in RE_WIKILINK.finditer(line):
             target = m.group(1).strip()
             alias = m.group(2)
@@ -268,7 +267,7 @@ def _name_search(name, md_files):
 
 
 def link_resolve(target, source_path, link_type, journal_root, md_files):
-    """Resolve a link target per spec-note Link Convention (§3.2).
+    """Resolve a link target per spec-note Link Convention.
 
     Returns (resolved, status):
       resolved: str | None — absolute path (forward slashes); None for
@@ -289,7 +288,7 @@ def link_resolve(target, source_path, link_type, journal_root, md_files):
     Called by: main() — per-link processing in scan loop.
     """
     # 【NON-PORTABLE】 _abspath_nofollow vs Node path.resolve() — both normalize . and ..
-    # without following symlinks (aligned; Path.resolve() previously expanded them)
+    # without following symlinks
     source_dir = os.path.dirname(source_path)
 
     # EXTERNAL: absolute path (posix root or windows drive) — classified only
@@ -380,7 +379,7 @@ def graph_assemble(file_data, journal_root):
             if link["resolved"] is not None:
                 link["resolved"] = link["resolved"].replace("\\", "/")
 
-    # ── Build inbound (referenced_by) map (§9 step 2) ──
+    # ── Build inbound (referenced_by) map ──
     # inbound_map: resolved_path → [{source: rel_path, line, text}]
     inbound_map = {}
     for fd in file_data:
@@ -398,7 +397,7 @@ def graph_assemble(file_data, journal_root):
                     "text": occ["text"],
                 })
 
-    # ── Compute broken links (§9 step 3) ──
+    # ── Compute broken links ──
     broken_map = {}
     for fd in file_data:
         for link in fd["links"]:
@@ -421,7 +420,7 @@ def graph_assemble(file_data, journal_root):
             "occurrences": occurrences,
         })
 
-    # ── Compute orphan files (§9 step 4) ──
+    # ── Compute orphan files ──
     all_rel_paths = {fd["rel_path"] for fd in file_data}
     # Files that are referenced at least once (by resolved path)
     referenced = set()
@@ -433,7 +432,7 @@ def graph_assemble(file_data, journal_root):
 
     orphan_files = sorted(all_rel_paths - referenced - {"index.md", "INDEX.md"})
 
-    # ── Compute self_refs (§9 step 1-5) ──
+    # ── Compute self_refs ──
     total_links = 0
     broken_count = 0
     valid_count = 0
@@ -462,7 +461,7 @@ def graph_assemble(file_data, journal_root):
             if link["resolved"] == fd["file"]:
                 self_refs_total += 1
 
-    # ── Build most_referenced (§9 step 6) ──
+    # ── Build most_referenced ──
     ref_counts = []
     for resolved_path, refs in inbound_map.items():
         if resolved_path.startswith(jr):
@@ -475,7 +474,7 @@ def graph_assemble(file_data, journal_root):
     ref_counts.sort(key=lambda x: (-x["refs"], x["file"].lower()))
     most_referenced = ref_counts[:10]
 
-    # ── Build per_file with referenced_by (§9 output structure) ──
+    # ── Build per_file with referenced_by (output structure) ──
     per_file = []
     for fd in file_data:
         source_abs = fd["file"]
@@ -554,7 +553,7 @@ def fmt_output(graph_data, resolve_mode, focus_file):
     journal_root = graph_data["journal_root"]
     jr = journal_root.rstrip("/\\") + os.sep
 
-    # ── Determine resolve root (§10 resolve formatting) ──
+    # ── Determine resolve root (resolve formatting) ──
     def format_resolved(resolved, source_file):
         """Format a resolved path according to resolve_mode."""
         if resolved is None:
@@ -638,7 +637,7 @@ def parse_args(argv):
         "help": False,          # print help and exit
     }
 
-    # Track last resolve option for conflict resolution (§2)
+    # Track last resolve option for conflict resolution
     last_resolve = None  # "absolute" or "relative_to"
 
     i = 0
@@ -698,7 +697,7 @@ def parse_args(argv):
         print("Run with --help for usage.", file=sys.stderr)
         sys.exit(1)
 
-    # ── Validate argument combinations (§2 decision table) ──
+    # ── Validate argument combinations ──
     if positional:
         params["entry"] = positional[0]
         if len(positional) > 1:
@@ -714,7 +713,7 @@ def parse_args(argv):
         print("Run with --help for usage.", file=sys.stderr)
         sys.exit(1)
 
-    # Resolve conflict: last option wins (§2)
+    # Resolve conflict: last option wins
     if last_resolve == "relative_to":
         params["absolute"] = False
 
@@ -816,7 +815,6 @@ def main():
     journal_root = journal_root.replace("\\", "/")
 
     # ── Step 2: Scan all md files ──
-    # scanning <N> files under journal_root
     all_files = target_expand(journal_root)
 
     # ── Step 3: Determine entry focus ──
@@ -824,7 +822,7 @@ def main():
     if params["entry"]:
         entry_path = _abspath_nofollow(params["entry"])
 
-    # ── Step 4: Handle --file validation (§2) ──
+    # ── Step 4: Handle --file validation ──
     focus_file = None
     if params["file"]:
         # Resolve --file relative to journal_root
@@ -856,7 +854,6 @@ def main():
             sys.exit(1)
 
     # ── Step 5: Per-file scan ──
-    # extracting links from <file>
     file_data = []
     for fpath in all_files:
         rel_path = os.path.relpath(fpath, journal_root).replace("\\", "/")
@@ -938,7 +935,7 @@ def main():
     json_str = fmt_output(graph_data, resolve_mode, focus_file)
 
     # ── Step 8: Print output ──
-    # Apply pretty/compact formatting (§10 JSON format)
+    # Apply pretty/compact formatting (JSON format)
     if params["no_pretty"]:
         # Re-serialize without indentation
         data = json.loads(json_str)

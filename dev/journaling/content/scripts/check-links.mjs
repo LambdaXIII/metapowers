@@ -18,7 +18,7 @@ import { dirname, basename, resolve, isAbsolute, relative, join, extname } from 
 
 // ── Constants ──────────────────────────────────────────────────────────
 
-// Patterns for link extraction (§3)
+// Patterns for link extraction
 // Standard markdown link: [text](target)
 const RE_MD_LINK = /\[([^\]]*)\]\(([^)]+)\)/;
 // Obsidian wikilink: [[target]] or [[target|text]]
@@ -44,7 +44,7 @@ const SKIP_DIRS = new Set([".git", "__pycache__", ".obsidian", "node_modules"]);
  * Called by: main() — dispatch step 1.
  */
 function journalDiscover(entry) {
-  // Resolve entry to absolute path (§2 auto-discovery rule)
+  // Resolve entry to absolute path (auto-discovery rule)
   // 【NON-PORTABLE】 path.resolve() vs pathlib.Path.resolve() — both normalize . and ..
   const entryPath = resolve(entry);
 
@@ -53,7 +53,7 @@ function journalDiscover(entry) {
     process.exit(1);
   }
 
-  // Start directory: entry itself if it's INDEX.md, else its parent
+  // Start directory: entry itself if it's a directory, else its parent
   const entryStat = statSync(entryPath);
   let currentDir;
   if (entryStat.isDirectory()) {
@@ -62,10 +62,10 @@ function journalDiscover(entry) {
     currentDir = dirname(entryPath);
   }
 
-  // Walk upward looking for INDEX.md or index.md (§2 auto-discovery)
+  // Walk upward looking for INDEX.md or index.md (auto-discovery)
   // 【NON-PORTABLE】 Node dirname chain vs Python Path.parent chain — equivalent
   while (true) {
-    // Check exact case-insensitive matches only (§5 step 2)
+    // Check exact case-insensitive matches only
     for (const name of ["INDEX.md", "index.md"]) {
       const candidate = join(currentDir, name);
       try {
@@ -121,7 +121,7 @@ function targetExpand(journalRoot) {
     process.exit(1);
   }
 
-  // Deduplicate and sort alphabetically (§8)
+  // Deduplicate and sort alphabetically
   return [...new Set(result)].sort();
 }
 
@@ -147,7 +147,7 @@ function scanMdFiles(dir) {
   for (const entry of entries) {
     const fullPath = join(dir, entry.name);
     if (entry.isDirectory()) {
-      // Skip ignored directories (§8)
+      // Skip ignored directories
       if (SKIP_DIRS.has(entry.name)) {
         continue;
       }
@@ -178,7 +178,7 @@ function scanMdFiles(dir) {
 function linkExtract(content, _filePath) {
   const links = [];
 
-  // Scan each line independently for accurate line numbers (§3)
+  // Scan each line independently for accurate line numbers
   const lines = content.split('\n');
   for (let lineNum = 0; lineNum < lines.length; lineNum++) {
     const line = lines[lineNum];
@@ -189,11 +189,11 @@ function linkExtract(content, _filePath) {
     for (const match of line.matchAll(new RegExp(RE_MD_LINK.source, 'g'))) {
       const target = match[2].trim();
       const text = match[1];
-      // Filter: skip URLs and pure anchors (§3 filtering)
+      // Filter: skip URLs and pure anchors (filtering)
       if (shouldSkipTarget(target)) {
         continue;
       }
-      // Strip #section suffix (§3)
+      // Strip #section suffix
       const cleanTarget = target.split('#')[0];
       links.push({
         target: cleanTarget,
@@ -203,7 +203,7 @@ function linkExtract(content, _filePath) {
       });
     }
 
-    // Extract wikilinks: [[target]] or [[target|text]] (§3 type B)
+    // Extract wikilinks: [[target]] or [[target|text]]
     for (const match of line.matchAll(new RegExp(RE_WIKILINK.source, 'g'))) {
       const target = match[1].trim();
       const alias = match[2];
@@ -292,7 +292,7 @@ function nameSearch(name, mdFiles) {
 
 
 /**
- * Resolve a link target per spec-note Link Convention (§3.2).
+ * Resolve a link target per spec-note Link Convention.
  *
  * Returns [resolved|null, status]:
  *   resolved: absolute path (forward slashes); null for EXTERNAL / WRONG /
@@ -403,7 +403,7 @@ function fsExistCheck(path) {
 function graphAssemble(fileData, journalRoot) {
   const jr = journalRoot.replace(/\/$/, '') + '/';  // ensure trailing slash
 
-  // ── Build inbound (referenced_by) map (§9 step 2) ──
+  // ── Build inbound (referenced_by) map ──
   // inboundMap: resolved_path → [{source: rel_path, line, text}]
   /** @type {Map<string, Array<{source: string, line: number, text: string}>>} */
   const inboundMap = new Map();
@@ -427,7 +427,7 @@ function graphAssemble(fileData, journalRoot) {
     }
   }
 
-  // ── Compute broken links (§9 step 3) ──
+  // ── Compute broken links ──
   /** @type {Map<string, {target: string, type: string, occurrences: Array}>} */
   const brokenMap = new Map();
   for (const fd of fileData) {
@@ -451,7 +451,7 @@ function graphAssemble(fileData, journalRoot) {
   // Sort by target alphabetically
   const brokenLinks = [...brokenMap.values()].sort((a, b) => a.target.localeCompare(b.target));
 
-  // ── Compute orphan files (§9 step 4) ──
+  // ── Compute orphan files ──
   const allRelPaths = new Set(fileData.map(fd => fd.rel_path));
   // Files that are referenced at least once (by resolved path → rel_path)
   const referenced = new Set();
@@ -466,7 +466,7 @@ function graphAssemble(fileData, journalRoot) {
     .filter(p => !referenced.has(p) && p.toLowerCase() !== 'index.md')
     .sort();
 
-  // ── Compute statistics (§9 step 5) ──
+  // ── Compute statistics ──
   let totalLinks = 0;
   let brokenCount = 0;
   let validCount = 0;
@@ -502,7 +502,7 @@ function graphAssemble(fileData, journalRoot) {
     }
   }
 
-  // ── Build most_referenced (§9 step 6) ──
+  // ── Build most_referenced ──
   const refCounts = [];
   for (const [resolvedPath, refs] of inboundMap) {
     if (resolvedPath.startsWith(jr)) {
@@ -517,7 +517,7 @@ function graphAssemble(fileData, journalRoot) {
   refCounts.sort((a, b) => b.refs - a.refs || a.file.localeCompare(b.file));
   const mostReferenced = refCounts.slice(0, 10);
 
-  // ── Build per_file with referenced_by (§9 output structure) ──
+  // ── Build per_file with referenced_by (output structure) ──
   const perFile = [];
   for (const fd of fileData) {
     const sourceAbs = fd.file;
@@ -602,7 +602,7 @@ function graphAssemble(fileData, journalRoot) {
 function fmtOutput(graphData, resolveMode, focusFile) {
   const journalRoot = graphData.journal_root;
 
-  // ── Determine resolve root (§10 resolve formatting) ──
+  // ── Determine resolve root (resolve formatting) ──
   /**
    * Format a resolved path according to resolveMode.
    * @param {string} resolved - Absolute resolved path (forward slashes).
@@ -700,7 +700,7 @@ function parseArgs(argv) {
     help: false,
   };
 
-  // Track last resolve option for conflict resolution (§2)
+  // Track last resolve option for conflict resolution
   let lastResolve = null;  // "absolute" or "relative_to"
 
   const positional = [];
@@ -772,7 +772,7 @@ function parseArgs(argv) {
     process.exit(1);
   }
 
-  // ── Validate argument combinations (§2 decision table) ──
+  // ── Validate argument combinations ──
   if (positional.length > 0) {
     params.entry = positional[0];
     if (positional.length > 1) {
@@ -792,7 +792,7 @@ function parseArgs(argv) {
     process.exit(1);
   }
 
-  // Resolve conflict: last option wins (§2)
+  // Resolve conflict: last option wins
   if (lastResolve === 'relative_to') {
     params.absolute = false;
   }
@@ -905,10 +905,9 @@ function main() {
   }
 
   // ── Step 2: Scan all md files ──
-  // scanning <N> files under journalRoot
   const allFiles = targetExpand(journalRoot);
 
-  // ── Step 4: Handle --file validation (§2) ──
+  // ── Step 4: Handle --file validation ──
   let focusFile = null;
   if (params.file) {
     // Resolve --file relative to journal_root
@@ -943,7 +942,6 @@ function main() {
   }
 
   // ── Step 5: Per-file scan ──
-  // extracting links from <file>
   /** @type {Array<Object>} */
   const fileData = [];
   for (const fpath of allFiles) {
@@ -1033,7 +1031,7 @@ function main() {
   const output = fmtOutput(graphData, resolveMode, focusFile);
 
   // ── Step 8: Print output ──
-  // Apply pretty/compact formatting (§10 JSON format)
+  // Apply pretty/compact formatting (JSON format)
   const indent = params.no_pretty ? null : 2;
   // Re-serialize for consistent formatting
   const jsonStr = JSON.stringify(output, null, indent);

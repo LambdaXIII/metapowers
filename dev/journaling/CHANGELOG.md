@@ -1,5 +1,20 @@
 # Changelog
 
+## [5.0.1] — 2026-08-16
+
+> Base: v5.0.0. 元语境渗漏全量校正——判定标准重构为「语境归属」（这段文字对运行时读者有功能吗？读者用它吗？），16 个内容文件渗漏清除（删除/归位/转化三分），另 2 个归位目标文件（SKILL-DESIGN/CHANGELOG）同步。
+
+### Changed
+- **写入协议交付前自检条目化**: 四问全部条目适用化——「可执行性」改为未来重读能否直接使用；「独立性」检查面为脱离本 session 对话上下文与其他条目；「边界覆盖」从文档 QA 视角（空输入/错输入）转化为「结论的适用条件与失效场景」；「可复现性」保留。
+- **发现合约冗余说明改写**: 删除悬空引用「对应技能设计决策 #6/#20」（SKILL-DESIGN 不随技能分发，且编号已陈旧）；保留「重复是有意的」事实与「合约设计时保留此重复」约束。
+- **模式文档作者口吻转化**: 「不要生硬照搬」→「不直接照搬，按笔记库自身情况调整」（dashboard/layered-rules/maintenance-memo/note-tags 共 4 处，禁止边界保留）；「可以考虑」→「建议」（note-tags/spec-frontmatter/spec-rules，推荐强度保留）；「自行决定」→「按自身情况自行设计」（layered-rules）；「精心设计的」→「固定的」（protocal-import）。
+- **种子 RULES.md 引言**: 「均为可改默认值」→「非技能强制、可调整」——作者对种子起点的自我定位转化为操作事实。
+- **SKILL-DESIGN**: 措辞风格约定更新为「语境归属判定 + 修复三分」；维护注意事项补充 protocal-import P1 顺序理据（廉价优先——先零成本检查后读取内容）。
+
+### Fixed
+- **frontmatter 双版本悬空引用清除**: 「plan §2.1 decision table」等 7 处引用指向不存在的写作计划，删除或改为实际导航；英文 docstring 中的中文速记转为英文表述；fm_parse 边界导航修正为「empty input → {}; unsupported YAML → error」；自相矛盾的「null-like keep as string」注释及其暴露的不可达分支（重复的 null 判断）一并删除。
+- **check-links 双版本注释清理**: 44 处悬空节编号括注（§2/§3/§5/§8/§9/§10——指向不存在的写作计划）删除（描述性文字保留）；孤儿标签「(type B)」删除（代码与 spec-note 均无 type A/B 分类）；4 处未实现的调试日志模板（2 种模板 × 双版本）与 1 处与行为不符的草稿注释删除；mjs「Start directory」注释与代码行为对齐（目录→自身，否则→父目录）；变更历史括注「Path.resolve() previously expanded them」删除（历史已在 v5.0.0 Fixed 记录）。
+
 ## [5.0.0] — 2026-08-15
 
 > Base: v4.10.0. 大规模重设计——机制归属收敛（四件套 → RULES.md 单入口）、规范性动作统一收敛到协议层、INDEX 约束收敛 + spec/design 拆分、spec-note 纯方法论化、写入协议重组、check-links 符号链接行为对齐。

@@ -28,7 +28,6 @@ const SPECIAL_CHARS = /[:"#&*!/|>%@]/;
  * @param {string[]} paths - Raw path arguments (may contain wildcards)
  * @returns {string[]} Sorted, deduplicated, absolute file paths
  * @behavior Same as Python target_expand
- * Edge cases: see plan §2.1 decision tables
  */
 function targetExpand(paths) {
   const result = [];
@@ -177,7 +176,7 @@ function globPartToRegex(part) {
  * Read a Markdown file and extract YAML frontmatter header and body.
  * @param {string} filepath - Path to .md file
  * @returns {{header_raw: string, body: string, body_start_line: number}}
- * @behavior Same as Python fm_read (see decision table §2.1)
+ * @behavior Same as Python fm_read
  */
 function fmRead(filepath) {
   // reading file
@@ -225,7 +224,7 @@ function fmRead(filepath) {
  * Parse a YAML subset string into an object.
  * @param {string} yamlText - Raw YAML text (without --- delimiters)
  * @returns {Object} Parsed key-value pairs
- * @behavior Same as Python fm_parse (see decision table §2.1)
+ * @behavior Same as Python fm_parse
  */
 function fmParse(yamlText) {
   if (!yamlText || yamlText.trim() === "") {
@@ -514,7 +513,7 @@ function fmSelect(d, fields) {
  * @param {Object} current - Existing frontmatter
  * @param {Object} delta - Fields to merge
  * @returns {Object} Merged result
- * @behavior See plan §2.1 merge decision table
+ * @behavior Same as Python fm_merge
  */
 function fmMerge(current, delta) {
   const result = { ...current };
