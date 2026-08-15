@@ -78,6 +78,6 @@ and: workspace/    ← 主题面板（按需创建）
 - 在需要之前不要创建新目录。空目录是噪音
 - 分裂触发的信号是数量 + 查询模式，不是时间
 
-- [技能 SKILL.md](../SKILL.md)
-- [Dashboard 规范](../references/spec-index.md)
-- [Writing Protocol](../references/protocal-write.md)
+- [技能 SKILL.md](../../SKILL.md)
+- [INDEX 规范](../../references/spec-index.md)
+- [Writing Protocol](../../references/protocal-write.md)

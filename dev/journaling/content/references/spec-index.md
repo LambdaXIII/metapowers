@@ -14,7 +14,7 @@ INDEX.md 必须：不加载技能时即可一览 journal 全貌，并提供进�
 
 ## 协议声明（必含）
 
-文件顶部。以 `## 协议声明` 标题开始，以下内容以列表形式依次列出（由种子提供，全程不变）：
+文件顶部。以 `## 协议声明` 标题开始，以下内容以列表形式依次列出（由种子提供，全程不变——结构不变，其中维护信号等值为快照，随维护更新）：
 
 - ⚠️ 本 journal 由 `journaling` 技能管理
 - 维护信号：<signal snapshot>
@@ -30,4 +30,4 @@ INDEX.md 的具体格式（板块选择、同步节奏、维护规则）由 jour
 
 归属链：INDEX 格式的唯一权威在 journal 规则；design-index.md 是纯设计参考，其"具体格式由 journal 规则规范"为反向指针，非循环依赖。
 
-INDEX 设计参考（板块建议/组织方式）见 `references/design-index.md`。
+INDEX 设计参考（板块建议/组织方式）见 `design-index.md`。

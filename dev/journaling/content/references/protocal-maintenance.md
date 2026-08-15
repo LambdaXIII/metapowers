@@ -30,7 +30,7 @@
 
 ### 2. 设计：跳出框架，审视规范
 
-**做什么**：基于扫描获得的全貌，审视笔记库自身的规范——INDEX 结构、笔记元数据字段设计、笔记命名规则、放置分类等方面——判断这些规范是否仍然适合当前内容，并设计优化后的规则。设计应真实基于笔记库现状，同时预想将来可能出现的情况。若规则仍适合现状，确认后直接进入重组。设计时可参考 `references/design-rules.md`。确认后的规则更新到 journal 规则文档。
+**做什么**：基于扫描获得的全貌，审视笔记库自身的规范——INDEX 结构、笔记元数据字段设计、笔记命名规则、放置分类等方面——判断这些规范是否仍然适合当前内容，并设计优化后的规则。设计应真实基于笔记库现状，同时预想将来可能出现的情况。若规则仍适合现状，确认后直接进入重组。设计时可参考 `design-rules.md`。确认后的规则更新到 journal 规则文档。
 
 **规则区检查**：审视 journal 规则文档既有板块是否仍适用——过时板块归档或更新。与设计优化分工：设计优化面向"要设计优化什么"，规则区检查面向"已有板块是否仍适用"。
 
@@ -141,4 +141,4 @@ INDEX 是 journal 中信息的引导入口：每个 session 都从这里开始�
 - frontmatter 规范：[`spec-frontmatter.md`](spec-frontmatter.md)
 - 规则设计方法论：[`design-rules.md`](design-rules.md)
 - INDEX 规范：[`spec-index.md`](spec-index.md)
-- Dashboard 模式：[`references/patterns/dashboard.md`](references/patterns/dashboard.md)
+- Dashboard 模式：[`patterns/dashboard.md`](patterns/dashboard.md)

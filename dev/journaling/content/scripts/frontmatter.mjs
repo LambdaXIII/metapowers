@@ -1234,7 +1234,7 @@ COMMANDS:
         frontmatter check note.md
         frontmatter check *.md
       Options:
-        --journal-root <path>   Check tags against TAGS.md registry (optional)
+        --journal-root <path>   Optional journal root (reserved)
 
   update <target...> --data '<json>' | --file <path>
       Merge fields into frontmatter. JSON null values clear a field.
@@ -1296,7 +1296,7 @@ Exit codes:
   1 = at least one file has issues
 
 Options:
-  --journal-root <path>   Check tags against TAGS.md registry (optional)`;
+  --journal-root <path>   Optional journal root (reserved)`;
 
 const HELP_UPDATE = `USAGE: frontmatter update <target...> --data '<json>' | --file <path>
 

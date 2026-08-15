@@ -9,6 +9,7 @@
 - **`references/design-index.md`**: INDEX 设计参考（设计层，与规范层 spec-index 分离）——常用板块建议（六原则降格为启发）、三个示例板块、组织方式建议、dashboard 指引。
 - **`templates/seed/RULES.md`**: 规则文档种子——协议头部、初始 4 目录分类、7 种子标签、元数据字段推荐方案、INDEX 结构占位、写作需求占位。种子为可改默认值，inbox 存在与否由 journal 自行决定。
 - **spec-note.md Link Convention 章节**: 链接形态规范独立成章——两种形态选用策略、解析语义五条、WRONG/EXTERNAL/歧义分类、路径基准约束（笔记间链接禁用绝对路径、外部文件建议绝对路径）。
+- **`references/script-tools.md`**: 脚本工具完整指南（替代 scripts/README.md——scripts/ 目录按规范仅含脚本）——frontmatter/check-links 命令参考、输出格式、链接解析语义、符号链接行为。
 
 ### Changed
 - **四件套 → RULES.md 单入口**: CLASSIFICATION.md/TAGS.md/CONVENTIONS.md 三份 journal 侧规则文件与 .maintenance-memo.md 机制收敛为单一规则文档（RULES.md）——技能强制 5 条义务 + 4 条提醒；写入/维护/收录协议只面对一个入口；读 INDEX 时不感知、写时才加载。
@@ -22,6 +23,10 @@
 - **SKILL.md 全文件更新**: Journal 节（规则文档单入口）、Core Constraint（技能定义协议、journal 规则定义内容组织）、Linked Files（design-index/design-rules 新增、三旧文档与 Inbox/Conventions Template 移除）、Operating Principles 两条改写、场景表同步。
 - **seed INDEX.md 精简**: 仅含协议声明（删除个性化规则行、板块占位、初始化占位行）。
 - **元数据字段方案降级**: 字段规定从协议硬编码（Required fields 写死列表）降级为"推荐并预设"（种子 RULES.md 元数据字段板块），字段设计归 journal 规则；frontmatter.py check 脚本自定义字段集支持归 #8 单独处理。
+- **check-links 解析语义实现按 Link Convention 重写**: `[[foo]]` 库内按名搜索（多匹配报歧义）、`[[foo.md]]`/`[foo.md]` 相对当前文件 + 各自 fallback、`./`/`../` 前缀相对当前文件、路径无前缀相对 journal-root；链接输出新增 `status` 字段（internal/external/wrong/ambiguous），summary 新增 `wrong`/`ambiguous` 计数——双实现（py/mjs）逐字段一致。
+- **引用路径基准统一**: references/ 内文档互引用统一为相对当前文件（裸文件名或 `../` 前缀）——修复 protocal-maintenance 相关参考列表 dashboard 死链、design-index/script-tools/examples 悬空引用；SKILL.md 等根目录文档保持 `references/` 前缀（相对技能根）。
+- **journal-standards 示例与单文档模型对齐**: INDEX.example.md 协议声明删除个性化规则行、专项工作板块改项目状态、维护信号去旧概念；TAGS.example.md 补"现行模型位于规则文档标签板块"说明与种子数修正；examples/README.md 描述更新。
+- **spec-frontmatter.md 规则文档表述**: tags 来源/规则从 TAGS.md 改为规则文档标签板块；自定义字段约定记录位置改规则文档；示例节补充自定义标签先注册说明。
 
 ### Removed
 - **references/spec-conventions.md / design-classification.md / design-tags.md**: 内容并入 design-rules.md。
@@ -30,6 +35,12 @@
 
 ### Fixed
 - **`scripts/check-links.py` 符号链接行为对齐**: Path.resolve() 全部替换为纯字符串规范化（不追踪符号链接，与 Node path.resolve() 对齐）——journal-root 本身为符号链接时保持用户路径视角；文件收集跳过符号链接文件（与 Node Dirent.isFile() 一致）；存在性检查保持跟随符号链接（指向存在即有效）；scripts/README.md 声明补充到文件收集层。
+- **protocal-import P2-S2 顺序循环消除**: "按 journal 规则确定发现入口位置"从 P2-S2 移除（规则在 P2-S3 才读取），入口定位统一在 P3-S3；P2-S3 补规则文档缺失处理（复制种子补齐），与写入协议一致。
+- **spec-index 协议声明加注**: "全程不变"澄清为结构不变——维护信号等值为快照，随维护更新。
+- **protocal-init 边界修复**: P1"已有笔记文件"判定排除骨架文件（避免重初始化误触发 P4）；P3 禁令作用域澄清（仅限发现合约建立）。
+- **Link Convention 内部自洽修复**: 共享规则集表述、库内 mdlink 选用策略、两处"相对当前文件"措辞统一、分类体系与语义表对应完整（WRONG/EXTERNAL/歧义补判定位置）、EXTERNAL 与库内绝对路径禁用边界说明。
+- **frontmatter 帮助文本残留清理**: 两脚本 `--journal-root` 帮助描述移除 TAGS.md registry 引用（该校验未实现，标记预留）。
+- **杂项**: SKILL.md `index.md` 大小写统一；种子 RULES.md 头部补 `references/…` 路径归属说明（指向技能文档）；SKILL.md Discovery Contract 条目路径补全。
 
 ## [4.10.0] — 2026-08-11
 

@@ -12,7 +12,7 @@ Dashboard 即"二级 INDEX"：
 INDEX : journal = Dashboard : project/domain
 ```
 
-功能一致（状态概览 + 快速路由），但 INDEX 覆盖整个 journal，Dashboard 覆盖一个项目/领域。设计参考与 INDEX 一致——不重复定义，参见 `references/design-index.md`。
+功能一致（状态概览 + 快速路由），但 INDEX 覆盖整个 journal，Dashboard 覆盖一个项目/领域。设计参考与 INDEX 一致——不重复定义，参见 `../design-index.md`。
 
 ## 是什么 / 不是什么
 

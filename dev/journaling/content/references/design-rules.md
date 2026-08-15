@@ -79,11 +79,11 @@
 
 ### INDEX 结构板块
 
-本 journal 的 INDEX 组织方式（板块选择/同步节奏/维护规则）——**强烈建议参考 `references/design-index.md`** 获取设计启发。
+本 journal 的 INDEX 组织方式（板块选择/同步节奏/维护规则）——**强烈建议参考 `design-index.md`** 获取设计启发。
 
 ### 笔记元数据字段板块
 
-frontmatter 字段方案：选什么字段、各字段用途。字段格式语法见 `references/spec-frontmatter.md`（通用格式规范），字段设计自由。示例：
+frontmatter 字段方案：选什么字段、各字段用途。字段格式语法见 `spec-frontmatter.md`（通用格式规范），字段设计自由。示例：
 
 | 字段 | 用途 |
 |------|------|
@@ -109,7 +109,7 @@ frontmatter 字段方案：选什么字段、各字段用途。字段格式语�
 
 ## 参考示例
 
-完整的分类体系示例见 `examples/classification-systems/`（每个文件以摘要开头，先读摘要判断是否需要全文）：
+完整的分类体系示例见 `../examples/classification-systems/`（每个文件以摘要开头，先读摘要判断是否需要全文）：
 
 | 文件 | 一句话摘要 |
 |------|-----------|
@@ -123,4 +123,4 @@ frontmatter 字段方案：选什么字段、各字段用途。字段格式语�
 
 **免责说明**：示例（尤其 journaling-default）含旧设计残留断言（如"inbox 必须存在"）——inbox 存在与否由 journal 自行决定，示例仅作体系参考、不作规范。
 
-成熟的标签集合示例见 `examples/journal-standards/`——作启发参考，不作为模板照抄。
+成熟的标签集合示例见 `../examples/journal-standards/`——作启发参考，不作为模板照抄。

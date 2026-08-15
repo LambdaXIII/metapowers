@@ -53,8 +53,8 @@
 | 属性 | 值 |
 |------|---|
 | 类型 | 数组[字符串] |
-| 作用 | 检索入口。所有 tag 必须来自 `<journal-root>/TAGS.md` |
-| 规范 | 遵循 TAGS.md 中的 Rules。如果 TAGS.md 未定义规则，至少选一个 tag。先注册后使用 |
+| 作用 | 检索入口。所有 tag 必须来自 journal 规则文档的标签板块 |
+| 规范 | 遵循规则文档标签板块中的规则。如果规则文档未定义规则，至少选一个 tag。先注册后使用 |
 
 ### `last_update`
 
@@ -72,7 +72,7 @@
 
 | 字段 | 类型 | 场景 | 说明 |
 |------|------|------|------|
-| `status` | 字符串 | `active_works/` 中的任务 | 标记条目生命周期状态。推荐值：`active`（进行中）、`completed`（已完成）、`superseded`（已被替代）、`abandoned`（已放弃）。也可由各 journal 在 TAGS.md 中自行定义规则，或不使用此字段 |
+| `status` | 字符串 | `active_works/` 中的任务 | 标记条目生命周期状态。推荐值：`active`（进行中）、`completed`（已完成）、`superseded`（已被替代）、`abandoned`（已放弃）。也可由各 journal 在规则文档中自行定义规则，或不使用此字段 |
 | `author` | 字符串 | 多 agent 共享场景 | 标识条目作者。通常从环境变量自动注入，默认 `"main"`。单 agent 场景不需要 |
 | `date` | 日期 | 创建日期有独立意义时 | 如果创建日期与 `last_update` 不同并且有保留价值（如决策记录需要知道"这个决定是哪天做的"），用此字段记录初始创建日期 |
 
@@ -122,7 +122,7 @@
 | `active_works/` | `status:`、`deadline:`、`blocked_by:`（数组）、`depends_on:`（数组） |
 | `knowledge/` | `source:`（信息来源 URL）、`author:`（原作者） |
 
-这不是硬性规定——根据实际需求灵活添加。如果你发现某个目录下的条目频繁使用同一组自定义字段，可以考虑在 TAGS.md 或 CLASSIFICATION.md 中记录该约定。
+这不是硬性规定——根据实际需求灵活添加。如果你发现某个目录下的条目频繁使用同一组自定义字段，可以考虑在规则文档中记录该约定。
 
 ---
 
@@ -144,6 +144,8 @@ last_update
 ---
 
 ## 6. Examples
+
+> 示例中的自定义标签（如 `environment`）需先按注册流程登记到规则文档标签板块后再使用。
 
 ### 基本条目（experience/）
 

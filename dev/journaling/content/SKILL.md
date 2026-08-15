@@ -35,7 +35,7 @@ Journal 位于 `<journal-root>`，由以下要素构成：
 
 ## Before You Begin
 
-This skill's protocols depend on `<journal-root>/index.md` context — maintenance signals, active works, and experience traps. If you have not read INDEX.md this session, open it now and note:
+This skill's protocols depend on `<journal-root>/INDEX.md` context — maintenance signals, active works, and experience traps. If you have not read INDEX.md this session, open it now and note:
 
 - **Active maintenance signals** — they determine whether a full maintenance cycle is needed
 - **Active works** — your changes may conflict with ongoing operations if assessed without this context
@@ -54,7 +54,7 @@ Operating without INDEX.md means operating blind. INDEX.md is the cover of your 
 - [Note Writing Guide](references/spec-note.md) — 条目格式指南：summary anchoring 三检查点、body 格式（一句一行/过度泛化/context boundary）、粒度控制、链接形态规范（Link Convention）。
 - [Importing Protocol](references/protocal-import.md) — Bring existing external content into the journal: evaluation, copy, frontmatter, adjustment.
 - [Journal Initialization](references/protocal-init.md) — Create a new journal from scratch: four-phase protocol (locate root + check existing content → init skeleton files → design discovery contract → maintenance takeover if content exists).
-- [Discovery Contract Design Guide](references/design-discovery-contract.md) — 发现合约设计的系统化方法：载体清查、过滤评估、推荐方案、用户呈报。在 `protocal-init.md` Phase 3 执行期间加载。
+- [Discovery Contract Design Guide](references/design-discovery-contract.md) — 发现合约设计的系统化方法：载体清查、过滤评估、推荐方案、用户呈报。在 `references/protocal-init.md` Phase 3 执行期间加载。
 - [Maintenance Protocol](references/protocal-maintenance.md) — 笔记库整理与规范演化：概述 + 推荐流程（扫描 → 设计（设计优化 + 规则区检查）→ 重组 → 细粒度收尾，执行路径可调整）+ 操作规范（硬性底线）+ 补充论述（启发）。若觉得 journal 过于混乱（如写入时错误尝试过多），适当向用户建议启动维护。
 - [Journal Standards Examples](examples/journal-standards/) — INDEX.md、规则文档等的参考示例。
 - [Templates](templates/seed/) — 初始化所需的种子文件模板（INDEX.md、RULES.md）。
@@ -63,6 +63,7 @@ Operating without INDEX.md means operating blind. INDEX.md is the cover of your 
 - [Rule Design Guide](references/design-rules.md) — 规则设计方法论：规则设计的建议、规则编写的原则、Pitfalls、建议的板块（含示例）。设计/修订 journal 规则（分类/标签/约定）时加载。
 - [Frontmatter Specification](references/spec-frontmatter.md) — YAML format rules, required fields, recommended optional fields, custom field guidelines, and examples.
 - [Project Dashboard Pattern](references/patterns/dashboard.md) — 项目/领域级次级 INDEX 设计参考。和 INDEX.md 类比：提供聚焦一域的状态概览，作为 session 的次级路由入口。不是规范——从实际需求中生长。
+- [Script Tools Guide](references/script-tools.md) — frontmatter/check-links 脚本工具完整指南：命令参考、输出格式、链接解析语义、符号链接行为。
 ---
 
 
@@ -89,7 +90,7 @@ If the scenario is ambiguous, load two references. Don't load all at once.
 
 ## Scripts
 
-The `scripts/` directory contains zero-dependency convenience tools for common journal operations. All tools are dual-version (Python 3.8+ and Node.js 18+ ESM), with identical behavior across versions. Run `script.py --help` or `script.mjs --help` for complete usage.
+The `scripts/` directory contains zero-dependency convenience tools for common journal operations. All tools are dual-version (Python 3.8+ and Node.js 18+ ESM), with identical behavior across versions. Run `script.py --help` or `script.mjs --help` for usage; the complete guide (command reference, output formats, link resolution semantics, symlink behavior) is `references/script-tools.md`.
 
 | Script | When to use |
 |--------|-------------|

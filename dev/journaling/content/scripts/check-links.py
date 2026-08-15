@@ -238,46 +238,96 @@ def _should_skip_target(target):
 # Module: link_resolve
 # ═══════════════════════════════════════════════════════════════════════
 
-def link_resolve(target, source_path, link_type, journal_root):
-    """Resolve a link target to an absolute path.
+def _has_extension(target):
+    """Return True if target's last path segment carries a file extension.
 
-    Path resolution differs by link type (per §5 of check-links design):
-    - markdown links [text](path): resolve relative to source file directory (standard)
-    - wikilinks [[path]]: resolve relative to journal-root (Obsidian vault convention)
+    'foo.md' → True; 'a/b/c.md' → True; 'foo' → False; '...' → False; '.md' → False.
+    """
+    base = os.path.basename(target)
+    return "." in base and not base.startswith(".")
 
-    Args:
-        target (str): Raw target from link_extract.
-        source_path (str): Absolute path of the file containing the link.
-        link_type (str): "markdown" or "wikilink" — determines resolution base.
-            markdown: resolve relative to source file directory.
-            wikilink: resolve relative to journal_root (Obsidian convention).
-        journal_root (str): Absolute path of journal root directory.
 
-    Returns:
-        str: Resolved absolute path (normalized, no symlink expansion).
+def _stem(target):
+    """Strip the file extension from target's last segment ('foo.md' → 'foo')."""
+    return re.sub(r"\.[^./\\]+$", "", target)
+
+
+def _name_search(name, md_files):
+    """Library-wide search by base name (any location).
+
+    Returns (resolved_path, status): unique match → (path, "internal");
+    multiple matches → (None, "ambiguous"); no match → (None, "internal").
+    """
+    matches = [f for f in md_files
+               if os.path.splitext(os.path.basename(f))[0] == name]
+    if len(matches) == 1:
+        return matches[0], "internal"
+    if len(matches) > 1:
+        return None, "ambiguous"
+    return None, "internal"
+
+
+def link_resolve(target, source_path, link_type, journal_root, md_files):
+    """Resolve a link target per spec-note Link Convention (§3.2).
+
+    Returns (resolved, status):
+      resolved: str | None — absolute path (forward slashes); None for
+                EXTERNAL / WRONG / ambiguous. Internal links with no name-search
+                match also return None (counted as broken).
+      status: "internal" | "external" | "wrong" | "ambiguous".
+
+    Resolution rules:
+      - URL / absolute path → EXTERNAL (classified only, reachability not verified)
+      - mdlink without extension → WRONG
+      - `[[foo]]` (wikilink, no extension) → library-wide name search
+      - `[[foo.md]]` / `[foo.md]` (extension, no path) → relative to source
+        file's directory; fallback on failure: wikilink → name search,
+        mdlink → exact path under journal-root
+      - path with `./`/`../` prefix → relative to source file's directory
+      - path without prefix → relative to journal-root
 
     Called by: main() — per-link processing in scan loop.
     """
     # 【NON-PORTABLE】 _abspath_nofollow vs Node path.resolve() — both normalize . and ..
     # without following symlinks (aligned; Path.resolve() previously expanded them)
-    source_dir = Path(source_path).parent
+    source_dir = os.path.dirname(source_path)
 
-    # Determine resolution base per link type
-    if link_type == "wikilink":
-        # Obsidian convention: wikilinks [[path]] resolve from vault root (journal-root)
-        base_dir = Path(journal_root)
-    else:
-        # Standard markdown: [text](path) resolves from source file directory
-        base_dir = source_dir
+    # EXTERNAL: absolute path (posix root or windows drive) — classified only
+    if target.startswith("/") or re.match(r"^[A-Za-z]:[/\\]", target):
+        return None, "external"
+    # EXTERNAL: URL schemes (normally filtered in link_extract; keep as safety)
+    for prefix in SKIP_PREFIXES:
+        if target.lower().startswith(prefix):
+            return None, "external"
 
-    # Relative path: resolve against base_dir
-    # Absolute path (starts with /): resolve from filesystem root
-    if target.startswith("/"):
-        # Absolute path within journal
-        resolved = _abspath_nofollow(target)
-    else:
-        resolved = _abspath_nofollow(os.path.join(str(base_dir), target))
-    return str(resolved)
+    # WRONG: mdlink without extension
+    if link_type == "markdown" and not _has_extension(target):
+        return None, "wrong"
+
+    # `[[foo]]` — wikilink without extension: library-wide name search
+    if link_type == "wikilink" and not _has_extension(target):
+        return _name_search(target, md_files)
+
+    # Path with ./ or ../ prefix: relative to source file's directory
+    if target.startswith(("./", "../")):
+        resolved = _abspath_nofollow(os.path.join(source_dir, target))
+        return resolved.replace("\\", "/"), "internal"
+
+    # Extension, no path: relative to source file's directory, with fallback
+    if "/" not in target and "\\" not in target:
+        candidate = _abspath_nofollow(os.path.join(source_dir, target))
+        if os.path.exists(candidate):
+            return candidate.replace("\\", "/"), "internal"
+        if link_type == "wikilink":
+            # `[[foo.md]]` fallback: extension-less name search
+            return _name_search(_stem(target), md_files)
+        # `[foo.md]` fallback: exact path under journal-root
+        fallback = _abspath_nofollow(os.path.join(journal_root, target))
+        return fallback.replace("\\", "/"), "internal"
+
+    # Path without prefix: relative to journal-root
+    resolved = _abspath_nofollow(os.path.join(journal_root, target))
+    return resolved.replace("\\", "/"), "internal"
 
 
 # ═══════════════════════════════════════════════════════════════════════
@@ -327,7 +377,8 @@ def graph_assemble(file_data, journal_root):
     for fd in file_data:
         fd["file"] = fd["file"].replace("\\", "/")
         for link in fd["links"]:
-            link["resolved"] = link["resolved"].replace("\\", "/")
+            if link["resolved"] is not None:
+                link["resolved"] = link["resolved"].replace("\\", "/")
 
     # ── Build inbound (referenced_by) map (§9 step 2) ──
     # inbound_map: resolved_path → [{source: rel_path, line, text}]
@@ -335,6 +386,8 @@ def graph_assemble(file_data, journal_root):
     for fd in file_data:
         source_rel = fd["rel_path"]
         for link in fd["links"]:
+            if link["resolved"] is None:
+                continue
             resolved = link["resolved"]
             if resolved not in inbound_map:
                 inbound_map[resolved] = []
@@ -349,7 +402,7 @@ def graph_assemble(file_data, journal_root):
     broken_map = {}
     for fd in file_data:
         for link in fd["links"]:
-            if not link["exists"] and link["inside_journal"]:
+            if link["status"] == "internal" and not link["exists"]:
                 key = (link["target"], link["type"])
                 if key not in broken_map:
                     broken_map[key] = []
@@ -385,14 +438,22 @@ def graph_assemble(file_data, journal_root):
     broken_count = 0
     valid_count = 0
     external_count = 0
+    wrong_count = 0
+    ambiguous_count = 0
     self_refs_total = 0
 
     for fd in file_data:
         for link in fd["links"]:
             total_links += 1
-            if not link["inside_journal"]:
+            if link["status"] == "external":
                 external_count += 1
                 continue  # external links don't count toward valid/broken
+            if link["status"] != "internal":
+                if link["status"] == "wrong":
+                    wrong_count += 1
+                elif link["status"] == "ambiguous":
+                    ambiguous_count += 1
+                continue
             if link["exists"]:
                 valid_count += 1
             else:
@@ -456,6 +517,8 @@ def graph_assemble(file_data, journal_root):
         "broken": broken_count,
         "valid": valid_count,
         "external": external_count,
+        "wrong": wrong_count,
+        "ambiguous": ambiguous_count,
         "self_refs": self_refs_total,
         "orphan_files": len(orphan_files),
     }
@@ -494,6 +557,8 @@ def fmt_output(graph_data, resolve_mode, focus_file):
     # ── Determine resolve root (§10 resolve formatting) ──
     def format_resolved(resolved, source_file):
         """Format a resolved path according to resolve_mode."""
+        if resolved is None:
+            return None
         if resolve_mode == "absolute":
             return resolved
         elif isinstance(resolve_mode, dict) and "relative_to" in resolve_mode:
@@ -694,6 +759,15 @@ EXAMPLES:
   check-links INDEX.md --absolute                # Resolved as absolute paths
   check-links INDEX.md --relative-to ../other    # Resolved relative to ../other
 
+LINK RESOLUTION (per spec-note Link Convention):
+  URL / local absolute path        -> EXTERNAL (classified only, not verified)
+  mdlink without extension         -> WRONG (illegal)
+  [[foo]] (wikilink, no ext)       -> library-wide name search; multiple matches = ambiguous
+  [[foo.md]] / [foo.md]            -> relative to source file dir; fallback:
+                                      wikilink -> name search; mdlink -> journal-root exact path
+  path with ./ or ../ prefix       -> relative to source file dir
+  path without prefix              -> relative to journal-root
+
 Node.js 18+ required for check-links.mjs counterpart.
 """
 
@@ -817,15 +891,21 @@ def main():
         # Resolve each unique target
         links = []
         for (target, typ), link_info in links_by_target.items():
-            resolved = link_resolve(target, fpath, typ, journal_root).replace("\\", "/")
-            exists = fs_exist_check(resolved)
-            inside_journal = resolved.startswith(
-                journal_root + "/"
-            ) or resolved == journal_root
+            resolved, status = link_resolve(target, fpath, typ, journal_root, all_files)
+            if resolved is not None:
+                resolved = resolved.replace("\\", "/")
+                exists = fs_exist_check(resolved)
+                inside_journal = resolved.startswith(
+                    journal_root + "/"
+                ) or resolved == journal_root
+            else:
+                exists = False
+                inside_journal = status == "internal"
 
             links.append({
                 "target": target,
                 "type": typ,
+                "status": status,
                 "resolved": resolved,
                 "exists": exists,
                 "inside_journal": inside_journal,

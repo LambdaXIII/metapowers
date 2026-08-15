@@ -33,9 +33,9 @@ INDEX 结构从简单开始自然生长——不预设板块，随条目增加�
 
 ## Dashboard
 
-关于为特定项目/领域创建次级 INDEX（二级 INDEX），参见 `references/patterns/dashboard.md`。
+关于为特定项目/领域创建次级 INDEX（二级 INDEX），参见 `patterns/dashboard.md`。
 
 ## 被引用关系
 
 - journal 规则文档（RULES.md）的 INDEX 结构板块强烈建议参考本文
-- `references/spec-index.md` 简单提及本文
+- `spec-index.md` 简单提及本文

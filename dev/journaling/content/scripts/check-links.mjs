@@ -257,39 +257,109 @@ function shouldSkipTarget(target) {
 // ═══════════════════════════════════════════════════════════════════════
 
 /**
- * Resolve a link target to an absolute path.
+ * Return true if target's last path segment carries a file extension.
+ * 'foo.md' → true; 'a/b/c.md' → true; 'foo' → false; '...' → false; '.md' → false.
+ */
+function hasExtension(target) {
+  const base = basename(target);
+  return base.includes('.') && !base.startsWith('.');
+}
+
+
+/**
+ * Strip the file extension from target's last segment ('foo.md' → 'foo').
+ */
+function stem(target) {
+  return target.replace(/\.[^./\\]+$/, '');
+}
+
+
+/**
+ * Library-wide search by base name (any location).
+ * Returns [resolvedPath|null, status]: unique match → [path, 'internal'];
+ * multiple matches → [null, 'ambiguous']; no match → [null, 'internal'].
+ */
+function nameSearch(name, mdFiles) {
+  const matches = mdFiles.filter(f => basename(f).replace(/\.[^.]+$/, '') === name);
+  if (matches.length === 1) {
+    return [matches[0], 'internal'];
+  }
+  if (matches.length > 1) {
+    return [null, 'ambiguous'];
+  }
+  return [null, 'internal'];
+}
+
+
+/**
+ * Resolve a link target per spec-note Link Convention (§3.2).
  *
- * Path resolution differs by link type (per §5 of check-links design):
- * - markdown links `[text](path)`: resolve relative to source file directory (standard)
- * - wikilinks `[[path]]`: resolve relative to journal-root (Obsidian vault convention)
+ * Returns [resolved|null, status]:
+ *   resolved: absolute path (forward slashes); null for EXTERNAL / WRONG /
+ *             ambiguous. Internal links with no name-search match also return
+ *             null (counted as broken).
+ *   status: "internal" | "external" | "wrong" | "ambiguous".
+ *
+ * Resolution rules:
+ *   - URL / absolute path → EXTERNAL (classified only, reachability not verified)
+ *   - mdlink without extension → WRONG
+ *   - `[[foo]]` (wikilink, no extension) → library-wide name search
+ *   - `[[foo.md]]` / `[foo.md]` (extension, no path) → relative to source
+ *     file's directory; fallback on failure: wikilink → name search,
+ *     mdlink → exact path under journal-root
+ *   - path with `./`/`../` prefix → relative to source file's directory
+ *   - path without prefix → relative to journal-root
  *
  * @param {string} target - Raw target from linkExtract.
  * @param {string} sourcePath - Absolute path of the file containing the link (forward slashes).
- * @param {"markdown"|"wikilink"} linkType - Determines resolution base.
- *   markdown: resolve relative to source file directory.
- *   wikilink: resolve relative to journalRoot (Obsidian convention).
+ * @param {"markdown"|"wikilink"} linkType - "markdown" or "wikilink".
  * @param {string} journalRoot - Absolute path of journal root directory.
- * @returns {string} Resolved absolute path with forward slashes.
+ * @param {string[]} mdFiles - All .md files under journal root (absolute, forward slashes).
+ * @returns {[string|null, string]} [resolved, status].
  *
  * Called by: main() — per-link processing in scan loop.
  */
-function linkResolve(target, sourcePath, linkType, journalRoot) {
+function linkResolve(target, sourcePath, linkType, journalRoot, mdFiles) {
   // 【NON-PORTABLE】 path.resolve() vs Path.resolve() — both normalize . and ..
+  // without following symlinks
   const sourceDir = dirname(sourcePath);
 
-  // Determine resolution base per link type
-  const baseDir = linkType === "wikilink"
-    // Obsidian convention: wikilinks [[path]] resolve from vault root (journal-root)
-    ? journalRoot
-    // Standard markdown: [text](path) resolves from source file directory
-    : sourceDir;
-
-  // Relative path: resolve against baseDir
-  // Absolute path (starts with / or Windows root): resolve from absolute
-  if (isAbsolute(target)) {
-    return normPath(resolve(target));
+  // EXTERNAL: absolute path or URL scheme — classified only
+  if (isAbsolute(target) || SKIP_PREFIXES.some(p => target.toLowerCase().startsWith(p))) {
+    return [null, 'external'];
   }
-  return normPath(resolve(baseDir, target));
+
+  // WRONG: mdlink without extension
+  if (linkType === 'markdown' && !hasExtension(target)) {
+    return [null, 'wrong'];
+  }
+
+  // `[[foo]]` — wikilink without extension: library-wide name search
+  if (linkType === 'wikilink' && !hasExtension(target)) {
+    return nameSearch(target, mdFiles);
+  }
+
+  // Path with ./ or ../ prefix: relative to source file's directory
+  if (target.startsWith('./') || target.startsWith('../')) {
+    return [normPath(resolve(sourceDir, target)), 'internal'];
+  }
+
+  // Extension, no path: relative to source file's directory, with fallback
+  if (!target.includes('/') && !target.includes('\\')) {
+    const candidate = resolve(sourceDir, target);
+    if (existsSync(candidate)) {
+      return [normPath(candidate), 'internal'];
+    }
+    if (linkType === 'wikilink') {
+      // `[[foo.md]]` fallback: extension-less name search
+      return nameSearch(stem(target), mdFiles);
+    }
+    // `[foo.md]` fallback: exact path under journal-root
+    return [normPath(resolve(journalRoot, target)), 'internal'];
+  }
+
+  // Path without prefix: relative to journal-root
+  return [normPath(resolve(journalRoot, target)), 'internal'];
 }
 
 
@@ -341,6 +411,9 @@ function graphAssemble(fileData, journalRoot) {
     const sourceRel = fd.rel_path;
     for (const link of fd.links) {
       const resolved = link.resolved;
+      if (resolved === null) {
+        continue;
+      }
       if (!inboundMap.has(resolved)) {
         inboundMap.set(resolved, []);
       }
@@ -359,7 +432,7 @@ function graphAssemble(fileData, journalRoot) {
   const brokenMap = new Map();
   for (const fd of fileData) {
     for (const link of fd.links) {
-      if (!link.exists && link.inside_journal) {
+      if (link.status === 'internal' && !link.exists) {
         const key = `${link.target}::${link.type}`;
         if (!brokenMap.has(key)) {
           brokenMap.set(key, { target: link.target, type: link.type, occurrences: [] });
@@ -398,14 +471,24 @@ function graphAssemble(fileData, journalRoot) {
   let brokenCount = 0;
   let validCount = 0;
   let externalCount = 0;
+  let wrongCount = 0;
+  let ambiguousCount = 0;
   let selfRefsTotal = 0;
 
   for (const fd of fileData) {
     for (const link of fd.links) {
       totalLinks++;
-      if (!link.inside_journal) {
-        externalCount++;  // external links
-        continue;          // don't count toward valid/broken
+      if (link.status === 'external') {
+        externalCount++;
+        continue;  // external links don't count toward valid/broken
+      }
+      if (link.status !== 'internal') {
+        if (link.status === 'wrong') {
+          wrongCount++;
+        } else if (link.status === 'ambiguous') {
+          ambiguousCount++;
+        }
+        continue;
       }
       if (link.exists) {
         validCount++;
@@ -484,6 +567,8 @@ function graphAssemble(fileData, journalRoot) {
     broken: brokenCount,
     valid: validCount,
     external: externalCount,
+    wrong: wrongCount,
+    ambiguous: ambiguousCount,
     self_refs: selfRefsTotal,
     orphan_files: orphanFiles.length,
   };
@@ -525,6 +610,9 @@ function fmtOutput(graphData, resolveMode, focusFile) {
    * @returns {string} Formatted path with forward slashes.
    */
   function formatResolved(resolved, sourceFile) {
+    if (resolved === null) {
+      return null;
+    }
     if (resolveMode === 'absolute') {
       return resolved;
     } else if (typeof resolveMode === 'object' && resolveMode.relative_to) {
@@ -751,6 +839,15 @@ EXAMPLES:
   check-links INDEX.md --absolute                # Resolved as absolute paths
   check-links INDEX.md --relative-to ../other    # Resolved relative to ../other
 
+LINK RESOLUTION (per spec-note Link Convention):
+  URL / local absolute path        -> EXTERNAL (classified only, not verified)
+  mdlink without extension         -> WRONG (illegal)
+  [[foo]] (wikilink, no ext)       -> library-wide name search; multiple matches = ambiguous
+  [[foo.md]] / [foo.md]            -> relative to source file dir; fallback:
+                                      wikilink -> name search; mdlink -> journal-root exact path
+  path with ./ or ../ prefix       -> relative to source file dir
+  path without prefix              -> relative to journal-root
+
 Node.js 18+ required.
 `;
 
@@ -887,13 +984,20 @@ function main() {
     /** @type {Array<Object>} */
     const links = [];
     for (const [, linkInfo] of linksByTarget) {
-      const resolved = linkResolve(linkInfo.target, fpath, linkInfo.type, journalRoot);
-      const exists = fsExistCheck(resolved);
-      const insideJournal = resolved.startsWith(journalRoot + '/') || resolved === journalRoot;
+      const [resolved, status] = linkResolve(linkInfo.target, fpath, linkInfo.type, journalRoot, allFiles);
+      let exists, insideJournal;
+      if (resolved !== null) {
+        exists = fsExistCheck(resolved);
+        insideJournal = resolved.startsWith(journalRoot + '/') || resolved === journalRoot;
+      } else {
+        exists = false;
+        insideJournal = status === 'internal';
+      }
 
       links.push({
         target: linkInfo.target,
         type: linkInfo.type,
+        status: status,
         resolved: resolved,
         exists: exists,
         inside_journal: insideJournal,
