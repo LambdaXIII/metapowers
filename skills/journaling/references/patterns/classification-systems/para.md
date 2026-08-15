@@ -58,7 +58,7 @@
 ## 改编要点
 
 - 可以添加 `Inbox/` 作为捕获缓冲（PARA 原始设计中没有明确 inbox，但几乎所有实践者都加了）
-- `Areas/` 和 `Resources/` 的边界可以根据实际内容灵活调整——核心是保持 Project/非Project 的分界清晰
+- `Areas/` 和 `Resources/` 的边界按实际内容灵活调整——核心是保持 Project/非Project 的分界清晰
 - 对 AI 读者，PARA 的四个目录不足以表达内容之间的关系，需要补充 frontmatter 字段和链接
 
 ## 参考来源
