@@ -18,7 +18,7 @@ import { dirname, basename, resolve, isAbsolute, relative, join, extname } from 
 
 // ── Constants ──────────────────────────────────────────────────────────
 
-// Patterns for link extraction (§3)
+// Patterns for link extraction
 // Standard markdown link: [text](target)
 const RE_MD_LINK = /\[([^\]]*)\]\(([^)]+)\)/;
 // Obsidian wikilink: [[target]] or [[target|text]]
@@ -44,7 +44,7 @@ const SKIP_DIRS = new Set([".git", "__pycache__", ".obsidian", "node_modules"]);
  * Called by: main() — dispatch step 1.
  */
 function journalDiscover(entry) {
-  // Resolve entry to absolute path (§2 auto-discovery rule)
+  // Resolve entry to absolute path (auto-discovery rule)
   // 【NON-PORTABLE】 path.resolve() vs pathlib.Path.resolve() — both normalize . and ..
   const entryPath = resolve(entry);
 
@@ -53,7 +53,7 @@ function journalDiscover(entry) {
     process.exit(1);
   }
 
-  // Start directory: entry itself if it's INDEX.md, else its parent
+  // Start directory: entry itself if it's a directory, else its parent
   const entryStat = statSync(entryPath);
   let currentDir;
   if (entryStat.isDirectory()) {
@@ -62,10 +62,10 @@ function journalDiscover(entry) {
     currentDir = dirname(entryPath);
   }
 
-  // Walk upward looking for INDEX.md or index.md (§2 auto-discovery)
+  // Walk upward looking for INDEX.md or index.md (auto-discovery)
   // 【NON-PORTABLE】 Node dirname chain vs Python Path.parent chain — equivalent
   while (true) {
-    // Check exact case-insensitive matches only (§5 step 2)
+    // Check exact case-insensitive matches only
     for (const name of ["INDEX.md", "index.md"]) {
       const candidate = join(currentDir, name);
       try {
@@ -121,7 +121,7 @@ function targetExpand(journalRoot) {
     process.exit(1);
   }
 
-  // Deduplicate and sort alphabetically (§8)
+  // Deduplicate and sort alphabetically
   return [...new Set(result)].sort();
 }
 
@@ -147,7 +147,7 @@ function scanMdFiles(dir) {
   for (const entry of entries) {
     const fullPath = join(dir, entry.name);
     if (entry.isDirectory()) {
-      // Skip ignored directories (§8)
+      // Skip ignored directories
       if (SKIP_DIRS.has(entry.name)) {
         continue;
       }
@@ -178,7 +178,7 @@ function scanMdFiles(dir) {
 function linkExtract(content, _filePath) {
   const links = [];
 
-  // Scan each line independently for accurate line numbers (§3)
+  // Scan each line independently for accurate line numbers
   const lines = content.split('\n');
   for (let lineNum = 0; lineNum < lines.length; lineNum++) {
     const line = lines[lineNum];
@@ -189,11 +189,11 @@ function linkExtract(content, _filePath) {
     for (const match of line.matchAll(new RegExp(RE_MD_LINK.source, 'g'))) {
       const target = match[2].trim();
       const text = match[1];
-      // Filter: skip URLs and pure anchors (§3 filtering)
+      // Filter: skip URLs and pure anchors (filtering)
       if (shouldSkipTarget(target)) {
         continue;
       }
-      // Strip #section suffix (§3)
+      // Strip #section suffix
       const cleanTarget = target.split('#')[0];
       links.push({
         target: cleanTarget,
@@ -203,7 +203,7 @@ function linkExtract(content, _filePath) {
       });
     }
 
-    // Extract wikilinks: [[target]] or [[target|text]] (§3 type B)
+    // Extract wikilinks: [[target]] or [[target|text]]
     for (const match of line.matchAll(new RegExp(RE_WIKILINK.source, 'g'))) {
       const target = match[1].trim();
       const alias = match[2];
@@ -257,39 +257,109 @@ function shouldSkipTarget(target) {
 // ═══════════════════════════════════════════════════════════════════════
 
 /**
- * Resolve a link target to an absolute path.
+ * Return true if target's last path segment carries a file extension.
+ * 'foo.md' → true; 'a/b/c.md' → true; 'foo' → false; '...' → false; '.md' → false.
+ */
+function hasExtension(target) {
+  const base = basename(target);
+  return base.includes('.') && !base.startsWith('.');
+}
+
+
+/**
+ * Strip the file extension from target's last segment ('foo.md' → 'foo').
+ */
+function stem(target) {
+  return target.replace(/\.[^./\\]+$/, '');
+}
+
+
+/**
+ * Library-wide search by base name (any location).
+ * Returns [resolvedPath|null, status]: unique match → [path, 'internal'];
+ * multiple matches → [null, 'ambiguous']; no match → [null, 'internal'].
+ */
+function nameSearch(name, mdFiles) {
+  const matches = mdFiles.filter(f => basename(f).replace(/\.[^.]+$/, '') === name);
+  if (matches.length === 1) {
+    return [matches[0], 'internal'];
+  }
+  if (matches.length > 1) {
+    return [null, 'ambiguous'];
+  }
+  return [null, 'internal'];
+}
+
+
+/**
+ * Resolve a link target per spec-note Link Convention.
  *
- * Path resolution differs by link type (per §5 of check-links design):
- * - markdown links `[text](path)`: resolve relative to source file directory (standard)
- * - wikilinks `[[path]]`: resolve relative to journal-root (Obsidian vault convention)
+ * Returns [resolved|null, status]:
+ *   resolved: absolute path (forward slashes); null for EXTERNAL / WRONG /
+ *             ambiguous. Internal links with no name-search match also return
+ *             null (counted as broken).
+ *   status: "internal" | "external" | "wrong" | "ambiguous".
+ *
+ * Resolution rules:
+ *   - URL / absolute path → EXTERNAL (classified only, reachability not verified)
+ *   - mdlink without extension → WRONG
+ *   - `[[foo]]` (wikilink, no extension) → library-wide name search
+ *   - `[[foo.md]]` / `[foo.md]` (extension, no path) → relative to source
+ *     file's directory; fallback on failure: wikilink → name search,
+ *     mdlink → exact path under journal-root
+ *   - path with `./`/`../` prefix → relative to source file's directory
+ *   - path without prefix → relative to journal-root
  *
  * @param {string} target - Raw target from linkExtract.
  * @param {string} sourcePath - Absolute path of the file containing the link (forward slashes).
- * @param {"markdown"|"wikilink"} linkType - Determines resolution base.
- *   markdown: resolve relative to source file directory.
- *   wikilink: resolve relative to journalRoot (Obsidian convention).
+ * @param {"markdown"|"wikilink"} linkType - "markdown" or "wikilink".
  * @param {string} journalRoot - Absolute path of journal root directory.
- * @returns {string} Resolved absolute path with forward slashes.
+ * @param {string[]} mdFiles - All .md files under journal root (absolute, forward slashes).
+ * @returns {[string|null, string]} [resolved, status].
  *
  * Called by: main() — per-link processing in scan loop.
  */
-function linkResolve(target, sourcePath, linkType, journalRoot) {
+function linkResolve(target, sourcePath, linkType, journalRoot, mdFiles) {
   // 【NON-PORTABLE】 path.resolve() vs Path.resolve() — both normalize . and ..
+  // without following symlinks
   const sourceDir = dirname(sourcePath);
 
-  // Determine resolution base per link type
-  const baseDir = linkType === "wikilink"
-    // Obsidian convention: wikilinks [[path]] resolve from vault root (journal-root)
-    ? journalRoot
-    // Standard markdown: [text](path) resolves from source file directory
-    : sourceDir;
-
-  // Relative path: resolve against baseDir
-  // Absolute path (starts with / or Windows root): resolve from absolute
-  if (isAbsolute(target)) {
-    return normPath(resolve(target));
+  // EXTERNAL: absolute path or URL scheme — classified only
+  if (isAbsolute(target) || SKIP_PREFIXES.some(p => target.toLowerCase().startsWith(p))) {
+    return [null, 'external'];
   }
-  return normPath(resolve(baseDir, target));
+
+  // WRONG: mdlink without extension
+  if (linkType === 'markdown' && !hasExtension(target)) {
+    return [null, 'wrong'];
+  }
+
+  // `[[foo]]` — wikilink without extension: library-wide name search
+  if (linkType === 'wikilink' && !hasExtension(target)) {
+    return nameSearch(target, mdFiles);
+  }
+
+  // Path with ./ or ../ prefix: relative to source file's directory
+  if (target.startsWith('./') || target.startsWith('../')) {
+    return [normPath(resolve(sourceDir, target)), 'internal'];
+  }
+
+  // Extension, no path: relative to source file's directory, with fallback
+  if (!target.includes('/') && !target.includes('\\')) {
+    const candidate = resolve(sourceDir, target);
+    if (existsSync(candidate)) {
+      return [normPath(candidate), 'internal'];
+    }
+    if (linkType === 'wikilink') {
+      // `[[foo.md]]` fallback: extension-less name search
+      return nameSearch(stem(target), mdFiles);
+    }
+    // `[foo.md]` fallback: exact path under journal-root
+    return [normPath(resolve(journalRoot, target)), 'internal'];
+  }
+
+  // Path without prefix: relative to journal-root
+  return [normPath(resolve(journalRoot, target)), 'internal'];
 }
 
 
@@ -333,7 +403,7 @@ function fsExistCheck(path) {
 function graphAssemble(fileData, journalRoot) {
   const jr = journalRoot.replace(/\/$/, '') + '/';  // ensure trailing slash
 
-  // ── Build inbound (referenced_by) map (§9 step 2) ──
+  // ── Build inbound (referenced_by) map ──
   // inboundMap: resolved_path → [{source: rel_path, line, text}]
   /** @type {Map<string, Array<{source: string, line: number, text: string}>>} */
   const inboundMap = new Map();
@@ -341,6 +411,9 @@ function graphAssemble(fileData, journalRoot) {
     const sourceRel = fd.rel_path;
     for (const link of fd.links) {
       const resolved = link.resolved;
+      if (resolved === null) {
+        continue;
+      }
       if (!inboundMap.has(resolved)) {
         inboundMap.set(resolved, []);
       }
@@ -354,12 +427,12 @@ function graphAssemble(fileData, journalRoot) {
     }
   }
 
-  // ── Compute broken links (§9 step 3) ──
+  // ── Compute broken links ──
   /** @type {Map<string, {target: string, type: string, occurrences: Array}>} */
   const brokenMap = new Map();
   for (const fd of fileData) {
     for (const link of fd.links) {
-      if (!link.exists && link.inside_journal) {
+      if (link.status === 'internal' && !link.exists) {
         const key = `${link.target}::${link.type}`;
         if (!brokenMap.has(key)) {
           brokenMap.set(key, { target: link.target, type: link.type, occurrences: [] });
@@ -378,7 +451,7 @@ function graphAssemble(fileData, journalRoot) {
   // Sort by target alphabetically
   const brokenLinks = [...brokenMap.values()].sort((a, b) => a.target.localeCompare(b.target));
 
-  // ── Compute orphan files (§9 step 4) ──
+  // ── Compute orphan files ──
   const allRelPaths = new Set(fileData.map(fd => fd.rel_path));
   // Files that are referenced at least once (by resolved path → rel_path)
   const referenced = new Set();
@@ -393,19 +466,29 @@ function graphAssemble(fileData, journalRoot) {
     .filter(p => !referenced.has(p) && p.toLowerCase() !== 'index.md')
     .sort();
 
-  // ── Compute statistics (§9 step 5) ──
+  // ── Compute statistics ──
   let totalLinks = 0;
   let brokenCount = 0;
   let validCount = 0;
   let externalCount = 0;
+  let wrongCount = 0;
+  let ambiguousCount = 0;
   let selfRefsTotal = 0;
 
   for (const fd of fileData) {
     for (const link of fd.links) {
       totalLinks++;
-      if (!link.inside_journal) {
-        externalCount++;  // external links
-        continue;          // don't count toward valid/broken
+      if (link.status === 'external') {
+        externalCount++;
+        continue;  // external links don't count toward valid/broken
+      }
+      if (link.status !== 'internal') {
+        if (link.status === 'wrong') {
+          wrongCount++;
+        } else if (link.status === 'ambiguous') {
+          ambiguousCount++;
+        }
+        continue;
       }
       if (link.exists) {
         validCount++;
@@ -419,7 +502,7 @@ function graphAssemble(fileData, journalRoot) {
     }
   }
 
-  // ── Build most_referenced (§9 step 6) ──
+  // ── Build most_referenced ──
   const refCounts = [];
   for (const [resolvedPath, refs] of inboundMap) {
     if (resolvedPath.startsWith(jr)) {
@@ -434,7 +517,7 @@ function graphAssemble(fileData, journalRoot) {
   refCounts.sort((a, b) => b.refs - a.refs || a.file.localeCompare(b.file));
   const mostReferenced = refCounts.slice(0, 10);
 
-  // ── Build per_file with referenced_by (§9 output structure) ──
+  // ── Build per_file with referenced_by (output structure) ──
   const perFile = [];
   for (const fd of fileData) {
     const sourceAbs = fd.file;
@@ -484,6 +567,8 @@ function graphAssemble(fileData, journalRoot) {
     broken: brokenCount,
     valid: validCount,
     external: externalCount,
+    wrong: wrongCount,
+    ambiguous: ambiguousCount,
     self_refs: selfRefsTotal,
     orphan_files: orphanFiles.length,
   };
@@ -517,7 +602,7 @@ function graphAssemble(fileData, journalRoot) {
 function fmtOutput(graphData, resolveMode, focusFile) {
   const journalRoot = graphData.journal_root;
 
-  // ── Determine resolve root (§10 resolve formatting) ──
+  // ── Determine resolve root (resolve formatting) ──
   /**
    * Format a resolved path according to resolveMode.
    * @param {string} resolved - Absolute resolved path (forward slashes).
@@ -525,6 +610,9 @@ function fmtOutput(graphData, resolveMode, focusFile) {
    * @returns {string} Formatted path with forward slashes.
    */
   function formatResolved(resolved, sourceFile) {
+    if (resolved === null) {
+      return null;
+    }
     if (resolveMode === 'absolute') {
       return resolved;
     } else if (typeof resolveMode === 'object' && resolveMode.relative_to) {
@@ -612,7 +700,7 @@ function parseArgs(argv) {
     help: false,
   };
 
-  // Track last resolve option for conflict resolution (§2)
+  // Track last resolve option for conflict resolution
   let lastResolve = null;  // "absolute" or "relative_to"
 
   const positional = [];
@@ -684,7 +772,7 @@ function parseArgs(argv) {
     process.exit(1);
   }
 
-  // ── Validate argument combinations (§2 decision table) ──
+  // ── Validate argument combinations ──
   if (positional.length > 0) {
     params.entry = positional[0];
     if (positional.length > 1) {
@@ -704,7 +792,7 @@ function parseArgs(argv) {
     process.exit(1);
   }
 
-  // Resolve conflict: last option wins (§2)
+  // Resolve conflict: last option wins
   if (lastResolve === 'relative_to') {
     params.absolute = false;
   }
@@ -750,6 +838,15 @@ EXAMPLES:
   check-links --journal-root .                   # Full journal, from cwd
   check-links INDEX.md --absolute                # Resolved as absolute paths
   check-links INDEX.md --relative-to ../other    # Resolved relative to ../other
+
+LINK RESOLUTION (per spec-note Link Convention):
+  URL / local absolute path        -> EXTERNAL (classified only, not verified)
+  mdlink without extension         -> WRONG (illegal)
+  [[foo]] (wikilink, no ext)       -> library-wide name search; multiple matches = ambiguous
+  [[foo.md]] / [foo.md]            -> relative to source file dir; fallback:
+                                      wikilink -> name search; mdlink -> journal-root exact path
+  path with ./ or ../ prefix       -> relative to source file dir
+  path without prefix              -> relative to journal-root
 
 Node.js 18+ required.
 `;
@@ -808,10 +905,9 @@ function main() {
   }
 
   // ── Step 2: Scan all md files ──
-  // scanning <N> files under journalRoot
   const allFiles = targetExpand(journalRoot);
 
-  // ── Step 4: Handle --file validation (§2) ──
+  // ── Step 4: Handle --file validation ──
   let focusFile = null;
   if (params.file) {
     // Resolve --file relative to journal_root
@@ -846,7 +942,6 @@ function main() {
   }
 
   // ── Step 5: Per-file scan ──
-  // extracting links from <file>
   /** @type {Array<Object>} */
   const fileData = [];
   for (const fpath of allFiles) {
@@ -887,13 +982,20 @@ function main() {
     /** @type {Array<Object>} */
     const links = [];
     for (const [, linkInfo] of linksByTarget) {
-      const resolved = linkResolve(linkInfo.target, fpath, linkInfo.type, journalRoot);
-      const exists = fsExistCheck(resolved);
-      const insideJournal = resolved.startsWith(journalRoot + '/') || resolved === journalRoot;
+      const [resolved, status] = linkResolve(linkInfo.target, fpath, linkInfo.type, journalRoot, allFiles);
+      let exists, insideJournal;
+      if (resolved !== null) {
+        exists = fsExistCheck(resolved);
+        insideJournal = resolved.startsWith(journalRoot + '/') || resolved === journalRoot;
+      } else {
+        exists = false;
+        insideJournal = status === 'internal';
+      }
 
       links.push({
         target: linkInfo.target,
         type: linkInfo.type,
+        status: status,
         resolved: resolved,
         exists: exists,
         inside_journal: insideJournal,
@@ -929,7 +1031,7 @@ function main() {
   const output = fmtOutput(graphData, resolveMode, focusFile);
 
   // ── Step 8: Print output ──
-  // Apply pretty/compact formatting (§10 JSON format)
+  // Apply pretty/compact formatting (JSON format)
   const indent = params.no_pretty ? null : 2;
   // Re-serialize for consistent formatting
   const jsonStr = JSON.stringify(output, null, indent);
