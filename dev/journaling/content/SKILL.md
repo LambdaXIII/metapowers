@@ -9,8 +9,8 @@ description: |
   - 维护 / 整理 journal
   - 将讨论中确认的设计决策写入 journal 文件
 metadata:
-  version: "4.10.0"
-  last_updated: "2026-08-11"
+  version: "5.0.0"
+  last_updated: "2026-08-15"
 ---
 
 # Journaling
@@ -26,11 +26,8 @@ Journal 是你的结构化长期记忆机制——跨 session 的经验、决策
 Journal 位于 `<journal-root>`，由以下要素构成：
 
 - **INDEX.md** — 封面与仪表盘。Journal 的唯一入口，显示当前状态信号。一切 journal 操作从这里开始。
-- **个性化规则文件** — 三份文件，定义这个 journal 的运作方式：
-  - `CLASSIFICATION.md` — 目录分类规则
-  - `TAGS.md` — 标签注册表及使用规则
-  - `CONVENTIONS.md` — 设计模式实例（可选；存在时优先级高于前两份——特例覆盖默认规则）
-- **条目** — 各条笔记，按生命周期目录组织（inbox → experience | knowledge | active_works → archive）
+- **规则文档（RULES.md）** — 规则单入口，定义这个 journal 的运作方式：分类、标签、INDEX 结构、笔记元数据字段、写作需求等。内容由 journal 自定，种子提供初始方案。
+- **条目** — 各条笔记。条目组织方式（目录、生命周期等）由 journal 规则定义。
 
 
 ---
@@ -47,29 +44,25 @@ This skill's protocols depend on `<journal-root>/index.md` context — maintenan
 Operating without INDEX.md means operating blind. INDEX.md is the cover of your journal — it tells you what needs maintenance, what's in progress, and what traps to avoid. The file takes seconds to read and prevents hours of blind work.
 ## Core Constraint
 
-**INDEX.md is the sole entrance to journal.** It is the notebook cover — a dashboard of state signals, not a directory listing. All journal norms (format, directory usage, maintenance) are defined by this skill.
+**INDEX.md is the sole entrance to journal.** It is the notebook cover — a dashboard of state signals, not a directory listing. 本技能定义写入/维护流程协议（怎么写入、怎么维护）；内容组织规范（目录、标签、INDEX 结构等）由 journal 规则定义。
 
 ## Linked Files
 
-- [INDEX.md Specification](references/spec-index.md) — INDEX.md 的核心规范：协议声明、设计原理、与个性化规则文件的关系。关于项目级次级 INDEX 的设计参考，见 `references/patterns/dashboard.md`。
-- [Writing Protocol](references/protocal-write.md) — 写条目的工作流程：triage 判断、同 session 补充 vs 跨 session 补充、After Writing 更新 INDEX.md、Before Delivery 自检。
-- [Note Writing Guide](references/spec-note.md) — 条目格式指南：summary anchoring 三检查点、body 格式（一句一行/wikilink/过度泛化/context boundary）、粒度控制、4 种子目录分配、条目生命周期。
+- [INDEX.md Specification](references/spec-index.md) — INDEX.md 的核心规范：唯一入口定位、协议声明、格式归属（由 journal 规则规范）。关于项目级次级 INDEX 的设计参考，见 `references/patterns/dashboard.md`。
+- [INDEX Design Reference](references/design-index.md) — INDEX 设计参考：常用板块建议、组织方式建议。设计自己的 INDEX 结构时加载。
+- [Writing Protocol](references/protocal-write.md) — 写条目的工作流程：4 步写入流程（判断是否值得写 → 读取 journal 规则 → 编写 frontmatter 与 body → 检查可发现链路）+ 额外说明（补充已有条目/交叉引用/维护信号/自检提醒）。
+- [Note Writing Guide](references/spec-note.md) — 条目格式指南：summary anchoring 三检查点、body 格式（一句一行/过度泛化/context boundary）、粒度控制、链接形态规范（Link Convention）。
 - [Importing Protocol](references/protocal-import.md) — Bring existing external content into the journal: evaluation, copy, frontmatter, adjustment.
-- [Journal Initialization](references/protocal-init.md) — Create a new journal from scratch: three-phase protocol (locate root → init skeleton files → design discovery contract).
+- [Journal Initialization](references/protocal-init.md) — Create a new journal from scratch: four-phase protocol (locate root + check existing content → init skeleton files → design discovery contract → maintenance takeover if content exists).
 - [Discovery Contract Design Guide](references/design-discovery-contract.md) — 发现合约设计的系统化方法：载体清查、过滤评估、推荐方案、用户呈报。在 `protocal-init.md` Phase 3 执行期间加载。
-- [Maintenance Protocol](references/protocal-maintenance.md) — 笔记库整理与规范演化：概述 + 推荐流程（扫描 → 设计 → 重组 → 细粒度收尾，执行路径可调整）+ 操作规范（硬性底线）+ 补充论述（启发）。若觉得 journal 过于混乱（如写入时错误尝试过多），适当向用户建议启动维护。
-- [Journal Standards Examples](examples/journal-standards/) — INDEX.md、个性化规则文件等的参考示例。
-- [Templates](templates/seed/) — 初始化所需的种子文件模板（INDEX.md、CLASSIFICATION.md、TAGS.md）。
+- [Maintenance Protocol](references/protocal-maintenance.md) — 笔记库整理与规范演化：概述 + 推荐流程（扫描 → 设计（设计优化 + 规则区检查）→ 重组 → 细粒度收尾，执行路径可调整）+ 操作规范（硬性底线）+ 补充论述（启发）。若觉得 journal 过于混乱（如写入时错误尝试过多），适当向用户建议启动维护。
+- [Journal Standards Examples](examples/journal-standards/) — INDEX.md、规则文档等的参考示例。
+- [Templates](templates/seed/) — 初始化所需的种子文件模板（INDEX.md、RULES.md）。
 
-- [Inbox](`inbox/README.md`) — Zero-friction staging area for unsure content. Requires only minimum frontmatter (title or date). Processed during maintenance.
-- [Classification Design Guide](references/design-classification.md) — Design your journal's own classification: when to customize, design process, verification.
 - [Classification System Examples](examples/classification-systems/) — Reference catalog of common real-world classification systems (PARA, Zettelkasten, Johnny Decimal, MOC/LYT, Evergreen, GTD, and journaling default). Each file starts with a summary for quick scanning.
-- [Tag Design Guide](references/design-tags.md) — Tag creation, naming, registration, and lifecycle methodology. Consult when registering new tags or during tag maintenance.
+- [Rule Design Guide](references/design-rules.md) — 规则设计方法论：规则设计的建议、规则编写的原则、Pitfalls、建议的板块（含示例）。设计/修订 journal 规则（分类/标签/约定）时加载。
 - [Frontmatter Specification](references/spec-frontmatter.md) — YAML format rules, required fields, recommended optional fields, custom field guidelines, and examples.
 - [Project Dashboard Pattern](references/patterns/dashboard.md) — 项目/领域级次级 INDEX 设计参考。和 INDEX.md 类比：提供聚焦一域的状态概览，作为 session 的次级路由入口。不是规范——从实际需求中生长。
-
-- [Conventions Specification](references/spec-conventions.md) — CONVENTIONS.md 的设计原则与操作建议。描述 convention 机制的三条核心原则、文件格式、与各协议的关系。
-- [Conventions Template](templates/seed/CONVENTIONS.md) — CONVENTIONS.md 种子模板。最小化格式参考，在维护中首次创建时使用。
 ---
 
 
@@ -82,16 +75,15 @@ This skill uses progressive disclosure. Load the reference document matching you
 | **Creating a new journal from scratch** | **`references/protocal-init.md`** |
 | **Designing the discovery contract for a new journal** | **`references/design-discovery-contract.md`** |
 | Writing/reviewing INDEX.md core spec and protocol declaration | `references/spec-index.md` |
-| Creating or maintaining journal conventions (design pattern instances) | `references/spec-conventions.md` |
+| Designing INDEX structure (sections/organization) | `references/design-index.md` |
 | Creating or reviewing a project-level dashboard (secondary INDEX) | `references/patterns/dashboard.md` |
-| Writing a journal entry (workflow: triage → supplement → update INDEX.md → self-check) | `references/protocal-write.md` |
-| Writing a journal entry (format: summary → body → granularity → directory → lifecycle) | `references/spec-note.md` |
+| Writing a journal entry (workflow: triage → read journal rules → frontmatter+body → discoverability) | `references/protocal-write.md` |
+| Writing a journal entry (format: summary → body → granularity → links) | `references/spec-note.md` |
 | **Importing existing content into the journal** | **`references/protocal-import.md`** |
 | **Capturing a discussion decision immediately into a project document** | **Operating Rules below** |
 | Maintaining or cleaning up the journal | `references/protocal-maintenance.md` |
-| Designing or revising journal classification | **`references/design-classification.md`** |
+| Designing or revising journal rules (classification/tags/conventions) | **`references/design-rules.md`** |
 | Researching classification patterns for a custom design | **`examples/classification-systems/`** — read summaries, decide which to load |
-| Designing or revising journal tag system | **`references/design-tags.md`** |
 | Writing or checking entry frontmatter format | **`references/spec-frontmatter.md`** |
 If the scenario is ambiguous, load two references. Don't load all at once.
 
@@ -130,9 +122,9 @@ These principles follow from the journal's design decisions. Each exists because
 
 - **Journal serves you, not the user — don't ask for approval, for reversible operations.** You write it, you maintain it, for your future self. The user cannot effectively judge whether a directory reorganization, tag merge, or archive is correct — these depend on patterns only you see. So reversible operations (directory reorganization, tag merge, archive) do not need permission. All journal operations are reversible — hard deletion is not a valid operation in this journal. You MAY solicit the user's perspective on ambiguous cases to learn from their judgment, but the decision and execution are yours for reversible ops.
 
-- **Select tags from TAGS.md before writing — the tag system is self-managed.** A tag not in `<journal-root>/TAGS.md` doesn't exist for this journal. If a needed tag is missing, register it there first. Freeform tags bypass the registry and silently decay into noise.
+- **标签遵循 journal 规则标签板块——标签系统由 journal 自管理。** 写前按 journal 规则标签板块选标签；未定义时用种子标签集。新标签按规则文档的注册约定注册。
 
-- **Determine directory assignment before writing — the directories are the classification.** Which directory an entry lands in is a decision about what kind of thing this is. Read `references/spec-note.md`'s Directory Assignment before creating.
+- **目录归属按 journal 规则判断——写前读取。** 写前读取 journal 规则文档（分类板块），判断这条内容属于哪个目录；未定义时用种子方案。目录归属是内容组织决策，归 journal 规则，不由技能规定。
 
 - **Verify actual entry state before proposing improvements — the spec is ideal, the disk is truth.** The loaded spec describes what entries should look like; actual entries may already conform. Check files before recommending changes.
 

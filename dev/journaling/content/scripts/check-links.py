@@ -35,6 +35,19 @@ SKIP_PREFIXES = ("https://", "http://", "ftp://", "mailto:")
 SKIP_DIRS = {".git", "__pycache__", ".obsidian", "node_modules"}
 
 
+def _abspath_nofollow(path):
+    """Pure-string absolute path normalization — does NOT follow symlinks.
+
+    Equivalent to Node's path.resolve(): joins against cwd if relative,
+    normalizes . and .. segments, and keeps all other segments verbatim
+    (including odd ones like '...' that Windows GetFullPathName would collapse).
+
+    NOTE: os.path.abspath is NOT used here — on Windows it calls the Win32
+    GetFullPathName API, which normalizes dot-segments differently than Node.
+    """
+    return os.path.normpath(os.path.join(os.getcwd(), path))
+
+
 # ═══════════════════════════════════════════════════════════════════════
 # Module: journal_discover
 # ═══════════════════════════════════════════════════════════════════════
@@ -54,10 +67,10 @@ def journal_discover(entry):
     Called by: main() — dispatch step 1.
     """
     # Resolve entry to absolute path (§2 auto-discovery rule)
-    # 【NON-PORTABLE】 pathlib.Path.resolve() behavior differs from Node path.resolve()
-    entry_path = Path(entry).resolve()
+    # _abspath_nofollow normalizes . and .. but does NOT follow symlinks — aligns with Node path.resolve()
+    entry_path = _abspath_nofollow(entry)
 
-    if not entry_path.exists():
+    if not os.path.exists(entry_path):
         print(f"{entry}: file not found", file=sys.stderr)
         sys.exit(1)
 
@@ -65,23 +78,23 @@ def journal_discover(entry):
     # If entry is INDEX.md, start from its parent (the journal root)
     # If entry is a directory, start from that directory
     # If entry is a regular file, start from its parent directory
-    if entry_path.name.lower() in ("index.md",):
-        journal_root = entry_path.parent
-    elif entry_path.is_dir():
+    if os.path.basename(entry_path).lower() in ("index.md",):
+        journal_root = os.path.dirname(entry_path)
+    elif os.path.isdir(entry_path):
         journal_root = entry_path
     else:
-        journal_root = entry_path.parent
+        journal_root = os.path.dirname(entry_path)
 
     # Walk upward looking for INDEX.md or index.md (§2 auto-discovery)
     current = journal_root
     while True:
         # Check exact case-insensitive matches only
         for name in ("INDEX.md", "index.md"):
-            candidate = current / name
-            if candidate.is_file():
-                return str(current)
+            candidate = os.path.join(current, name)
+            if os.path.isfile(candidate):
+                return current
         # Move up one level
-        parent = current.parent
+        parent = os.path.dirname(current)
         if parent == current:
             # Reached filesystem root
             print(f"INDEX.md not found in ancestors of {entry}", file=sys.stderr)
@@ -119,6 +132,11 @@ def target_expand(journal_root):
             dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS]
             for fname in filenames:
                 if fname.lower().endswith(".md"):
+                    fpath = os.path.join(dirpath_str, fname)
+                    # Skip symlink files — matches Node Dirent.isFile() which returns
+                    # false for symlinks: only real files enter the file list
+                    if os.path.islink(fpath):
+                        continue
                     result.append(str(dirpath / fname))
     except OSError as e:
         print(f"scan error: {e}", file=sys.stderr)
@@ -240,7 +258,8 @@ def link_resolve(target, source_path, link_type, journal_root):
 
     Called by: main() — per-link processing in scan loop.
     """
-    # 【NON-PORTABLE】 Path.resolve() vs Node path.resolve() — both normalize . and ..
+    # 【NON-PORTABLE】 _abspath_nofollow vs Node path.resolve() — both normalize . and ..
+    # without following symlinks (aligned; Path.resolve() previously expanded them)
     source_dir = Path(source_path).parent
 
     # Determine resolution base per link type
@@ -255,9 +274,9 @@ def link_resolve(target, source_path, link_type, journal_root):
     # Absolute path (starts with /): resolve from filesystem root
     if target.startswith("/"):
         # Absolute path within journal
-        resolved = Path(target).resolve()
+        resolved = _abspath_nofollow(target)
     else:
-        resolved = (base_dir / target).resolve()
+        resolved = _abspath_nofollow(os.path.join(str(base_dir), target))
     return str(resolved)
 
 
@@ -706,12 +725,12 @@ def main():
 
     # ── Step 1: Determine journal_root ──
     if params["journal_root"] is not None:
-        # Manual journal_root: resolve to directory
-        jr_path = Path(params["journal_root"]).resolve()
-        if jr_path.is_file():
-            journal_root = str(jr_path.parent)
+        # Manual journal_root: resolve to directory (no symlink expansion)
+        jr_path = _abspath_nofollow(params["journal_root"])
+        if os.path.isfile(jr_path):
+            journal_root = os.path.dirname(jr_path)
         else:
-            journal_root = str(jr_path).replace("\\", "/")
+            journal_root = jr_path.replace("\\", "/")
         if not os.path.isdir(journal_root):
             print(f"{params['journal_root']}: directory not found", file=sys.stderr)
             sys.exit(1)
@@ -729,7 +748,7 @@ def main():
     # ── Step 3: Determine entry focus ──
     entry_path = None
     if params["entry"]:
-        entry_path = str(Path(params["entry"]).resolve())
+        entry_path = _abspath_nofollow(params["entry"])
 
     # ── Step 4: Handle --file validation (§2) ──
     focus_file = None
@@ -741,11 +760,11 @@ def main():
         else:
             file_abs = str(Path(journal_root) / params["file"])
 
-        # Normalize for comparison
-        file_abs_resolved = str(Path(file_abs).resolve())
+        # Normalize for comparison (no symlink expansion)
+        file_abs_resolved = _abspath_nofollow(file_abs)
 
         # Check within journal_root
-        jr = str(Path(journal_root).resolve())
+        jr = _abspath_nofollow(journal_root)
         if not file_abs_resolved.startswith(jr + os.sep) and file_abs_resolved != jr:
             print(f"{params['file']}: outside journal-root", file=sys.stderr)
             sys.exit(1)
@@ -753,7 +772,7 @@ def main():
         # Check file exists in scan results
         found = False
         for f in all_files:
-            if str(Path(f).resolve()) == file_abs_resolved:
+            if _abspath_nofollow(f) == file_abs_resolved:
                 focus_file = os.path.relpath(f, journal_root).replace("\\", "/")
                 found = True
                 break
@@ -817,7 +836,7 @@ def main():
         links.sort(key=lambda x: x["target"])
 
         file_data.append({
-            "file": str(Path(fpath).resolve()).replace("\\", "/"),
+            "file": _abspath_nofollow(fpath).replace("\\", "/"),
             "rel_path": rel_path,
             "links": links,
         })

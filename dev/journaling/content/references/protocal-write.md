@@ -2,20 +2,15 @@
 
 ## 定位
 
-本协议定义对 journal 条目进行内容操作——包括新建笔记、补充已有条目、更新 frontmatter。
-核心目标两条：
-- **内容就绪**：entry 有完整 frontmatter（title/summary/tags/last_update），body 可读
-- **索引同步**：INDEX.md 的最近变更反映新内容
-
+本协议定义对 journal 条目进行内容操作——新建笔记、补充已有条目、更新 frontmatter。
+核心目标：内容就绪（entry 有完整 frontmatter，body 可读）+ 写入路径轻量。
 写得不完美没关系——维护协议兜底。关键是不打断主线工作。
 
 ---
 
-Every journal entry must have YAML frontmatter and a markdown body.
+## 写入流程（规范性动作，按序执行）
 
----
-
-## Before Writing: Is This Journal-Worthy?
+### 1. 判断是否值得写
 
 Not everything belongs in the journal. Before committing content, check:
 
@@ -23,104 +18,45 @@ Not everything belongs in the journal. Before committing content, check:
 - **Version-independent?** Not tied to a software version, config snapshot, or one-time event?
 - **Reference value?** If read a week from now, would it still hold meaning?
 
-Content that fails all three (quick-test results, build logs, transient findings)
-does not belong in the journal. Use `inbox/` if unsure — it accepts minimal format
-(minimum: `title` or `last_update` in frontmatter) and maintenance will sort it out.
+Content that fails all three (quick-test results, build logs, transient findings) does not belong in the journal.
+
+### 2. 读取 journal 规则
+
+写入前必读 journal 规则文档——技能强制存在，即使为空；内容由 journal 自定（分类板块、标签板块、INDEX 结构板块、笔记元数据字段板块、写作需求板块等）。加载其中定义的规则并按之执行；为空或未定义相应板块时，用种子默认方案（目录/tag/元数据字段，见 templates/seed/）。
+
+规则文档不存在属异常（强制义务：必须存在）——此时从 templates/seed/ 复制规则文档种子补齐（只补缺失文件，不触发初始化协议的其他步骤，避免连带覆盖已有 INDEX）。
+
+### 3. 编写 frontmatter 与 body
+
+- 必须有 YAML frontmatter（技能硬性）。
+- 字段方案：按 journal 规则元数据板块；未定义时用种子推荐方案（见 templates/seed/ 规则文档种子的元数据字段板块）。
+- 格式语法：见 `references/spec-frontmatter.md`（通用格式规范）。
+- 目录归属与标签：遵循 journal 规则分类板块/标签板块（未定义时用种子方案）。
+- summary 锚定范围（见 `references/spec-note.md` Summary Anchoring）；正文承载理解。
+
+### 4. 检查可发现链路
+
+写完思考：这条内容将来被需要时如何被发现？
+
+- 属于需要入口的内容（被读取路径依赖）→ 按 journal 规则建立发现入口
+- 属于读时无需感知的内容 → 不建入口
+
+只给判断原则，不预设任何载体。
 
 ---
 
-## Supplementing Existing Entries
+## 额外说明
 
-When content relates to an existing entry, the decision depends on when that entry was written:
-
-### Same Session（刚写的笔记）
-
-If you just wrote the entry in this session and have supplementary insights:
-the Summary Anchoring Principle's scope check decides (see `references/spec-note.md` Summary Anchoring) — is the new content still within the original summary?
-
-- Yes → expand the existing entry (update summary if scope widened)
-- No → create a new entry with its own summary
-
-The scope is still forming; don't over-think.
-
-### Cross-Session（已有的旧笔记）
-
-If the existing entry was written in a past session, the bar is stricter:
-the new content must be a **direct extension** that does not require changing the original summary.
-
-- **Direct extension** (summary unchanged) → add to the existing entry
-- **Not a direct extension** (summary would change) → create a new entry.
-  In the new entry's body or summary, link back to the related old entry:
-  `Related: [old entry title](path/to/old-entry.md)`
-
-Do not worry about redundancy, overlap, or contradictions between the two entries.
-These are resolved during maintenance (see `references/protocal-maintenance.md`).
-Split now, merge later.
-
----
-
-## Before Writing: Check Journal Rules
-
-Journal 在 `<journal-root>` 下有个性化规则文件——CLASSIFICATION.md（目录分类规则）、TAGS.md（标签注册表）、CONVENTIONS.md（设计模式实例）。
-加载其中存在的文件。读取顺序无先后，但注意：CONVENTIONS.md 存在时，其内容优先级高于其他两份。对每份：
-
-- **CLASSIFICATION.md** — 确定目标目录。条目所属目录须符合分类规则。不存在时使用默认种子目录（inbox/ experience/ knowledge/ active_works/），按 `spec-note.md` 的目录分配指南判断。
-- **TAGS.md** — frontmatter 中所有 tag 必须来自已注册列表。如需使用未注册 tag，先在 TAGS.md 中注册。不存在时使用种子 tag 集。
-- **CONVENTIONS.md** — 检查当前条目是否命中任何 convention 的 scope。命中 → 执行该 convention 定义的写入感知步骤，convention 定义与 CLASSIFICATION/TAGS 冲突时以 convention 为准。未命中或文件不存在 → 跳过。
-
-此步骤在规格确认之后、实际写入之前执行——个性化规则文件确定基线，在此基础上落笔。
-
-## Frontmatter (Required)
-
-Every journal entry must have YAML frontmatter. See `references/spec-frontmatter.md` for full format specification, syntax rules, data types, and field ordering.
-
-```yaml
----
-title: "Entry Title"
-summary: One-line summary
-tags:
-  - lesson
-last_update: 2026-06-26
----
-```
-
-**Required fields**: `title`, `summary`, `tags`, `last_update`.
-
-**Optional fields**: `status`, `author`, `date`, and custom fields as needed.
-
-Key rules:
-- All tags must come from `<journal-root>/TAGS.md`. New tags: register before use.
-  - The `summary` is the scope anchor — see Summary Anchoring in `references/spec-note.md`.
-
----
-## After Writing: Check for Related Entries
-
-After creating a new entry, scan existing entries in the same directory or with overlapping tags. If a clear cross-reference relationship exists (complementary topic, contradictory findings, direct extension), add a `Related:` or `See also:` line in the body.
-
-This is a lightweight heuristic — one quick scan, not deep reading. Skip for `inbox/` entries.
-
-### Maintenance Signals
-
-If you notice a non-urgent issue during writing — stale INDEX.md lines, a misclassified entry, an unregistered tag, fragmenting topics — append a one-line note to `<journal-root>/.maintenance-memo.md`. One issue per line. The file doesn't exist until you first write to it. During the next maintenance cycle, these notes become the first thing processed (see the scan phase of the maintenance protocol).
-
----
-
-## After Writing: Update INDEX.md
-Every write (new entry, updated entry, new workspace) must update INDEX.md:
-
-- **最近变更** — always add the new entry title. Trim before add: if the list already has ≥7 entries, remove the oldest BEFORE adding the new entry.
-- **专项工作列表** — update if the entry changes project status
-- **经验摘要** — add if the new entry is cross-domain and behavior-changing
-
-**Status line guard**: When updating a project's status with a future direction, verify this was explicitly discussed — not inferred, not assumed. If uncertain, mark as `🤔 pending-discussion` or omit.
-
----
-
-## Before Delivery: Self-Check
-
-Before delivering any written output (journal entry, project document, or update to INDEX.md), ask four questions. Fail any → fix before delivery:
-
-1. **可执行性** — 一个新人读完后能直接实现/执行吗？
-2. **独立性** — 脱离所有其他文档只读这一份，能理解吗？
-3. **边界覆盖** — 空输入、错输入、不存在的情况都处理了吗？
-4. **可复现性** — 半年后回来重读，能理解当时为什么这样决定吗？
+- **写得不完美没关系**——维护协议兜底。
+- **补充已有条目**：判断取决于条目何时写的——
+  - 同 session（刚写的笔记）：用 Summary Anchoring 的 scope 检查（见 `references/spec-note.md`）——新内容仍在原 summary 范围内？是 → 扩展原条目（范围扩大则更新 summary）；否 → 新建条目。范围还在形成中，不必过度思考。
+  - 跨 session（旧笔记）：标准更严——必须是**直接扩展**且不改变原 summary：summary 不变 → 追加到原条目；summary 会变 → 新建条目，并在新条目中回链 `Related: [old entry title](path/to/old-entry.md)`。
+  - 不要担心两条目间的冗余、重叠或矛盾——维护时解决（见 `references/protocal-maintenance.md`）。Split now, merge later.
+- **交叉引用（轻量启发）**：写 body 时扫描同目录/同标签条目，有明确关系（互补主题、矛盾发现、直接扩展）加 `Related:` 或 `See also:` 行——一次快速扫描，不是深读。
+- **维护信号**：写入时发现非紧急问题（INDEX 行过时、条目误分类、未注册标签、主题碎片化）→ 记入 journal 规则约定的维护信息位置；未约定位置时由维护协议自行扫描识别。维护周期扫描时处理。
+- **INDEX 的重要性**：写入后 INDEX 应能反映新内容——价值陈述，非强制义务；INDEX 同步的具体规则由 journal 规则（INDEX 结构板块）定义。
+- **交付前自检（四问提醒）**——可执行性 / 独立性 / 边界覆盖 / 可复现性：
+  1. **可执行性** — 一个新人读完后能直接实现/执行吗？
+  2. **独立性** — 脱离所有其他文档只读这一份，能理解吗？
+  3. **边界覆盖** — 空输入、错输入、不存在的情况都处理了吗？
+  4. **可复现性** — 半年后回来重读，能理解当时为什么这样决定吗？

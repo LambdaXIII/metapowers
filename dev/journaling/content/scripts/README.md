@@ -424,7 +424,7 @@ python check-links.py INDEX.md --absolute > /tmp/journal-audit.json
 
 - **仅检查 .md 文件**：不追踪图片、PDF 等非 Markdown 附件链接
 - **不验证 URL**：HTTP/HTTPS 链接直接跳过，不检查可达性
-- **不展开符号链接**：路径 resolve 不追踪 symlink
+- **不展开符号链接**：路径 resolve 不追踪 symlink——符号链接文件不进入文件清单、不参与链接检查；目录符号链接不递归；存在性检查跟随符号链接（指向存在的目标即视为有效）
 - **代码块内误识别**：代码块中的类链接语法（如 `[array](index)`）可能被当作真实链接提取——维护协议要求"宁可多报不可漏报"
 
 ### 文件清单

@@ -4,7 +4,7 @@
 >
 > 初始种子是 4 个目录（inbox / experience / knowledge / active_works），以下结构是在维护中逐步演化而成的成熟形态。
 >
-> 关于分类设计的完整方法论，见 `references/design-classification.md`。
+> 关于分类设计的完整方法论，见 `references/design-rules.md`。
 
 ## 快速参考
 
