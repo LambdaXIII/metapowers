@@ -137,5 +137,5 @@ INDEX 是 journal 中信息的引导入口：每个 session 都从这里开始�
 - frontmatter 规范：[`spec-frontmatter.md`](spec-frontmatter.md)
 - 规则设计方法论：[`design-rules.md`](design-rules.md)
 - 规则规范层：[`spec-rules.md`](spec-rules.md)
-- INDEX 规范：[`spec-index.md`](spec-index.md)
+- INDEX 规范：[`spec-index.md`](spec-index.md) · INDEX 设计参考：[`design-index.md`](design-index.md)
 - Dashboard 模式：[`patterns/dashboard.md`](patterns/dashboard.md)
