@@ -9,8 +9,8 @@ description: |
   - 维护 / 整理 journal
   - 将讨论中确认的设计决策写入 journal 文件
 metadata:
-  version: "5.0.1"
-  last_updated: "2026-08-16"
+  version: "5.0.2"
+  last_updated: "2026-08-20"
 ---
 
 # Journaling
@@ -70,7 +70,7 @@ Operating without INDEX.md means operating blind.
 
 ## Operating Principles
 
-- **Journal serves you, not the user — reversible operations need no approval.** You write it, maintain it, for your future self. Directory reorganization, tag merge, archive — these depend on patterns only you see; the decision and execution are yours.
+- **Journal serves you, not the user — reversible operations need no approval.** You write it, maintain it, for your future self. Directory reorganization, tag merge — these depend on patterns only you see; the decision and execution are yours.
 
 - **标签遵循 journal 规则——标签系统由 journal 自管理。** 写前读取 journal 规则的标签相关内容；规则未定义标签时，从内容、用途等维度提炼简短词汇写入 `tags` 字段。
 
@@ -80,4 +80,4 @@ Operating without INDEX.md means operating blind.
 
 - **Capture discussion decisions immediately.** When the user confirms a design decision, write it to the target project document in the same turn. Do not defer to journal; a journal summary can follow later during maintenance.
 
-- **'Delete' in journal means move to `archive/` — never direct file removal.** This applies to daily operations and maintenance alike. Deletion is not a valid operation in this journal.
+- **删除处理按 journal 规则判断——技能不预设归档设施。** 写前读取 journal 规则的删除/归档约定；维护期间的删除按维护协议执行。
