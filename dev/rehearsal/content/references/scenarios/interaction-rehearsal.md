@@ -7,7 +7,7 @@
 - 表单流程：多步骤填写、校验、提交
 - 操作序列：任何需要按特定顺序执行的动作关联
 
-不适用：纯文档阅读（→ `doc-guide-rehearsal.md`）、API 调用（→ `api-design-rehearsal.md`）、代码执行逻辑（→ `logic-chain-rehearsal.md`）。
+不适用：纯文档阅读（→ [doc-guide-rehearsal.md](doc-guide-rehearsal.md)）、API 调用（→ [api-design-rehearsal.md](api-design-rehearsal.md)）、代码执行逻辑（→ [logic-chain-rehearsal.md](logic-chain-rehearsal.md)）。
 
 ## 本载体的核心差异：交互媒介分模式
 
@@ -138,3 +138,7 @@ CLI 扩展维度：
 - **把设计者知识当作操作者知识**：你知道每个功能在哪里，操作者不知道
 - **只测正常路径**：高频缺陷在边界路径上——操作错误、网络中断、好奇心点击
 - **混淆 UI 和 CLI 信号**：同一问题在不同模式中表现不同——不要用 UI 框架推演 CLI
+
+---
+
+推演过程与评估整理按通用论述 P3-P5 执行；本场景文档只补充交互流程的特化信号、边界场景与评估维度，不替代通用论述的步骤骨架。

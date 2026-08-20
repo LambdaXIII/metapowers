@@ -10,14 +10,14 @@ description: |
   - 知识库、教学材料、代码示例、规则集
 
   **触发场景**（任一即触发）：
-  - 用户说以下之一触发（中英都行）：「推演 / rehearsal / 通读 / 验一下 / 检查 / 确保理解 / 充分理解 / 不误解 / 能不能走通 / 过一遍 / 走一遍 / 模拟接收方视角 / simulate a reader / first-contact / dry-run / walk through / sanity-check / verify for a newcomer / will users get stuck」
+  - 用户说以下之一触发（对象为交付物，中英都行）：「推演 / rehearsal / 通读 / 验一下 / 检查 / 确保理解 / 充分理解 / 不误解 / 能不能走通 / 卡住 / 看不懂 / 新人会不会卡 / 过一遍 / 走一遍 / 模拟接收方视角 / simulate a reader / first-contact / dry-run / walk through / sanity-check / verify for a newcomer / will users get stuck」
   - 刚写完上列任一类交付物，自问「能不能被没有上下文的人读懂」「交付出去会不会卡住」「我自己看不出问题但别人会卡在哪」（或英文自问 can a newcomer follow this / will readers get stuck / is this readable without my context）
-  - 在载体的相关产出阶段做交付前质量验证（不限上述清单——凡是最终给别人看 / 用的产物都适用）
+  - 写完任何要给别人看 / 用的东西，交付前都可以推演一遍（不限上述清单——凡是最终给别人看 / 用的产物都适用）
 
   仅修改错别字、错标点、纯格式调整时不触发。
 metadata:
-  version: "2.0.0"
-  last_updated: "2026-08-08"
+  version: "2.0.1"
+  last_updated: "2026-08-20"
   author: "xiii_1991"
   license: "MIT"
 ---
@@ -52,7 +52,10 @@ Rehearsal 就是强制切除"设计者知识"——假装不知道，走一遍�
 - 仅修改错别字、错标点、纯格式调整——一次性无内容变化的修订，不改变接收方理解路程
 - 已有真实用户反馈数据，本技能是模拟，反馈比模拟更准——优先处理反馈数据，rehearsal 仅做补充视角
 - 重复推演同一未变更交付物——上轮已发现的问题清单仍在，再次推演只是把同一条问题再发现一遍；应改后再推
-- 纯粹代码运行时逻辑验证（不需模拟「人」的视角） → 此类任务可单独参照 references/scenarios/logic-chain-rehearsal.md 的执行指导，**但本技能仍正常触发**——logic-chain-rehearsal 是本技能 references 下的场景文档，而非另一技能；当交付物同时含文档 + 代码示例时，文档推演与逻辑链路推演一并做
+
+**澄清**（以下场景**不是**不合触发）：
+
+- 纯粹代码运行时逻辑验证（不需模拟「人」的视角）——按 references/scenarios/logic-chain-rehearsal.md 的执行指导推演。logic-chain-rehearsal 是本技能 references 下的场景文档而非另一技能，不要因「不需模拟人」而漏触发本技能；当交付物同时含文档 + 代码示例时，文档推演与逻辑链路推演一并做
 
 **边界判定**：如果拿不准要不要触发，默认触发——推演发现不到问题不造成损失，漏推演却可能让交付物带着本可发现的问题出去。
 
@@ -60,7 +63,7 @@ Rehearsal 就是强制切除"设计者知识"——假装不知道，走一遍�
 
 **阅读通用论述文档并按照其中的流程进行推演：**
 
-→ [rehearsal-guide.md](references/rehearsal-guide.md) — 含推演方法的完整阐述（原理、三元素、四步流程、评估维度）和场景特化参考索引。
+→ [rehearsal-guide.md](references/rehearsal-guide.md) — 含推演方法的完整阐述（原理、推演步骤 P1-P5、四向复现、评估维度）和场景特化参考索引。
 
 ## 参考文件
 
@@ -68,7 +71,7 @@ Rehearsal 就是强制切除"设计者知识"——假装不知道，走一遍�
 
 - [rehearsal-guide.md](references/rehearsal-guide.md) — 通用论述，完整方法 + 场景特化参考
 
-**场景文档（按需参考）：**
+**场景文档（按需参考）**：按推演载体类型匹配——完整路由与判断条件见 [rehearsal-guide.md](references/rehearsal-guide.md)「场景特化参考」节。
 
 - [文档/指南质量验证推演](references/scenarios/doc-guide-rehearsal.md) — 单文档推演 + 全流程跨文档推演，五维度评估标准
 - [设计方法论文档验证推演](references/scenarios/design-doc-rehearsal.md) — 四维验证框架：逻辑正确、线索清晰、前后一致、可复现深刻理解
@@ -81,7 +84,7 @@ Rehearsal 就是强制切除"设计者知识"——假装不知道，走一遍�
 
 **按需参考：**
 
-- [batch-execution.md](references/supplementary/batch-execution.md) — 推演场景 ≥ 5 个时使用并行执行模式
+- [batch-execution.md](references/supplementary/batch-execution.md) — 推演场景 ≥ 5 个时使用并行执行模式（角色矩阵设计见 knowledge-base 场景文档）
 - [defect-taxonomy.md](references/supplementary/defect-taxonomy.md) — 发现缺陷时用于归类与定位
 
 
