@@ -8,7 +8,7 @@
 - 数据转换管道：数据从源头经多步变换后的输出
 - 工作流编排：步骤的分支流转和条件判断
 
-不适用：文档内容 → `doc-guide-rehearsal.md`、交互体验 → `interaction-rehearsal.md`、接口契约 → `api-design-rehearsal.md`、知识库 → `knowledge-base-rehearsal.md`、提示词 → `prompt-instruction-rehearsal.md`、计划文档 → `plan-rehearsal.md`、设计方法论 → `design-doc-rehearsal.md`。
+不适用：文档内容 → [doc-guide-rehearsal.md](doc-guide-rehearsal.md)、交互体验 → [interaction-rehearsal.md](interaction-rehearsal.md)、接口契约 → [api-design-rehearsal.md](api-design-rehearsal.md)、知识库 → [knowledge-base-rehearsal.md](knowledge-base-rehearsal.md)、提示词 → [prompt-instruction-rehearsal.md](prompt-instruction-rehearsal.md)、计划文档 → [plan-rehearsal.md](plan-rehearsal.md)、设计方法论 → [design-doc-rehearsal.md](design-doc-rehearsal.md)。
 
 ## 本载体的核心差异：读者是执行引擎
 
@@ -83,7 +83,7 @@ P2 身份转换时：你是执行引擎——不会说「也许设计者的意�
 - **异常**：执行引擎的字面行为与设计意图不一致——需要修复
 - **OK**：行为与意图一致
 
-**评估维度提示（额外提示，非硬性指标）：**
+**评估维度提示（在通用论述评估维度表逻辑链路行 5 项基础上扩展为 6 项；额外提示，非硬性指标）：**
 
 | 评估维度 | 含义 |
 |------|------|
@@ -100,7 +100,7 @@ P2 身份转换时：你是执行引擎——不会说「也许设计者的意�
 
 ## 与提示词推演的逻辑层关系
 
-提示词推演（`prompt-instruction-rehearsal.md`）的「逻辑执行层」本质上就是一次逻辑链路推演——将模型理解的指令作为"定义"，跟踪其执行链路。关键区别是逻辑链路推演的"定义"是精确的（代码/规则），而提示词推演的"定义"是模糊语义——模型可能理解错误。
+提示词推演（[prompt-instruction-rehearsal.md](prompt-instruction-rehearsal.md)）的「逻辑执行层」本质上就是一次逻辑链路推演——将模型理解的指令作为"定义"，跟踪其执行链路。关键区别是逻辑链路推演的"定义"是精确的（代码/规则），而提示词推演的"定义"是模糊语义——模型可能理解错误。
 
 如果推演提示词时发现了逻辑链路层面的缺陷，可以引用本文件的方法分别推演"被理解的逻辑本身"是否有漏洞。两个推演分开执行——先确定表达层的问题，再确定逻辑层的问题。
 
@@ -110,3 +110,7 @@ P2 身份转换时：你是执行引擎——不会说「也许设计者的意�
 - **只走正常路径**：最高频的 bug 在"从未想过会发生"的路径
 - **忽略时序/并发**：单线程逻辑完美，两个并发操作在同一数据上就是随机结果
 - **把注释当契约**：注释说"返回非 null"，某个分支返回了 null——执行引擎只看代码
+
+---
+
+推演过程与评估整理按通用论述 P3-P5 执行；本场景文档只补充逻辑链路的特化信号、边界场景与评估维度，不替代通用论述的步骤骨架。
