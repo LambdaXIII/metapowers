@@ -7,8 +7,8 @@ description: >-
   deliver report with sources independent of conclusions (Phase 4).
   Use when thorough investigation matters more than speed.
 metadata:
-  version: "2.3.2"
-  last_updated: "2026-06-17"
+  version: "2.4.0"
+  last_updated: "2026-08-23"
   author: "Ĉalio"
 ---
 
@@ -16,7 +16,7 @@ metadata:
 
 Information is a network, not a list. The first search result is a clue, not an answer.
 
-**Core mechanism:** Before any search, clarify what you're actually researching (Phase 0). Then trace clue chains — collect, read, summarize, connect, record URLs (Phase 2 — no judgment yet). In Phase 3, cross-reference everything by information type: facts get confidence assessment, knowledge gets systematic combination, opinions get dispute analysis, data gets methodology tracing. Discoveries that raise new questions loop back to Phase 2. Phase 4 delivers a complete research report where source materials stand independent of conclusions — readers can judge without reading conclusions.
+**Core mechanism:** Before any search, clarify what you're actually researching (Phase 0). Then chase the open question set (Q-set): trace the clues that can support each open question, collect, read, summarize, connect, record URLs (Phase 2 — no judgment yet). In Phase 3, cross-reference everything by information type: facts get confidence assessment, knowledge gets systematic combination, opinions get dispute analysis, data gets methodology tracing. Discoveries that raise new questions loop back to Phase 2. Phase 4 delivers a complete research report where source materials stand independent of conclusions — readers can judge without reading conclusions.
 
 > **Delegation:** This skill involves multiple search phases and many tool calls.
 > Consider delegating to a sub-agent when the research topic is self-contained —
@@ -37,6 +37,7 @@ For simple fact lookups where a quick answer suffices, this methodology is overk
 | File | Purpose | When to read |
 |------|---------|--------------|
 | `references/workflow.md` | Phase 0（话题确认）→ Phase 1（线索起点）→ Phase 2（纯收集，记录URL）→ Phase 3（按资料性质评估：事实→置信度，知识→组合，意见→争议，数据→溯源）→ Phase 4（整理报告，资料不被结论覆盖） | **Always** |
+| `references/search-strategy.md` | 如何使用本技能的编排策略：执行模式（委派/拆分/自执行）、报告落盘、多子话题整合、结论回灌 | 有能力委派，或话题不清晰时 |
 | `references/creative-work.md` | Domain-specific strategies for film, anime, games, books | When researching creative works — ideally before or alongside Phase 0 |
 | `references/person-biography.md` | Domain-specific strategies for public figures | When researching people — ideally before or alongside Phase 0 |
 | `references/policy-law.md` | Domain-specific strategies for policies, laws, regulations | When researching policies or laws — ideally before or alongside Phase 0 |

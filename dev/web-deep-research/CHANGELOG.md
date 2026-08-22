@@ -2,7 +2,18 @@
 
 All notable changes to this skill will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/).
+## [2.4.0] - 2026-08-23
+
+### Changed
+- **问题集（Q-set）模型**：`references/workflow.md` 重构为问题驱动结构——Phase 0 目标拆解为原子问题集，Phase 1/2 循环由开放问题驱动，Phase 3 成为消解闸门（交叉验证通过才消解，单来源不构成完整消解），停止条件升级为「收束 = 问题前沿稳定化」，「不可得」（逐 Q 可得性判定）与「收束」（全局停点）明确分离
+- `templates/report-template.md` —「信息空白与遗留问题」贴合 Q 模型：区分仍开放（"还开放"）/不可得/被排除的问题
+- `SKILL.md` — 核心机制简介从"追踪线索链"改为"问题集驱动"，与 Q-set 模型一致
+
+### Added
+- `references/search-strategy.md`（选读）— 使用层编排策略与内容层分离：执行模式 if 链（完全委派/拆分委派/自执行）、报告落盘、多子话题整合、结论回灌；零跨技能引用、不涉及子代理调用机制
+- `SKILL.md` Content Index 新增 `search-strategy.md` 路由行（有能力委派或话题不清晰时读）
+
+## [2.3.2] - 2026-06-17
 
 ## [2.3.2] - 2026-06-17
 
