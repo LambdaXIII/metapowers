@@ -1,94 +1,102 @@
 ---
 name: rehearsal
 description: |
-  推演(rehearsal)：以读者身份通读检查交付物的方法。
+  Rehearsal (推演): a method of reading a deliverable from the reader's
+  perspective to check it.
 
-  适用于一切「给别人看 / 用」的交付物：
-  - 文档、教程、操作指南、README、计划文档
-  - 系统提示词、Agent 指令、任务指令、提示词模板
-  - API 设计、UI 交互流程、CLI 命令系列、表单、操作手册
-  - 知识库、教学材料、代码示例、规则集
+  Applies to any deliverable made for others to read / use:
+  - Documents, tutorials, guides, READMEs, plan documents
+  - System prompts, Agent instructions, task instructions, prompt templates
+  - API designs, UI interaction flows, CLI command series, forms, operation manuals
+  - Knowledge bases, teaching materials, code examples, rule sets
 
-  **触发场景**（任一即触发）：
-  - 用户说以下之一触发（对象为交付物，中英都行）：「推演 / rehearsal / 通读 / 验一下 / 检查 / 确保理解 / 充分理解 / 不误解 / 能不能走通 / 卡住 / 看不懂 / 新人会不会卡 / 过一遍 / 走一遍 / 模拟接收方视角 / simulate a reader / first-contact / dry-run / walk through / sanity-check / verify for a newcomer / will users get stuck」
-  - 刚写完上列任一类交付物，自问「能不能被没有上下文的人读懂」「交付出去会不会卡住」「我自己看不出问题但别人会卡在哪」（或英文自问 can a newcomer follow this / will readers get stuck / is this readable without my context）
-  - 写完任何要给别人看 / 用的东西，交付前都可以推演一遍（不限上述清单——凡是最终给别人看 / 用的产物都适用）
+  **Triggers** (any one suffices):
+  - The user says any of the following about a deliverable (Chinese or English):
+    「推演 / rehearsal / 通读 / 验一下 / 检查 / 确保理解 / 充分理解 / 不误解 /
+    能不能走通 / 卡住 / 看不懂 / 新人会不会卡 / 过一遍 / 走一遍 /
+    模拟接收方视角 / simulate a reader / first-contact / dry-run /
+    walk through / sanity-check / verify for a newcomer / will users get stuck」
+  - Right after producing any of the deliverables above, asking yourself
+    「能不能被没有上下文的人读懂 / 交付出去会不会卡住 / 我自己看不出问题但别人会卡在哪」,
+    or "can a newcomer follow this / will readers get stuck / what will others
+    get stuck on that I can't see"
+  - After producing anything meant for others to read / use, rehearsing it
+    before delivery (not limited to the list above — applies to any final
+    deliverable for others)
 
-  仅修改错别字、错标点、纯格式调整时不触发。
+  Does NOT trigger for typo/punctuation/format-only fixes.
 metadata:
-  version: "2.0.1"
-  last_updated: "2026-08-20"
+  version: "2.0.2"
+  last_updated: "2026-08-23"
   author: "xiii_1991"
   license: "MIT"
 ---
 
-# Rehearsal（推演）
+# Rehearsal
 
-## 这是什么
+## What this is
 
-**Rehearsal（推演）= 丢掉作者身份，完整走一遍另一个视角的「首次接触 → 理解 → 决策」链路。**
+**Rehearsal = dropping the author identity and walking the full "first contact → understanding → decision" chain from another perspective.**
 
-它和载体无关——可以推演文档、代码、UI 流程、API 设计、指令集等任何交付物。
-它也不限定读者——读者可以是 AI 模型、真实用户、学生、顾客、新人同事。
+It is independent of the carrier — you can rehearse documents, code, UI flows, API designs, instruction sets, or any deliverable. It is also not limited to a particular reader — the reader can be an AI model, a real person, a student, a customer, a new colleague.
 
-## 为什么有效
+## Why it works
 
-作者有一个致命盲区：**你知道"应该得到什么结论"，所以你看不到"得不到的人会在哪里卡住"。**
-Rehearsal 就是强制切除"设计者知识"——假装不知道，走一遍，哪里卡住了哪里就有问题。
+The author has a fatal blind spot: **you know "what conclusion should be drawn", so you cannot see "where someone who fails to draw it gets stuck".** Rehearsal forces the removal of "designer knowledge" — pretend you don't know, walk through it, and wherever you get stuck is where the problem is.
 
-## 触发条件
+## Trigger conditions
 
-本节是 description 触发条件的展开版——description 负责被加载器命中，下方条款供 agent 加载后决定是否启动本次推演 / 复查触发是否合理、是否漏触发。
+This section expands the description's trigger conditions — the description is what the loader matches against; the clauses below let the agent decide after loading whether to start this rehearsal / verify whether the trigger is reasonable or whether something was missed.
 
-**合触发**（任一成立即触发）：
+**Triggers** (any one suffices):
 
-- 用户首话出现「推演 / 验一下 / 走一遍 / 过一遍 / 检查能不能看懂 / 能不能走通 / 新人会不会卡 / 读者看懂吗 / 接收方会卡在哪」等动词或短语，且目标是一部交付给他人看 / 用的产物
-- 用户首话出现「写完 / 设计完 / 改完 + 任一类交付物」表示要交付前自检：文档、教程、指南、README、计划文档、系统提示词、Agent 指令、任务指令、提示词模板、API 设计、UI 交互流程、CLI 命令系列、表单、操作手册、知识库、教学材料、代码示例、规则集
-- 作为 agent，**刚完成**上列任一类交付物、即将交付给用户 / 读者 / 调用方之前，自问「能不能被没有上下文的人读懂」「交付出去会卡住吗」「我自己看不出问题但别人会卡在哪」时
-- 用户提供了具体交付物并请求对其做质量验证 / 可用性评估 / 读者友好度检查
+- The user's first message contains verbs or phrases such as 「推演 / 验一下 / 走一遍 / 过一遍 / 检查能不能看懂 / 能不能走通 / 新人会不会卡 / 读者看懂吗 / 接收方会卡在哪」, and the target is a deliverable for others to read / use
+- The user's first message indicates pre-delivery self-check of a deliverable ("写完 / 设计完 / 改完 + any deliverable type"): documents, tutorials, guides, READMEs, plan documents, system prompts, Agent instructions, task instructions, prompt templates, API designs, UI interaction flows, CLI command series, forms, operation manuals, knowledge bases, teaching materials, code examples, rule sets
+- As an agent, **right after completing** any deliverable of the types above and before delivering it to the user / reader / caller, asking yourself "can someone without context understand this", "will it get stuck when delivered", "what will others get stuck on that I can't see"
+- The user provides a specific deliverable and asks for quality verification / usability assessment / reader-friendliness checking
 
-**不合触发**：
+**Does NOT trigger**:
 
-- 仅修改错别字、错标点、纯格式调整——一次性无内容变化的修订，不改变接收方理解路程
-- 已有真实用户反馈数据，本技能是模拟，反馈比模拟更准——优先处理反馈数据，rehearsal 仅做补充视角
-- 重复推演同一未变更交付物——上轮已发现的问题清单仍在，再次推演只是把同一条问题再发现一遍；应改后再推
+- Only typo, punctuation, or pure formatting fixes — one-off revisions with no content change, which do not change the reader's comprehension path
+- Real user feedback data already exists — this skill is a simulation; feedback is more accurate than simulation — handle feedback data first, rehearsal only adds a supplementary perspective
+- Re-rehearsing the same unchanged deliverable — the issue list from the last round is still there; rehearsing again just re-discovers the same issues; rehearse after changing
 
-**澄清**（以下场景**不是**不合触发）：
+**Clarification** (the following is **not** a non-trigger):
 
-- 纯粹代码运行时逻辑验证（不需模拟「人」的视角）——按 references/scenarios/logic-chain-rehearsal.md 的执行指导推演。logic-chain-rehearsal 是本技能 references 下的场景文档而非另一技能，不要因「不需模拟人」而漏触发本技能；当交付物同时含文档 + 代码示例时，文档推演与逻辑链路推演一并做
+- Pure code runtime-logic verification (no need to simulate a "person's" perspective) — rehearse per `references/scenarios/logic-chain-rehearsal.md`. logic-chain-rehearsal is a scenario document under this skill's references, not another skill; do not fail to trigger this skill because "no human simulation is needed". When a deliverable contains both documentation and code examples, do both the document rehearsal and the logic-chain rehearsal.
 
-**边界判定**：如果拿不准要不要触发，默认触发——推演发现不到问题不造成损失，漏推演却可能让交付物带着本可发现的问题出去。
+**Edge cases**: if unsure whether to trigger, trigger by default — a rehearsal that finds nothing costs nothing, but skipping one may let a deliverable go out with problems that could have been found.
 
-## 如何推演
+## How to rehearse
 
-**阅读通用论述文档并按照其中的流程进行推演：**
+**Read the general guide and follow its process:**
 
-→ [rehearsal-guide.md](references/rehearsal-guide.md) — 含推演方法的完整阐述（原理、推演步骤 P1-P5、四向复现、评估维度）和场景特化参考索引。
+→ [rehearsal-guide.md](references/rehearsal-guide.md) — full account of the method (principles, rehearsal steps P1–P5, four-direction reproduction, evaluation dimensions) plus an index of scenario-specific references.
 
-## 参考文件
+## Reference files
 
-**必读入口：**
+**Required entry:**
 
-- [rehearsal-guide.md](references/rehearsal-guide.md) — 通用论述，完整方法 + 场景特化参考
+- [rehearsal-guide.md](references/rehearsal-guide.md) — general guide, full method + scenario-specific references
 
-**场景文档（按需参考）**：按推演载体类型匹配——完整路由与判断条件见 [rehearsal-guide.md](references/rehearsal-guide.md)「场景特化参考」节。
+**Scenario documents (load on demand)**: matched by rehearsal carrier type — full routing and decision criteria in the "Scenario-specific references" section of [rehearsal-guide.md](references/rehearsal-guide.md).
 
-- [文档/指南质量验证推演](references/scenarios/doc-guide-rehearsal.md) — 单文档推演 + 全流程跨文档推演，五维度评估标准
-- [设计方法论文档验证推演](references/scenarios/design-doc-rehearsal.md) — 四维验证框架：逻辑正确、线索清晰、前后一致、可复现深刻理解
-- [多场景知识库验证推演](references/scenarios/knowledge-base-rehearsal.md) — 多角色×多路径推演，适配决策树分支消费模式
-- [提示词/指令集推演](references/scenarios/prompt-instruction-rehearsal.md) — 双维度推演（内容表达层 + 逻辑执行层），委派推演机制
-- [交互流程推演](references/scenarios/interaction-rehearsal.md) — 操作链路的首次可执行性、困惑点密度、放弃率预估维度
-- [API 设计推演](references/scenarios/api-design-rehearsal.md) — 命名一致性、默认值合理性、错误信息可操作性、缺失端点覆盖维度
-- [逻辑链路推演](references/scenarios/logic-chain-rehearsal.md) — 控制流正确性、边界条件覆盖、状态一致性等维度
-- [计划文档推演](references/scenarios/plan-rehearsal.md) — 执行路径完整性、依赖可见性、异常覆盖等 9 项评估维度
+- [Document/guide quality rehearsal](references/scenarios/doc-guide-rehearsal.md) — single-document rehearsal + full-process cross-document rehearsal, five-dimension evaluation criteria
+- [Design-methodology document rehearsal](references/scenarios/design-doc-rehearsal.md) — four-dimension verification framework: logical correctness, clear thread, internal consistency, reproducible deep understanding
+- [Multi-scenario knowledge base rehearsal](references/scenarios/knowledge-base-rehearsal.md) — multi-role × multi-path rehearsal, adapted to decision-tree branching consumption patterns
+- [Prompt/instruction-set rehearsal](references/scenarios/prompt-instruction-rehearsal.md) — two-dimension rehearsal (content-expression layer + logic-execution layer), delegation mechanism
+- [Interaction-flow rehearsal](references/scenarios/interaction-rehearsal.md) — dimensions: first-attempt executability of the operation chain, confusion-point density, abandonment-rate estimation
+- [API design rehearsal](references/scenarios/api-design-rehearsal.md) — dimensions: naming consistency, default-value reasonableness, error-message actionability, missing-endpoint coverage
+- [Logic-chain rehearsal](references/scenarios/logic-chain-rehearsal.md) — dimensions: control-flow correctness, boundary-condition coverage, state consistency
+- [Plan document rehearsal](references/scenarios/plan-rehearsal.md) — 9 evaluation dimensions including execution-path completeness, dependency visibility, exception coverage
 
-**按需参考：**
+**Load on demand:**
 
-- [batch-execution.md](references/supplementary/batch-execution.md) — 推演场景 ≥ 5 个时使用并行执行模式（角色矩阵设计见 knowledge-base 场景文档）
-- [defect-taxonomy.md](references/supplementary/defect-taxonomy.md) — 发现缺陷时用于归类与定位
+- [batch-execution.md](references/supplementary/batch-execution.md) — parallel-execution mode when rehearsal scenarios ≥ 5 (role-matrix design in the knowledge-base scenario document)
+- [defect-taxonomy.md](references/supplementary/defect-taxonomy.md) — for classifying and locating defects once found
 
 
-## 目录树
+## Directory tree
 
 ```
 rehearsal/

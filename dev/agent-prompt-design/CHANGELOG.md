@@ -1,4 +1,12 @@
-# Changelog
+## [1.0.3] - 2026-08-23
+
+### Changed
+- **SKILL.md 英文化**: 正文全量英文化（内容索引、快速决策树、迭代开发流程、能力边界、适用模型）——实质内容与中文原版逐节对照一致
+- **description 补中英双触发词**: 三条用户首话触发示例补回中文（「帮我写个系统提示词 / 这个 agent 需要什么指令 / 设计 agent 的 prompt」），满足 AGENTS.md §4.6 双语不变量
+
+### Fixed
+- **「背景资料」节删除（元语境渗漏）**: 原 `[RESEARCH.md](RESEARCH.md)` 为悬空引用——RESEARCH.md 位于 dev 侧 research/ 目录（开发溯源资料），不在 content/ 发布包内，链接无法解析且对运行时读者无功能；按删除/归位判定移除该节，溯源指针保留于 SKILL-DESIGN
+- **决策树 operations.md 条件性恢复**: 「Preparing for production deployment」分支的 operations.md 恢复「如需」（if team collaboration and version management are needed）条件语义——原译文丢失条件性，单人部署读者可能被引导多加载文件
 
 
 ## [1.0.2] - 2026-06-17

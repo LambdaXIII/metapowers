@@ -1,159 +1,159 @@
 ---
 name: skill-quick-test
-description: 通过子代理并行推演，快速测试 Skill 的可用性——验证 Agent 在不同使用场景下能否正确理解技能、走通流程、完成任务。与 skill-creator 的功能测试互补，非替代。
+description: Quickly test a skill's usability by parallel rehearsal with sub-agents — verifying that an Agent can correctly understand the skill, walk through its flow, and complete tasks in different usage scenarios. Complements skill-creator's functional testing; does not replace it. 通过子代理并行推演（parallel rehearsal）快速测试技能可用性——验证 Agent 能否理解技能、走通流程、完成任务。触发：「推演 / 测试 / 验一下 / 快速验证 / 走通」一个技能。
 metadata:
-  version: "1.4.4"
-  last_updated: "2026-06-17"
+  version: "1.4.5"
+  last_updated: "2026-08-23"
   author: "Ĉalio"
 ---
 
 # Skill Quick Test
 
-通过**子代理并行推演**快速测试 Skill 的可用性。
+Quickly test a skill's usability by **parallel rehearsal with sub-agents**.
 
-> **前置条件：** 运行环境必须支持子代理委派（`delegate_task`）。如果当前环境不具备此能力，本技能无法使用。
+> **Prerequisite:** the runtime must support sub-agent delegation (`delegate_task`). If the current environment lacks this capability, this skill cannot be used.
 
 ---
 
-## 何时使用
+## When to use
 
-- 新建 Skill，提交前快速验证可用性
-- 修改 Skill 后，回归验证修复效果
-- 多轮迭代中，跟踪质量变化趋势
-- 对比 baseline（加载技能 vs 不加载的行为差异）
+- New skill, quick usability verification before submission
+- After modifying a skill, regression-verify the fix
+- Multi-round iteration, tracking quality trends
+- Comparing against baseline (behavior difference with vs without loading the skill)
 
-**本技能 vs skill-creator 测试：**
+**This skill vs skill-creator testing:**
 
-| | skill-creator 测试 | skill-quick-test |
+| | skill-creator testing | skill-quick-test |
 |---|---|---|
-| 测什么 | 功能正确性（能加载、能执行） | 可用性（Agent 能理解、能走通、能完成任务） |
-| 怎么测 | 结构化验证流程 | 推演：模拟 Agent 使用技能的完整链路 |
-| 互补性 | 都不能替代对方 | — |
+| What it tests | Functional correctness (loads, executes) | Usability (Agent understands, walks through, completes tasks) |
+| How it tests | Structured verification process | Rehearsal: simulating the full chain of an Agent using the skill |
+| Complementarity | Neither can replace the other | — |
 
 ---
 
-## 流程概览
+## Flow overview
 
+                                             │                          │               │
+                    steps 1-5 coverage all pass      Light: complex <2 & total <5  ≥2 aborts → terminate
+                    step 6 error-pattern check      Full:  complex ≥2 or total ≥5  otherwise → summarize
 ```
-一次测试（one round）
-
-  分析范围 → 设计场景 → 覆盖检查 → 用户确认 → [Light/Full] → 致命检查 → 汇总
-                              │                           │               │
-                    步骤1-5覆盖标准全通过          Light: 复杂<2 且总<5  ≥2中止→终止
-                    步骤6错误模式检查              Full:  复杂≥2 或总≥5  否则→汇总
+                            │                            │                 │
+                   steps 1-5 coverage all pass     Light: complex <2 & total <5  ≥2 aborts → terminate
+                   step 6 error-pattern check     Full:  complex ≥2 or total ≥5  otherwise → summarize
 ```
 
-**步骤详解：**
+**Step details:**
 
-| 步骤 | 输入 | 输出 | 参考文件 |
-|------|------|------|---------|
-| 分析范围 | 被测技能的 SKILL.md | 功能域、路径集、决策点、能力边界 | scope-analysis.md |
-| 设计场景 | 范围分析输出 | 等价类组合、边界测试、端到端用例 | scenario-design.md |
-| 覆盖检查 | 场景设计产出 | 覆盖标准逐项检查结果 | scenario-design.md（各步骤覆盖标准） |
-| 错误模式 | 被测技能全部文件 | 反模式逐条检查结果 | error-patterns.md |
-| 用户确认 | 以上全部摘要 | 测试用例列表 + 用户批准/修改要求 | — |
-| 执行 | 场景卡片 + context 模板 | 子代理推演报告 | execution-light/full.md |
-| 致命检查 | 子代理返回值 | 继续 / 中止本轮 | execution-light.md |
-| 汇总 | 全部报告 + 预期效果 | 缺陷清单 + 对比分析 + 打分 | summarization.md, scoring-rubric.md |
+| Step | Input | Output | Reference |
+|------|-------|--------|-----------|
+| Analyze scope | The tested skill's SKILL.md | Functional domains, path set, decision points, capability boundaries | scope-analysis.md |
+| Design scenarios | Scope-analysis output | Equivalence-class combinations, boundary tests, end-to-end cases | scenario-design.md |
+| Coverage check | Scenario-design output | Coverage-standard check results item by item | scenario-design.md (per-step coverage standards) |
+| Error patterns | All files of the tested skill | Anti-pattern check results item by item | error-patterns.md |
+| User confirmation | Summary of all of the above | Test-case list + user approval/revision | — |
+| Execute | Scenario cards + context template | Sub-agent rehearsal reports | execution-light/full.md |
+| Fatal check | Sub-agent return values | Continue / abort this round | execution-light.md |
+| Summarize | All reports + expected effects | Defect list + comparative analysis + scoring | summarization.md, scoring-rubric.md |
 
-**Light 模式：** 全部在对话中完成，不写文件。子代理禁止写文件。
-**Full 模式：** 前置写测试计划 → 委派子代理写入报告文件 → 读取文件汇总。
+**Light mode:** everything in conversation, no files written. Sub-agents are forbidden from writing files.
+**Full mode:** write a test plan first → delegate sub-agents to write report files → read files and summarize.
 
-| | Light 模式 | Full 模式 |
+| | Light mode | Full mode |
 |---|---|---|
-| 适用条件 | 复杂场景 < 2 且总数 < 5 | 复杂场景 ≥ 2 或总数 ≥ 5 |
-| 测试计划 | 不写文件，口头确认 | 前置写入 test-plan.md |
-| 子代理输出 | 禁止写文件，返回值报告 | 允许写入 reports/ 目录 |
-| 数据来源 | 子代理对话返回值 | 读取报告文件 |
+| Applicable when | complex scenarios < 2 and total < 5 | complex scenarios ≥ 2 or total ≥ 5 |
+| Test plan | verbal confirmation, no file | test-plan.md written first |
+| Sub-agent output | return-value report, no file writes | allowed to write into reports/ directory |
+| Data source | sub-agent conversation return values | reading report files |
 
-临时目录：`$SKILL_TEST_DIR/<round-id>/`，未设置时 fallback 到 `<cwd>/.quick-tests/<round-id>/`。
-
----
-
-## 核心约束
-
-### 🚫 隔离铁律（信息边界）
-
-向子代理委派任务时，**绝对不能**出现在 context 中的信息：
-
-- 预期效果
-- 其他测试单元的存在
-- 这是 baseline / 对照 / 实验组
-- 任何对比信息
-
-子代理只拿到：使用场景描述 + 入口路径 + 目标 + 加载规则 + 推演指引 + 失败行为。
-
-### 🔧 加载规则（工具约束）
-
-子代理**必须**用 `read_file` 读取被测技能的全部文件。**禁止**对被测技能使用 `skill_view`。
-
-推演指引已内嵌在 context 模板中（清空 → 逐步骤跟随 → 边界刨），不依赖任何外部技能。
-
-### 🔄 能力模拟（行为规则）
-
-被测技能中涉及的**外部能力**，测试子代理不实际调用——模拟执行并记录假设：
-
-| 能力类型 | 触发场景 | 模拟方式 |
-|---------|---------|---------|
-| 子代理委派 | `delegate_task` / `task` | 自己扮演被委派的角色，按任务目标继续推演 |
-| 工具调用 | `bash`、`eval`、`browser` 等 | 读取工具意图和参数 → 基于场景推演合理结果 |
-| 脚本执行 | `scripts/*.py` 等 | 读取脚本源码 → 推演逻辑输出（不实际运行） |
-
-路径追踪中统一标注 `[能力模拟] [类型] → 动作 → 推演结果`。
-
-### ⚠️ 失败行为（容错机制）
-
-- **子代理侧**：遇到系统性障碍（文件不存在、路径断裂等）→ 不绕道自救，直接返回「推演中止」报告
-- **主代理侧（启动失败）**：≥ 2 个子代理启动失败（429、超时等）→ 中止本轮，向用户报告失败原因和建议
-- **主代理侧（推演中止）**：≥ 2 个子代理返回「推演中止」且为同一类系统性问题 → 中止本轮，输出诊断
-
-### 📋 呈现原则（输出控制）
-
-- 中间步骤（范围分析、场景设计过程、覆盖检查细节）不主动展示给用户
-- 只在「用户确认」节点输出简洁的测试用例列表
-- 用户要求查看过程时再展开
+Temp directory: `$SKILL_TEST_DIR/<round-id>/`; falls back to `<cwd>/.quick-tests/<round-id>/` when unset.
 
 ---
 
-## 测试用例设计方法论
+## Core constraints
 
-基于 ISTQB 框架的六步法：
+### 🚫 Isolation rule (information boundary)
 
-| 步骤 | 参考文件 | 产出 |
-|------|---------|------|
-| 1. 识别输入空间 | references/scope-analysis.md | 功能域、路径集、决策点、能力边界 |
-| 2. 等价类划分 | references/scenario-design.md | 使用场景组合（入口×明确度×上下文） |
-| 3. 边界测试 | references/scenario-design.md | 每条边界声明的双向测试 |
-| 4. 决策逻辑覆盖 | references/scenario-design.md | 决策树分支路径（仅当有决策树时） |
-| 5. 端到端用例 | references/scenario-design.md | 复杂场景 + baseline |
-| 6. 错误模式检查 | references/error-patterns.md | 反模式逐条核查 |
+When delegating to sub-agents, information that must **never** appear in the context:
 
-每一步同时产出设计动作和对应的覆盖标准。覆盖检查是步骤 2-6 完成后的闸门——不全通过不进入用户确认。
+- Expected effects
+- The existence of other test units
+- That this is a baseline / control / experiment group
+- Any comparative information
+
+The sub-agent receives only: usage-scenario description + entry path + goal + loading rules + rehearsal guide + failure behavior.
+
+### 🔧 Loading rules (tool constraints)
+
+Sub-agents **must** read all files of the tested skill with `read_file`. **Forbidden** to use `skill_view` on the tested skill.
+
+The rehearsal guide is embedded in the context template (empty-start → follow step by step → boundary probing), and does not depend on any external skill.
+
+### 🔄 Capability simulation (behavior rules)
+
+For **external capabilities** referenced by the tested skill, test sub-agents do not actually invoke them — they simulate execution and record assumptions:
+
+| Capability type | Trigger scenario | Simulation |
+|-----------------|-----------------|------------|
+| Sub-agent delegation | `delegate_task` / `task` | Play the delegated role and continue the rehearsal toward the goal |
+| Tool invocation | `bash`, `eval`, `browser`, etc. | Read tool intent and arguments → rehearse plausible results from the scenario |
+| Script execution | `scripts/*.py` etc. | Read script source → rehearse the logical output (no actual run) |
+
+Mark uniformly in path tracing: `[能力模拟] [委派/工具/脚本] → 动作描述 → 推演结果`（协议字面量，与 references 模板一致，不翻译）
+
+### ⚠️ Failure behavior (fault tolerance)
+
+- **Sub-agent side**: on systemic obstacles (file missing, broken path, etc.) — do not work around on its own; return a 「推演中止」 report directly
+- **Main-agent side (launch failure)**: ≥ 2 sub-agents fail to launch (429, timeout, etc.) → abort this round, report the failure reason and advice to the user
+- **Main-agent side (rehearsal aborted)**: ≥ 2 sub-agents return 「推演中止」 for the same class of systemic issue → abort this round, output diagnosis
+
+### 📋 Presentation principles (output control)
+
+- Intermediate steps (scope analysis, scenario-design process, coverage-check details) are not proactively shown to the user
+- Only output a concise test-case list at the "user confirmation" node
+- Expand only when the user asks to see the process
 
 ---
 
-## 参考文件索引
+## Test-case design methodology
 
-| 阶段 | 文件 | 内容 |
-|------|------|------|
-| 范围分析 | references/scope-analysis.md | 步骤 1：提取输入空间（功能域/路径集/决策点/边界） |
-| 场景设计 | references/scenario-design.md | 步骤 2-6：等价类/边界/决策/用例/错误模式 + 覆盖标准 + 模式判定 |
-| 错误模式 | references/error-patterns.md | 步骤 6：反模式清单（随测试经验累积） |
-| Light 执行 | references/execution-light.md | Light 模式的子代理委派格式、能力模拟、中止检查 |
-| Full 执行 | references/execution-full.md | Full 模式的目录结构、计划闸门、报告管理 |
-| 汇总 | references/summarization.md | 步骤 0 致命检查 → 逐场景对比 → 多单元对比 → 缺陷去重 → 全局打分 |
-| 打分标准 | references/scoring-rubric.md | 五维度打分体系（可选，主代理在汇总后执行） |
+Six-step method based on the ISTQB framework:
 
-## 模板索引
+| Step | Reference | Output |
+|------|-----------|--------|
+| 1. Identify input space | references/scope-analysis.md | Functional domains, path sets, decision points, capability boundaries |
+| 2. Equivalence-class partitioning | references/scenario-design.md | Usage-scenario combinations (entry × clarity × context) |
+| 3. Boundary testing | references/scenario-design.md | Two-way test of each stated boundary |
+| 4. Decision-logic coverage | references/scenario-design.md | Decision-tree branch paths (only when a decision tree exists) |
+| 5. End-to-end cases | references/scenario-design.md | Complex scenarios + baseline |
+| 6. Error-pattern check | references/error-patterns.md | Anti-patterns checked item by item |
 
-| 模板 | 用途 |
-|------|------|
-| templates/test-plan.md | Full 模式测试计划（简单测试列表 + 复杂场景列表） |
-| templates/scenario-card.md | 子代理报告格式（含能力模拟标注） |
-| templates/summary-report.md | 汇总报告格式 |
+Each step produces both design actions and the corresponding coverage standard. Coverage check is the gate after steps 2–6 — no entry to user confirmation unless all pass.
 
-## 子代理资源
+---
 
-| 文件 | 用途 |
-|------|------|
-| — | 子代理所需资源均已内嵌到 context 模板中，无需独立资源文件。 |
+## Reference-file index
+
+| Stage | File | Content |
+|-------|------|---------|
+| Scope analysis | references/scope-analysis.md | Step 1: extract input space (functional domains/path sets/decision points/boundaries) |
+| Scenario design | references/scenario-design.md | Steps 2–6: equivalence classes/boundaries/decisions/cases/error patterns + coverage standards + pattern determination |
+| Error patterns | references/error-patterns.md | Step 6: anti-pattern list (accumulates with testing experience) |
+| Light execution | references/execution-light.md | Light-mode sub-agent delegation format, capability simulation, abort checks |
+| Full execution | references/execution-full.md | Full-mode directory structure, plan gate, report management |
+| Summarization | references/summarization.md | Step 0 fatal check → per-scenario comparison → multi-unit comparison → defect dedup → global scoring |
+| Scoring rubric | references/scoring-rubric.md | Five-dimension scoring system (optional, executed by main agent after summarization) |
+
+## Template index
+
+| Template | Purpose |
+|----------|---------|
+| templates/test-plan.md | Full-mode test plan (simple test list + complex scenario list) |
+| templates/scenario-card.md | Sub-agent report format (with capability-simulation annotations) |
+| templates/summary-report.md | Summary report format |
+
+## Sub-agent resources
+
+| File | Purpose |
+|------|---------|
+| — | All resources needed by sub-agents are embedded in the context template; no standalone resource files needed. |

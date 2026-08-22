@@ -26,10 +26,7 @@ Hermes 生态中已有 `prompt-engineering` 技能，但它面向的是**单次 
 | 安全独立成文件（safety.md） | 安全是 Agent 提示词设计的第一阶变量（arXiv:2603.25056），且内容量大，独立加载更合理。 |
 | 反模式与诊断独立（anti-patterns.md） | 诊断是高频场景——Agent 出问题时用户首先需要的就是反模式排查。独立文件减少加载成本。 |
 
-## 维护注意事项
+## 措辞风格约定
 
-- **新增 reference 文件时**，同步更新 SKILL.md 中的内容索引表和使用方法决策树。
-- **修改模板时**，确保占位符 `[...]` 风格一致，注释标明使用场景和不适用的场景。
-- **CHANGELOG.md 必须同步更新**，记录每次迭代的变更。
-- **RESEARCH.md 尽量不改**——它是原始调研的快照。新的研究发现应补充到对应的 reference 文件中，而非追加到 RESEARCH。
-- 如果某个 reference 文件超过 500 行，考虑进一步拆分为子主题文件。
+- **SKILL.md 用英文编写**（2026-08-23 定）：技能入口全量英文化；description 保留中英双触发示例（「帮我写个系统提示词 / 这个 agent 需要什么指令 / 设计 agent 的 prompt」+ 英文示例）；references/ 与 templates/ 仍为中文，SKILL.md 是唯一英文入口（过渡态）
+- **RESEARCH.md 属开发侧，不进技能内容**：`[RESEARCH.md](RESEARCH.md)` 在 content/ 内为悬空引用（文件位于 dev 侧 research/），不得在 SKILL.md 中链接——溯源需求走 SKILL-DESIGN，不进入技能内容
