@@ -1,6 +1,12 @@
-# Changelog
+## [2.4.1] - 2026-08-23
 
-All notable changes to this skill will be documented in this file.
+### Changed
+- **SKILL.md Content Index 中文残留英文化**: `references/workflow.md`、`references/search-strategy.md`、`templates/report-template.md` 三行的 Purpose/When-to-read 描述由中文改写为英文，语义与中文原意一致
+
+### Fixed
+- **`cross-references` 语义偏移**: report-template 行「交叉比对」原误译为 `cross-references`（英文中更常指相互引用，与追踪链索引职责混淆），改为 `cross-comparison`
+- **workflow 行措辞**: 「资料不被结论覆盖」→ `sources stand independent of conclusions`，与顶部 Core mechanism 措辞统一（`covered` 原译文可读为「被包含/被遮蔽」两义）
+- **`web-search-protocol` 悬空引用清除**: "Not a tool selection guide" / "Not a troubleshooting guide" 两条指向不存在的技能名，改为自足表述（a separate concern）——既消除悬空引用，也符合 SKILL-DESIGN 零跨技能引用约束
 
 ## [2.4.0] - 2026-08-23
 

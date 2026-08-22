@@ -1,8 +1,15 @@
 # Changelog
 
-All notable changes to skill-quick-test will be documented in this file.
+## [1.4.5] — 2026-08-23
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/).
+### Changed
+- **SKILL.md 英文化**: 正文全量英文化（何时使用、流程概览、步骤详解、Light/Full 对照、核心约束、方法论六步、参考文件与模板索引）——实质内容与中文原版逐节对照一致
+- **description 中英双触发词**: 补回中文触发面（「推演 / 测试 / 验一下 / 快速验证 / 走通」+ 中文说明句），满足 AGENTS.md §4.6 双语不变量
+- **能力模拟协议字面量保留中文**: `[能力模拟] [委派/工具/脚本] → 动作描述 → 推演结果` 与 references/execution-light.md 模板保持一致，不翻译（跨文件协议字面量，翻译会造成主代理检索失配）
+
+### Fixed
+- **流程概览 ASCII 图标注错位**: 三个 `│` 节点对齐修正——coverage check / [Light/Full] / fatal check 三列连线与中文原版一致（原英文版整体左移，致覆盖闸门、模式判定、致命中止规则的视觉归属错误）
+- **失败行为节报告名对齐**: "rehearsal aborted" 改回模板字面量「推演中止」，与 references/execution-light.md 章节名一致
 
 
 ## [1.4.3] — 2026-06-17

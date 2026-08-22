@@ -1,6 +1,8 @@
-# Changelog
+## [1.3.2] — 2026-08-23
 
-所有重要变更记录。格式遵循 [Keep a Changelog](https://keepachangelog.com/)。
+### Changed
+- **SKILL.md 英文化**: 正文全量英文化（核心流程、委派建议、Content Index 七行表格、Instructions、Capability Boundaries）——实质内容与中文原版逐节对照一致
+- **description 补中英双触发面**: 原 description 纯英文（pre-existing 不符合 AGENTS.md §4.6），借英文化补齐——加入中文说明句与中英触发词（「查一下 / 搜索 / 是什么 / 搜一下 / 了解一下」+ what is X? / look up / search for）
 
 ## [1.3.1] — 2026-06-17
 

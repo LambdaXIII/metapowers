@@ -1,48 +1,52 @@
 ---
 name: web-entity-search
 description: >-
-  Answer "what is X?" questions by searching the web for named entities.
+  Answer "what is X?" questions by searching the web for named entities —
+  回答「XX 是什么」：通过网络搜索给出结构化、经过置信度检查的回答。
+  Triggers: 「查一下 / 搜索 / 是什么 / 搜一下 / 了解一下」+ a named entity
+  (person, company, work, product, event, concept); or "what is X?" /
+  "look up" / "search for" a named entity.
 metadata:
-  version: "1.3.1"
-  last_updated: "2026-06-17"
+  version: "1.3.2"
+  last_updated: "2026-08-23"
   author: "Ĉalio"
 ---
 
 # Web Entity Search
 
-回答"XXX 是什么"——通过网络搜索，给出一段有结构的、经过置信度检查的回答。
-不是研究报告，不需要链式追踪。只是一个比直接搜索多了框架和纪律的薄层。
+Answer "what is X?" — via web search, produce a structured answer with confidence checking.
+Not a research report, no chain tracing. Just a thin layer that adds framework and discipline over a direct search.
 
-**核心流程：** 消歧 → 分类 → 按模板逐维填充 → 置信回检 → 按模板输出。
+**Core flow:** disambiguation → classification → fill dimensions per template → confidence re-check → output per template.
 
-> **委派建议：** 本技能为简单结构化搜索，强烈建议委派子代理加载此技能独立执行——避免占用主代理上下文，也让搜索过程不被中断。话题通常自包含，极少依赖对话历史。
-> 委派时只传任务描述，**不要**读取本技能文件后转述给子代理——让子代理自行加载技能并按 Skill 内的流程执行。
+> **Delegation advice:** This skill is simple structured search; strongly recommend delegating a sub-agent to load this skill and execute independently — avoids occupying the main agent's context and keeps the search uninterrupted. Topics are usually self-contained and rarely depend on conversation history.
+> When delegating, pass only the task description — do **not** read this skill's files and relay them to the sub-agent. Let the sub-agent load the skill itself and follow the workflow inside the Skill.
 
-具体使用哪个搜索工具、如何提取网页内容，不在本技能范围内——本技能只负责"搜什么、搜多少、何时停、怎么呈现"。
+Which specific search tool to use and how to extract web content are outside this skill's scope — this skill only governs "what to search, how much, when to stop, how to present".
 
 ## Content Index
 
-| 实体类型 | 判断线索 | 参考文件（怎么搜） | 模板文件（怎么呈现） |
-|---------|---------|-------------------|---------------------|
-| 人物 | 搜索结果中有生卒日期、职业/身份 | `references/person.md` | `templates/person.md` |
-| 公司/机构 | 搜索结果中有成立时间、行业归属、产品 | `references/company.md` | `templates/company.md` |
-| 作品 | 搜索结果中有创作者、发行日期、类型标签 | `references/creative-work.md` | `templates/creative-work.md` |
-| 产品/技术 | 搜索结果中有开发者、功能描述、版本 | `references/product-tech.md` | `templates/product-tech.md` |
-| 事件 | 搜索结果中有发生时间地点、参与方 | `references/event.md` | `templates/event.md` |
-| 概念/术语 | 搜索结果中有定义、领域归属、理论来源 | `references/concept-term.md` | `templates/concept-term.md` |
-| 兜底 | 以上线索均不匹配，或实体横跨多类型 | `references/general.md` | `templates/general.md` |
+| Entity type | Judgment clue | Reference file (how to search) | Template file (how to present) |
+|-------------|--------------|--------------------------------|--------------------------------|
+| Person | Search results show birth/death dates, occupation/identity | `references/person.md` | `templates/person.md` |
+| Company / organization | Search results show founding date, industry, products | `references/company.md` | `templates/company.md` |
+| Creative work | Search results show creator, release date, genre tags | `references/creative-work.md` | `templates/creative-work.md` |
+| Product / technology | Search results show developer, feature description, version | `references/product-tech.md` | `templates/product-tech.md` |
+| Event | Search results show time/place, participants | `references/event.md` | `templates/event.md` |
+| Concept / term | Search results show definition, domain, theoretical origin | `references/concept-term.md` | `templates/concept-term.md` |
+| Fallback | None of the above clues match, or entity spans multiple types | `references/general.md` | `templates/general.md` |
 
-- **references/** — 搜索指引、维度表（含必填/选填/关键标记）、避坑规则。Step 2 分类后加载，指导 Step 3 逐维填充
-- **templates/** — 纯输出结构，带占位符。Step 5 加载，对着填空
-- `references/workflow.md` — **完整 5 步流程**（消歧→分类→填充→回检→输出）。必读
+- **references/** — search guidance, dimension tables (with required/optional/key markers), pitfall rules. Load after Step 2 classification; guides Step 3 dimension filling
+- **templates/** — pure output structures with placeholders. Load at Step 5; fill in the blanks
+- `references/workflow.md` — the **full 5-step flow** (disambiguation→classification→filling→re-check→output). Required reading
 
 ## Instructions
 
-1. 阅读 `references/workflow.md`，按 Step 1 → Step 5 执行
-2. Step 2 分类后，对照 Content Index 加载对应的参考文件和模板文件
+1. Read `references/workflow.md`, execute Step 1 → Step 5
+2. After Step 2 classification, load the matching reference and template files per the Content Index
 
 ## Capability Boundaries
 
-- **提供**：对单一命名实体的快速结构化搜索、关键维度覆盖、简易置信度检查
-- **不提供**：链式线索追踪、多实体对比、争议深度分析——这些属于深度研究的范畴，超出本技能的边界
-- **如果实体涉及高度争议的话题**：标注"存在争议"即可，不对争议各方做深入评估
+- **Provides**: fast structured search for a single named entity, key-dimension coverage, light confidence checking
+- **Does not provide**: chain clue tracing, multi-entity comparison, in-depth controversy analysis — these belong to deep research, beyond this skill's boundary
+- **If the entity involves highly controversial topics**: mark "controversial" and stop — do not deeply evaluate either side

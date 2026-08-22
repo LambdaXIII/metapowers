@@ -3,7 +3,19 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [2.0.2] - 2026-08-23
+
+非功能调整（Patch）：SKILL.md 全量英文化——叙述语言改英文，description 保留中英双触发词（含中文自问路径）；实质内容与中文原版逐节对照一致；修复翻译残留（description 中 `(English: …)` 冗余括号删除、自问短语改中英双语）。
+
+### Changed
+
+- SKILL.md 正文全量英文化：触发条件（合触发/不合触发/澄清/边界判定）、参考文件路由、目录树与中文原版实质一致
+- description 保留中英双名与中英双路径触发词；中文自问短语（「能不能被没有上下文的人读懂 / 交付出去会不会卡住 / 我自己看不出问题但别人会卡在哪」）补回并作为主触发面之一
+- 措辞遵循 SKILL-DESIGN「接收方」约定：正文以 reader/recipient 语义称呼被模拟对象，避免 user 专指
+
+### Fixed
+
+- description 第 2 条末尾 `(English: …)` 翻译残留括号删除（英文化后失去区分功能，且与主句短语重复不一致）
 
 
 ## [2.0.1] - 2026-08-20
