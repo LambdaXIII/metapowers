@@ -1,13 +1,14 @@
 ---
 name: web-deep-research
 description: >-
-  Deep research: clue-chain tracing (Phase 2, no judgment) →
-  cross-reference by information type (Phase 3: facts→confidence,
-  knowledge→combination, opinions→disputes, data→methodology) →
+  Deep research: topic-setting (Phase 0) → clue starting points (Phase 1) →
+  clue-chain tracing (Phase 2, no judgment) → cross-reference by
+  information type (Phase 3: facts→confidence, knowledge→combination,
+  opinions→disputes, data→methodology, experience→transferability) →
   deliver report with sources independent of conclusions (Phase 4).
   Use when thorough investigation matters more than speed.
 metadata:
-  version: "2.4.1"
+  version: "2.5.0"
   last_updated: "2026-08-23"
   author: "Ĉalio"
 ---
@@ -29,6 +30,9 @@ Information is a network, not a list. The first search result is a clue, not an 
 > When delegating, pass only the task description — do **not** read this skill's
 > files and relay their content to the sub-agent. The sub-agent should load the
 > skill itself and follow its workflow.
+>
+> If you are the delegated executor reading this: the delegation decision is
+> already made — do not re-delegate; load the skill and run the workflow yourself.
 
 For simple fact lookups where a quick answer suffices, this methodology is overkill — a direct search without the Phase structure will serve better.
 
@@ -47,6 +51,9 @@ For simple fact lookups where a quick answer suffices, this methodology is overk
 | `references/competitive-research.md` | Strategies for competitive and market landscape research | When researching competitors, market landscapes, or doing comparative product/company analysis |
 | `templates/report-template.md` | Research report template, conclusions first. Sections are located by name (unnumbered): research summary → conclusions → sources → cross-comparison → clue-chain index → information gaps → references → meta-knowledge. Conclusions can be traced back to source URLs | Before writing the report |
 
+> Loading note: `references/workflow.md` is **required** (Always). All other
+> references and the template are **optional** — load by topic match and need.
+
 ## Instructions
 
 1. Make a preliminary judgment: does the research topic match any domain references listed in the Content Index? If so, load all matching ones now. If unsure, skip — you can load one later if you discover a match during research
@@ -57,6 +64,6 @@ For simple fact lookups where a quick answer suffices, this methodology is overk
 - **Not a tool selection guide** — choosing search tools is a separate concern
 - **Not a troubleshooting guide** — extraction-failure handling is a separate concern
 - **Not a lightweight quick-search** — this methodology is overkill for simple lookups
-- **Not for pure advice/opinion questions** — "how should I...?" without a research dimension is consulting, not research. But if the question involves "what frameworks exist", "what do studies say", "what are best practices for", or any multi-source investigation, it IS research regardless of how the user phrases it
+- **Not a decision-maker** — this skill researches a topic; it does not make the user's decision. A delegated decision-shaped question ("should I...") becomes a neutral researchable topic ("should we adopt X" → "X vs the current stack: differences, tradeoffs, evidence") — the topic carries no lean, and the conclusion supports the delegating conversation's decision rather than making it. Whether and when to start research is the main agent's call from conversation context — not this skill's input gate
 
 This skill solves ONE problem: **"I need to research this topic thoroughly — how do I systematically uncover the truth?"**
