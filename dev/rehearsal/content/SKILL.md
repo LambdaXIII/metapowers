@@ -26,8 +26,8 @@ description: |
 
   Does NOT trigger for typo/punctuation/format-only fixes.
 metadata:
-  version: "2.0.2"
-  last_updated: "2026-08-23"
+  version: "2.0.3"
+  last_updated: "2026-08-28"
   author: "xiii_1991"
   license: "MIT"
 ---
@@ -39,6 +39,13 @@ metadata:
 **Rehearsal = dropping the author identity and walking the full "first contact → understanding → decision" chain from another perspective.**
 
 It is independent of the carrier — you can rehearse documents, code, UI flows, API designs, instruction sets, or any deliverable. It is also not limited to a particular reader — the reader can be an AI model, a real person, a student, a customer, a new colleague.
+
+## Delegate or continue reading
+
+Decide before reading further:
+
+- **Simple, quick rehearsal** — if you only need a fast sanity check over a deliverable, delegate it to a subagent: have the subagent load this skill and run the rehearsal. You do not need to read the rest of this skill.
+- **Complex material or comprehensive coverage** — if the rehearsal material is complex, or you want full coverage and rigorous evaluation, continue reading and follow the full process below.
 
 ## Why it works
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+
+## [2.0.3] - 2026-08-28
+
+非功能调整（Patch）：委托指令的表达方式修正——「不重复加载技能」的委托指导从 description 迁入 SKILL.md 正文，改为按推演轻重分流的「Delegate or continue reading」路由节；description 保持纯匹配面，不承载执行层指令。
+
+### Changed
+
+- SKILL.md 正文新增「Delegate or continue reading」路由节（位于「What this is」之后）：简单快速的推演检查委托子代理执行、主 agent 读到此节即可停止；材料复杂或需全面覆盖、严谨评估时继续阅读完整流程
+- description 维持测试定型的五个匹配元素，不承载委托/加载类执行指令
+- SKILL-DESIGN 新增「委托路由：轻推演交给子代理，重推演自己读」设计决策，锚定 description 不承载执行指令、路由位于正文前部两条不变量
+
 ## [2.0.2] - 2026-08-23
 
 非功能调整（Patch）：SKILL.md 全量英文化——叙述语言改英文，description 保留中英双触发词（含中文自问路径）；实质内容与中文原版逐节对照一致；修复翻译残留（description 中 `(English: …)` 冗余括号删除、自问短语改中英双语）。
