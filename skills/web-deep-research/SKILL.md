@@ -1,14 +1,14 @@
 ---
 name: web-deep-research
 description: >-
-  Deep research: topic-setting (Phase 0) → clue starting points (Phase 1) →
-  clue-chain tracing (Phase 2, no judgment) → cross-reference by
-  information type (Phase 3: facts→confidence, knowledge→combination,
-  opinions→disputes, data→methodology, experience→transferability) →
-  deliver report with sources independent of conclusions (Phase 4).
-  Use when thorough investigation matters more than speed.
+  Deep research (深度调研): systematically investigate a topic and get to the
+  truth when a quick search isn't enough — chase clues, cross-check by source
+  type, deliver a report whose sources stand independent of conclusions.
+  Use when the user wants a topic researched thoroughly (「深度调研 / 查透 /
+  彻底了解 / 深挖」) or when the agent judges something worth digging into in
+  depth. Overkill for simple fact lookups.
 metadata:
-  version: "2.5.0"
+  version: "2.5.1"
   last_updated: "2026-08-23"
   author: "Ĉalio"
 ---

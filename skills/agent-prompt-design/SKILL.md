@@ -1,29 +1,15 @@
 ---
 name: agent-prompt-design
 description: |
-  Methodology for designing Agent system prompts — covering the full
-  pipeline: structure design, content writing, tool protocols, safety
-  hardening, and operations management.
-
-  **When to trigger**:
-  - The user asks for a system prompt / an Agent instruction set / prompt
-    design for an agent — e.g. 「帮我写个系统提示词 / 这个 agent 需要什么指令 /
-    设计 agent 的 prompt」, or "write a system prompt" / "what instructions
-    does this agent need"
-  - Designing an Agent system prompt from scratch
-  - Diagnosing behavioral problems in an existing Agent (instruction
-    conflicts, tool overload, security holes)
-  - Hardening an Agent's security boundary for production
-  - Discussing prompt engineering or agent instruction best practices
-
-  **When NOT to trigger**:
-  - Writing ordinary one-off prompts (not persistent Agent instructions) —
-    the full methodology is overkill
-  - Creating a new Skill package — use skill-creator
-  - Pure code implementation problems — this skill covers prompt text design
+  Design Agent system prompts (系统提示词 / agent prompt): structure, content
+  writing, tool protocols, safety hardening, operations. Use when the user
+  asks for a system prompt or an Agent instruction set — 「帮我写系统提示词 /
+  这个 agent 需要什么指令 / 设计 agent 的 prompt」/ "write a system prompt" —
+  or wants an existing Agent's instruction conflicts, tool overload, or
+  security holes diagnosed. Not for ordinary one-off prompts.
 
 metadata:
-  version: "1.0.3"
+  version: "1.0.4"
   last_updated: "2026-08-23"
   author: "Ĉalio"
 ---

@@ -1,3 +1,11 @@
+## [2.5.1] - 2026-08-28
+
+非功能调整（Patch）：description 补中英双触发面——核心名含中文「深度调研」、when-to-use 自然措辞（用户问法「查透 / 彻底了解 / 深挖」+ agent 自问「是否值得深挖」），删方法论阶段名（Phase 0-4、clue-chain 等转正文）；修复纯英文方法论描述导致的漏触发。SKILL-DESIGN 记录补中文面决策。
+
+### Changed
+
+- description 从纯英文方法论阶段描述改写为中英双触发面；反向限一条（Overkill for simple fact lookups，对应「不是快速查询」边界）
+
 ## [2.5.0] - 2026-08-23
 
 ### Added

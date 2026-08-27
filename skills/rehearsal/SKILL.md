@@ -1,32 +1,17 @@
 ---
 name: rehearsal
 description: |
-  Rehearsal (推演): a method of reading a deliverable from the reader's
-  perspective to check it.
+  Rehearsal (推演): check a deliverable from the reader's first-contact
+  perspective to find where others would get stuck. For anything made to be
+  read or used by others — documents, prompts, plans, API/UI designs,
+  tutorials, knowledge bases, instruction sets.
 
-  Applies to any deliverable made for others to read / use:
-  - Documents, tutorials, guides, READMEs, plan documents
-  - System prompts, Agent instructions, task instructions, prompt templates
-  - API designs, UI interaction flows, CLI command series, forms, operation manuals
-  - Knowledge bases, teaching materials, code examples, rule sets
-
-  **Triggers** (any one suffices):
-  - The user says any of the following about a deliverable (Chinese or English):
-    「推演 / rehearsal / 通读 / 验一下 / 检查 / 确保理解 / 充分理解 / 不误解 /
-    能不能走通 / 卡住 / 看不懂 / 新人会不会卡 / 过一遍 / 走一遍 /
-    模拟接收方视角 / simulate a reader / first-contact / dry-run /
-    walk through / sanity-check / verify for a newcomer / will users get stuck」
-  - Right after producing any of the deliverables above, asking yourself
-    「能不能被没有上下文的人读懂 / 交付出去会不会卡住 / 我自己看不出问题但别人会卡在哪」,
-    or "can a newcomer follow this / will readers get stuck / what will others
-    get stuck on that I can't see"
-  - After producing anything meant for others to read / use, rehearsing it
-    before delivery (not limited to the list above — applies to any final
-    deliverable for others)
-
-  Does NOT trigger for typo/punctuation/format-only fixes.
+  Triggers: user says 「推演 / 通读 / 验一下 / 检查 / 过一遍 / 能不能走通 / 新人
+  会不会卡」; or after producing something, agent asks itself 「别人会不会卡住 /
+  能不能被没上下文的人读懂 / will readers get stuck / can a newcomer follow this」.
+  Not for typo/punctuation/format-only fixes.
 metadata:
-  version: "2.0.3"
+  version: "2.0.4"
   last_updated: "2026-08-28"
   author: "xiii_1991"
   license: "MIT"
