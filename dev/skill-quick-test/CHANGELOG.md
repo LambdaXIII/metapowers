@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0] — 2026-08-28
+
+### Added
+- **触发效果检查（trigger-check.md）**：新增补充说明 reference，在现有测试框架内定义「触发测试单元」——测技能 description 在真实触发场景下能否被选中。盲测设计：技能池（大量真实+编造技能，仅 name+description）+ 真实业务诉求场景（触发源而非触发词），子代理自由决定加载哪个，测试者不预设答案；红绿预期（正场景预期加载/反场景预期不加载）仅作测试者评估对照、不进入子代理 context；支持多份技能池对比某次 description 改动的影响。不新增执行路径——触发测试单元复用主框架的场景设计、委派与汇总，随主流程评估。补齐正文测试（起点在「已触发」之后）的触发环节缺口
+
+### Fixed
+- **流程图替换**：SKILL.md Flow overview 两块重复且围栏破损的 ASCII 图替换为单张 mermaid 流程图（覆盖覆盖闸门、Light/Full 模式判定、致命检查三分支）
+- **工具名描述化**：全量去除旧 harness 具体工具名（delegate_task / read_file / write_file / skill_view / web_search 等），改为能力描述——符合 AGENTS.md §4.5「不假设环境状态、不硬编码工具名」；v1.4.3 的「delegate_task / task」双写是补丁，本次根治
+- **Persona 残留清理**：scoring-rubric.md 评分标准与加权方案去 Persona（v1.3.0 声称移除但遗漏此文件），评分视角统一为 Agent；加权方案锚点从 Persona 改为使用场景维度（需求明确度/目标类型/背景上下文）
+- **术语统一**：scenario-design.md 内部「任务明确度」统一为「需求明确度」（与 execution-light.md、场景卡片一致）；test-plan.md 值域同步主流程（需求明确度 [精确/抽象/模糊]、背景上下文 [裸/半知/全知]）
+- **示例修正**：summary-report.md baseline 单元编号 U3 → U2（场景设计固定 U1 主测试 / U2 baseline），矩阵与对比节语义对齐（baseline 单元表现更差）
+- **推演检查修正**：SKILL.md Step details 表中 Coverage check / Error patterns 两行顺序与 mermaid 流程及 scenario-design.md「覆盖闸门（步骤 2-6 全部完成后）」矛盾，已调换为 Error patterns → Coverage check 并对齐 Input
+
 ## [1.4.5] — 2026-08-23
 
 ### Changed

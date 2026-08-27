@@ -2,8 +2,8 @@
 name: skill-quick-test
 description: Quickly test a skill's usability by parallel rehearsal with sub-agents — verifying that an Agent can correctly understand the skill, walk through its flow, and complete tasks in different usage scenarios. Complements skill-creator's functional testing; does not replace it. 通过子代理并行推演（parallel rehearsal）快速测试技能可用性——验证 Agent 能否理解技能、走通流程、完成任务。触发：「推演 / 测试 / 验一下 / 快速验证 / 走通」一个技能。
 metadata:
-  version: "1.4.5"
-  last_updated: "2026-08-23"
+  version: "1.5.0"
+  last_updated: "2026-08-28"
   author: "Ĉalio"
 ---
 
@@ -11,7 +11,7 @@ metadata:
 
 Quickly test a skill's usability by **parallel rehearsal with sub-agents**.
 
-> **Prerequisite:** the runtime must support sub-agent delegation (`delegate_task`). If the current environment lacks this capability, this skill cannot be used.
+> **Prerequisite:** the runtime must support sub-agent delegation. If the current environment lacks this capability, this skill cannot be used.
 
 ---
 
@@ -34,13 +34,21 @@ Quickly test a skill's usability by **parallel rehearsal with sub-agents**.
 
 ## Flow overview
 
-                                             │                          │               │
-                    steps 1-5 coverage all pass      Light: complex <2 & total <5  ≥2 aborts → terminate
-                    step 6 error-pattern check      Full:  complex ≥2 or total ≥5  otherwise → summarize
-```
-                            │                            │                 │
-                   steps 1-5 coverage all pass     Light: complex <2 & total <5  ≥2 aborts → terminate
-                   step 6 error-pattern check     Full:  complex ≥2 or total ≥5  otherwise → summarize
+```mermaid
+flowchart TD
+    A[Analyze scope] --> B[Design scenarios<br>steps 2-5]
+    B --> C[Error-pattern check<br>step 6]
+    C --> D{Coverage gate<br>steps 2-6 all pass?}
+    D -->|fail| B
+    D -->|pass| E[User confirmation]
+    E -->|revise| B
+    E -->|approve| F{Mode}
+    F -->|Light: complex <2 & total <5| G[Execute Light]
+    F -->|Full: complex ≥2 or total ≥5| H[Execute Full]
+    G --> I{Fatal check}
+    H --> I
+    I -->|≥2 aborts| J[Terminate round]
+    I -->|otherwise| K[Summarize]
 ```
 
 **Step details:**
@@ -49,8 +57,8 @@ Quickly test a skill's usability by **parallel rehearsal with sub-agents**.
 |------|-------|--------|-----------|
 | Analyze scope | The tested skill's SKILL.md | Functional domains, path set, decision points, capability boundaries | scope-analysis.md |
 | Design scenarios | Scope-analysis output | Equivalence-class combinations, boundary tests, end-to-end cases | scenario-design.md |
-| Coverage check | Scenario-design output | Coverage-standard check results item by item | scenario-design.md (per-step coverage standards) |
 | Error patterns | All files of the tested skill | Anti-pattern check results item by item | error-patterns.md |
+| Coverage check | Scenario-design + error-pattern results | Coverage-standard check results item by item | scenario-design.md (per-step coverage standards) |
 | User confirmation | Summary of all of the above | Test-case list + user approval/revision | — |
 | Execute | Scenario cards + context template | Sub-agent rehearsal reports | execution-light/full.md |
 | Fatal check | Sub-agent return values | Continue / abort this round | execution-light.md |
@@ -85,7 +93,7 @@ The sub-agent receives only: usage-scenario description + entry path + goal + lo
 
 ### 🔧 Loading rules (tool constraints)
 
-Sub-agents **must** read all files of the tested skill with `read_file`. **Forbidden** to use `skill_view` on the tested skill.
+Sub-agents **must** read all files of the tested skill via the file-reading capability, using file paths from the tested skill's own layout. **Forbidden** to load the tested skill through the skill-loading mechanism — that would fetch the installed runtime version, not the tested files.
 
 The rehearsal guide is embedded in the context template (empty-start → follow step by step → boundary probing), and does not depend on any external skill.
 
@@ -95,9 +103,9 @@ For **external capabilities** referenced by the tested skill, test sub-agents do
 
 | Capability type | Trigger scenario | Simulation |
 |-----------------|-----------------|------------|
-| Sub-agent delegation | `delegate_task` / `task` | Play the delegated role and continue the rehearsal toward the goal |
-| Tool invocation | `bash`, `eval`, `browser`, etc. | Read tool intent and arguments → rehearse plausible results from the scenario |
-| Script execution | `scripts/*.py` etc. | Read script source → rehearse the logical output (no actual run) |
+| Sub-agent delegation | The tested skill instructs delegating to sub-agents | Play the delegated role and continue the rehearsal toward the goal |
+| Tool invocation | The tested skill instructs invoking tools | Read tool intent and arguments → rehearse plausible results from the scenario |
+| Script execution | The tested skill ships executable scripts | Read script source → rehearse the logical output (no actual run) |
 
 Mark uniformly in path tracing: `[能力模拟] [委派/工具/脚本] → 动作描述 → 推演结果`（协议字面量，与 references 模板一致，不翻译）
 
@@ -143,6 +151,7 @@ Each step produces both design actions and the corresponding coverage standard. 
 | Full execution | references/execution-full.md | Full-mode directory structure, plan gate, report management |
 | Summarization | references/summarization.md | Step 0 fatal check → per-scenario comparison → multi-unit comparison → defect dedup → global scoring |
 | Scoring rubric | references/scoring-rubric.md | Five-dimension scoring system (optional, executed by main agent after summarization) |
+| Trigger check | references/trigger-check.md | Supplement: defines a trigger-test unit within the existing framework — real-scenario description trigger effect, red/green expectations, multi-pool comparison |
 
 ## Template index
 
