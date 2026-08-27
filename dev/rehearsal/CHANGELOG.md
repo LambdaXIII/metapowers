@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
+## [2.0.4] - 2026-08-28
+
+非功能调整（Patch）：description 收敛——触发词穷举精简为高频代表、载体列举逐项概括，保留中英双名/载体列举/双路径触发/反向一条五构成元素（SKILL-DESIGN 不变量未破）；降遮蔽 + 省常驻上下文。8 话题触发对比测试 16/16 命中零退化。
+
+### Changed
+
+- description 触发词 20+ 穷举 → 高频代表（推演/通读/验一下/检查/过一遍/能不能走通/新人会不会卡 + agent 自问中英双面）；载体列举 7 项逐项 → 概括（documents/prompts/plans/API-UI designs/tutorials/knowledge bases/instruction sets）
+
 ## [2.0.3] - 2026-08-28
 
 非功能调整（Patch）：委托指令的表达方式修正——「不重复加载技能」的委托指导从 description 迁入 SKILL.md 正文，改为按推演轻重分流的「Delegate or continue reading」路由节；description 保持纯匹配面，不承载执行层指令。

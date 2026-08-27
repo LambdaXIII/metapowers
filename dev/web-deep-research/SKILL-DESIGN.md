@@ -119,5 +119,6 @@
 
 ## 措辞风格约定
 
-- **SKILL.md 用英文编写**（2026-08-23 定）：技能入口保持英文（原已是英文），Content Index 中文残留清理完毕；description 目前纯英文（pre-existing，待评估是否补中文触发面）；references/ 仍为中文，SKILL.md 是唯一英文入口（过渡态）
+- **SKILL.md 用英文编写**（2026-08-23 定）：技能入口保持英文（原已是英文），Content Index 中文残留清理完毕；description 已补中文触发面（2026-08-28 定，见下条）；references/ 仍为中文，SKILL.md 是唯一英文入口（过渡态）
+- **description 补中英双触发面**（2026-08-28 定）：核心名含中文面「深度调研」；when-to-use 用自然措辞（用户问法「查透 / 彻底了解 / 深挖」+ agent 自问「是否值得深挖」）；反向限一条（simple fact lookups，对应「不是快速查询」边界）；**description 不承载方法论流程名**（Phase 0-4、clue-chain 等只作正文流程名，不占匹配面）——理由：description 是选择层非方法层，纯方法论名词不产生触发信号；纯英文方法论描述曾致该技能漏触发（2026-08-28 实测）
 - **零跨技能引用**：技能不硬编码指向其他技能名——边界判断自足表述（§4.5 技能无硬性依赖）；SKILL.md 中曾出现的 `web-search-protocol` 为悬空引用（技能不存在），已清除
