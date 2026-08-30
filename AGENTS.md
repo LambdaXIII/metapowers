@@ -28,6 +28,7 @@ metapowers/
 │       └── scripts/
 ├── docs/
 │   └── agents/                   # Agent 技能设施契约（见 §7）
+├── skills.sh.json                # skills.sh 仓库页分组配置（见 §3.3）
 └── AGENTS.md                     # 本文件
 ```
 
@@ -220,7 +221,15 @@ metapowers/
    git merge dev --no-ff
    ```
 
-### 3.3 新建技能
+### 3.3 skills.sh 分组配置（🔧 metapowers 追加）
+
+`skills.sh.json`（仓库根）控制 metapowers 在 [skills.sh](https://skills.sh) 仓库页上的技能分组展示。它只影响站点页面展示，不改变 `skills` CLI 的安装逻辑、不改任何 SKILL.md 内容。
+
+- **新增技能时**：在发布前向用户确认该技能是否进入 skills.sh 分组、进入哪个分组；确认后同步更新 `skills.sh.json`。
+- **默认不入组**：除非用户明确要求，否则新技能不写入任何分组（落入未分组区）。
+- **不强行归组**：不擅自为技能创建新分组；用户明确要求时才将其纳入分组或另立分组。
+
+### 3.4 新建技能
 
 新建技能时，建议按以下顺序推进——这是引导性流程，非硬性工作流：
 
@@ -235,7 +244,7 @@ metapowers/
    ```
 4. 在项目 README 中新建对应条目
 
-### 3.4 Issue 追踪（GitHub）
+### 3.5 Issue 追踪（GitHub）
 
 - 使用/审查技能时发现的问题（bug、歧义、改进点），**当场提交 GitHub issue**——问题描述与定位（`dev/<skill>/` 内文件与节）一步完成，不再另行记观察笔记、待维护时重新解读
 - 外部用户的技能反馈同样经 GitHub issue 流入，triage 整理（详见 `docs/agents/triage-labels.md`）
