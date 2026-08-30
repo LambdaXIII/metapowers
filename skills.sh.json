@@ -1,0 +1,18 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "metapowers",
+      "description": "Production-grade agent skills and the engineering standards behind them.",
+      "skills": [
+        "agent-prompt-design",
+        "skill-quick-test",
+        "skill-exposition",
+        "web-deep-research",
+        "rehearsal",
+        "journaling"
+      ]
+    }
+  ]
+}
