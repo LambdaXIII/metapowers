@@ -11,8 +11,8 @@ description: |
   能不能被没上下文的人读懂 / will readers get stuck / can a newcomer follow this」.
   Not for typo/punctuation/format-only fixes.
 metadata:
-  version: "2.0.4"
-  last_updated: "2026-08-28"
+  version: "2.1.0"
+  last_updated: "2026-09-02"
   author: "xiii_1991"
   license: "MIT"
 ---
