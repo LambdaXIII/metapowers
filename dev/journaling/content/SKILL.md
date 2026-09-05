@@ -14,7 +14,7 @@ description: |
   Write operations include: 创建/写入/编辑/移动/归档/删除 journal 条目、
   维护/整理 journal、将讨论中确认的设计决策写入 journal 文件。
 metadata:
-  version: "5.0.3"
+  version: "5.0.4"
   last_updated: "2026-08-23"
 ---
 
