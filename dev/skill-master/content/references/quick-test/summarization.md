@@ -1,6 +1,6 @@
 # 汇总评估
 
-> 📍 本文件是 skill-quick-test skill 的参考文件。主入口和决策树请见 SKILL.md。
+> 📍 本文件是 skill-master 技能的参考文件。工作论述与主入口见 [skill-quick-test](../skill-quick-test.md)。
 
 所有测试单元执行完毕后，主代理汇总分析。Light 和 Full 模式使用同一流程，区别仅在于数据来源。
 
@@ -95,4 +95,4 @@
 
 ---
 
-返回主入口 → [SKILL.md](../SKILL.md)
+返回测试册 → [skill-quick-test](../skill-quick-test.md)

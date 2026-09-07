@@ -3,12 +3,13 @@ name: skill-master
 description: |
   Skill master (技能编写): for work on agent skills — deciding whether a
   practice is worth making into one, how to organize and word it, why one
-  misbehaves, whether one is good enough. Use when asked to design, write,
-  modify, review, or troubleshoot a skill, or when an agent asks
+  misbehaves, whether one is good enough, and whether an agent can actually
+  use it. Use when asked to design, write, modify, review, troubleshoot, or
+  quickly test (推演 / 验一下 / 走通) a skill, or when an agent asks
   「这个技能别人能不能照着做完」. Not for rewriting skill content as prose.
 metadata:
-  version: "0.3.0"
-  last_updated: "2026-09-07"
+  version: "1.0.0"
+  last_updated: "2026-09-08"
   author: "LambdaXIII"
   license: "MIT"
 ---
@@ -16,7 +17,7 @@ metadata:
 # Skill Master
 
 
-Skill Master is the method for making skills: turning a practice into one, repairing one that misbehaves, judging one that already exists, and writing the text any of that needs.
+Skill Master is the method for making skills: turning a practice into one, repairing one that misbehaves, judging one that already exists, checking one can actually be used, and writing the text any of that needs.
 
 It is not a template to fill in and not a checklist to run. What it carries is the reasoning behind the choices — what belongs in a skill at all, which file a piece of content goes into, why a sentence should be cut. Read the part that matches what you are holding. Every file here is written to be read once, cold, by an agent with nothing else in hand.
 
@@ -51,13 +52,13 @@ Start from what is in your hands.
 
 **You need a verdict on a skill that already exists.** Finding what is wrong means setting what the skill claims against what it actually does, and against which file each rule is authoritative in. The output is a defect list, each item with a location and a reason. → [Finding what is wrong with a skill](references/skill-review.md)
 
-**A skill misbehaves — it does not trigger, it triggers on the wrong tasks, its output is off.** Not a fourth kind of work. Tracing a symptom back down the trigger chain is the fast form of finding what is wrong; the repair that trace recommends is then a modification job. → [Finding what is wrong with a skill](references/skill-review.md)
+**A skill misbehaves — it does not trigger, it triggers on the wrong tasks, its output is off.** Symptom tracing is the fast path of review, not a work of its own: trace the symptom back down the trigger chain, and the repair it points to is a modification job. → [Finding what is wrong with a skill](references/skill-review.md)
 
-**You want to know whether a skill works, not whether it reads well.** That judgement belongs to design, not to review. Review is a static read of the text. A walkthrough gives a cold agent the documents and a real task and watches where it stalls. The two answer different questions — is it right, versus is it enough. Where a walkthrough stalls is often a specific defect class showing through, which makes it usable as an input to finding what is wrong. → [Designing a skill](references/skill-design.md)
+**You want to know whether a skill actually works — whether a cold agent can understand it, walk its flow, and finish the task.** That is its own work: quick testing. It does not execute the skill — sub-agents rehearse "if I followed this guidance, what would happen" and report where they stall. It judges *is it enough*, not *is it right* — that division belongs to review. Where a rehearsal stalls is often a specific defect class showing through, so the output doubles as a modification job list. → [Quick-testing a skill](references/skill-quick-test.md)
 
 **You are writing or rewriting the entry file itself** — the one file every match pays for in full, the one that decides whether the rest is ever reached. → [Writing the entry file](references/documents/skill-md-writing.md)
 
-**You are writing or rewriting skill text.** Any of the three kinds of work puts you here. Sentence-level and structure-level craft, shared by every file form. → [Writing skill text](references/documents/writing-craft.md)
+**You are writing or rewriting skill text.** Any of the four kinds of work puts you here. Sentence-level and structure-level craft, shared by every file form. → [Writing skill text](references/documents/writing-craft.md)
 
 By the kind of thing you are writing:
 
@@ -69,11 +70,12 @@ By the kind of thing you are writing:
 
 Two more, entered by need rather than by situation:
 
-- **Where a piece of content goes, how the directories are layered, what to check before delivery.** → [Organizing a skill's structure](references/general/standards.md)
+- **How to structure a skill's files — where a piece of content goes, how the layers and references are organized.** → [Designing a skill's structure](references/general/structure.md)
+- **What the open standard and the runtime environment require, and how to verify compliance before delivery.** → [Keeping a skill package compliant](references/general/standards.md)
 - **Naming, `description`, trigger surface — anything about getting matched rather than being good once loaded.** → [Getting a skill matched](references/general/disclosure.md)
 
 ## Not this skill
 
 - Rewriting skill content as prose for people to read. Exposition, not skill work.
-- Running a skill to see whether it executes. That is test work; review reads text and does not load or execute the skill under judgement.
+- Actually executing a skill's functions to see whether they run. Quick testing here rehearses without executing; running a skill on real targets is outside this skill.
 - Typos, punctuation, and formatting on their own. Not one of the kinds of work above.

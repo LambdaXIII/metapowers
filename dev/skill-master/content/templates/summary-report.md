@@ -1,6 +1,6 @@
 # 汇总报告
 
-> 📍 本模板是 [skill-quick-test skill](../SKILL.md) 的模板文件。
+> 📍 本模板是 skill-master 技能的模板文件（快速测试工作使用）。
 
 ---
 

@@ -1,6 +1,6 @@
 # 五维打分标准
 
-> 📍 本文件是 [skill-quick-test skill](../SKILL.md) 的参考文件。主入口和决策树请见 SKILL.md。
+> 📍 本文件是 skill-master 技能的参考文件。工作论述与主入口见 [skill-quick-test](../skill-quick-test.md)。
 
 ---
 
@@ -123,4 +123,4 @@ Skill 是否覆盖了其声称支持的所有场景？
 本文件由 [summarization.md](summarization.md) 步骤 5 调用，不是独立流程阶段。
 打分完成后，流程回到汇总报告的输出环节。
 
-返回主入口 → [SKILL.md](../SKILL.md)
+返回测试册 → [skill-quick-test](../skill-quick-test.md)

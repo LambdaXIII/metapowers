@@ -54,7 +54,6 @@ npx skills add LambdaXIII/metapowers -g # 推荐全局安装
 
 ```bash
 npx skills add LambdaXIII/metapowers --skill agent-prompt-design
-npx skills add LambdaXIII/metapowers --skill skill-quick-test
 npx skills add LambdaXIII/metapowers --skill skill-exposition
 npx skills add LambdaXIII/metapowers --skill web-deep-research
 npx skills add LambdaXIII/metapowers --skill web-entity-search
@@ -67,10 +66,6 @@ npx skills add LambdaXIII/metapowers --skill journaling
 ### agent-prompt-design
 
 Agent 系统提示词设计方法论。覆盖结构设计、内容编写、工具协议、安全加固到运营管理。特色：安全视为设计起点；推理模型时代（2026）专项策略；十大反模式诊断体系。
-
-### skill-quick-test
-
-通过子代理并行推演快速验证技能可用性。ISTQB 六步测试设计 + 能力模拟 + 隔离铁律。
 
 ### skill-exposition
 
@@ -90,7 +85,7 @@ Agent 长期记忆的笔记本系统。结构化笔记 + 维护协议 + 渐进�
 
 ### skill-master（开发中）
 
-设计、构建、迭代 agent 技能的元技能。metapowers 自身技能开发方法论的产品化承载者。
+设计、修改、审查、快速测试 agent 技能的全功能元技能。metapowers 自身技能开发方法论的产品化承载者。
 
 ---
 

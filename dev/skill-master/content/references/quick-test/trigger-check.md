@@ -1,6 +1,6 @@
 # 触发效果检查（Trigger Check）
 
-> 📍 本文件是 skill-quick-test skill 的参考文件。主入口和决策树请见 SKILL.md。
+> 📍 本文件是 skill-master 技能的参考文件。工作论述与主入口见 [skill-quick-test](../skill-quick-test.md)。
 
 ---
 
@@ -101,4 +101,4 @@
 
 ---
 
-返回主入口 → [SKILL.md](../SKILL.md)
+返回测试册 → [skill-quick-test](../skill-quick-test.md)

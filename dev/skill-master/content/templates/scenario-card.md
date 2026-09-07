@@ -1,13 +1,13 @@
 # 场景卡片模板
 
-> 📍 本模板是 skill-quick-test skill 的模板文件。
+> 📍 本模板是 skill-master 技能的模板文件（快速测试工作使用）。
 
 ---
 
 ## 用途
 
 定义子代理的报告输出格式。主代理据此解析子代理返回的测试结论。
-子代理的 context 模板见 [execution-light.md](../references/execution-light.md)。
+子代理的 context 模板见 [execution-light.md](../references/quick-test/execution-light.md)。
 
 ---
 

@@ -54,7 +54,6 @@ Or install individual skills:
 
 ```bash
 npx skills add LambdaXIII/metapowers --skill agent-prompt-design
-npx skills add LambdaXIII/metapowers --skill skill-quick-test
 npx skills add LambdaXIII/metapowers --skill skill-exposition
 npx skills add LambdaXIII/metapowers --skill web-deep-research
 npx skills add LambdaXIII/metapowers --skill web-entity-search
@@ -68,10 +67,6 @@ npx skills add LambdaXIII/metapowers --skill journaling
 ### agent-prompt-design
 
 A methodology for designing agent system prompts. Covers structure design, content writing, tool protocols, security hardening, and operations. Highlights: security as a design starting point; reasoning-model era (2026) strategies; a ten-anti-pattern diagnostic system.
-
-### skill-quick-test
-
-Rapid skill validation through parallel sub-agent reasoning. ISTQB six-step test design + capability simulation + strict isolation discipline.
 
 ### skill-exposition
 

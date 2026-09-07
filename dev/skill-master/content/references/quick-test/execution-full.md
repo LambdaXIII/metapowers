@@ -1,6 +1,6 @@
 # Full 模式执行
 
-> 📍 本文件是 skill-quick-test skill 的参考文件。
+> 📍 本文件是 skill-master 技能的参考文件。工作论述与主入口见 [skill-quick-test](../skill-quick-test.md)。
 
 ---
 
@@ -89,4 +89,4 @@ Light 模式 context 中的 `约束: 禁止写入任何文件。所有发现通�
 
 ---
 
-返回主入口 → [SKILL.md](../SKILL.md)
+返回测试册 → [skill-quick-test](../skill-quick-test.md)
