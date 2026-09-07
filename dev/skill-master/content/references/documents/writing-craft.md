@@ -2,7 +2,7 @@
 
 一句技能文字留在正文里的唯一理由，是它改变了读者的行为。删掉它，读者会怎么做——这个问句是下面每一条的源头。
 
-形态特有的组织方法归[论述型](essay-writing.md)、[工作流型](workflow-writing.md)、[模板](template-writing.md)、[脚本](../scripts/scripting-craft.md)各册；本册收跨形态通用的手艺，对 SKILL.md、参考文档、模板、脚本说明一视同仁。
+形态特有的组织方法归[入口文件](skill-md-writing.md)、[论述型](essay-writing.md)、[工作流型](workflow-writing.md)、[模板](template-writing.md)、[脚本](../scripts/scripting-craft.md)各册；本册收跨形态通用的手艺，对 SKILL.md、参考文档、模板、脚本说明一视同仁。
 
 ## 一句文字凭什么留下来
 
@@ -65,5 +65,5 @@
 
 ## 边界
 
-- 落地执行不在本册：按这些标准改既有技能文字属[修改工作](../skill-modify.md)，按这些标准评判既有技能属[审查工作](../skill-review.md)。
-- 句子之上的组织问题归形态各册——[论述型](essay-writing.md)、[工作流型](workflow-writing.md)、[模板](template-writing.md)；脚本成品见[脚本编写手艺](../scripts/scripting-craft.md)。打磨具体句子、判断某个措辞是否合格，回本册。
+- 落地执行不在本册：按这些标准改既有技能文字属[修改工作](../skill-modify.md)，按这些标准评判既有技能属[找出一个技能的问题](../skill-review.md)。
+- 句子之上的组织问题归形态各册——[入口文件](skill-md-writing.md)、[论述型](essay-writing.md)、[工作流型](workflow-writing.md)、[模板](template-writing.md)；脚本成品见[脚本编写手艺](../scripts/scripting-craft.md)。打磨具体句子、判断某个措辞是否合格，回本册。

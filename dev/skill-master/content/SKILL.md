@@ -7,7 +7,7 @@ description: |
   modify, review, or troubleshoot a skill, or when an agent asks
   「这个技能别人能不能照着做完」. Not for rewriting skill content as prose.
 metadata:
-  version: "0.2.0"
+  version: "0.3.0"
   last_updated: "2026-09-07"
   author: "LambdaXIII"
   license: "MIT"
@@ -49,11 +49,13 @@ Start from what is in your hands.
 
 **A skill exists, something in it needs to change, and the change fits inside the structure already there.** Modification is not a small design. Its own problem is that every edit travels: along reference chains, across layers, into places the edit never named. → [Modifying a skill](references/skill-modify.md)
 
-**You need a verdict on a skill that already exists.** Review reads the text dimension by dimension and produces a defect list, each item with a location and a reason. → [Reviewing a skill](references/skill-review.md)
+**You need a verdict on a skill that already exists.** Finding what is wrong means setting what the skill claims against what it actually does, and against which file each rule is authoritative in. The output is a defect list, each item with a location and a reason. → [Finding what is wrong with a skill](references/skill-review.md)
 
-**A skill misbehaves — it does not trigger, it triggers on the wrong tasks, its output is off.** Not a fourth kind of work. Tracing a symptom back to its cause is the second input shape of review; the repair that trace recommends is then a modification job. → [Reviewing a skill](references/skill-review.md)
+**A skill misbehaves — it does not trigger, it triggers on the wrong tasks, its output is off.** Not a fourth kind of work. Tracing a symptom back down the trigger chain is the fast form of finding what is wrong; the repair that trace recommends is then a modification job. → [Finding what is wrong with a skill](references/skill-review.md)
 
-**You want to know whether a skill works, not whether it reads well.** That judgement belongs to design, not to review. Review is a static read of the text. A walkthrough gives a cold agent the documents and a real task and watches where it stalls. The two answer different questions — is it right, versus is it enough. Where a walkthrough stalls is often a specific dimension failing, which makes it usable as an input to review. → [Designing a skill](references/skill-design.md)
+**You want to know whether a skill works, not whether it reads well.** That judgement belongs to design, not to review. Review is a static read of the text. A walkthrough gives a cold agent the documents and a real task and watches where it stalls. The two answer different questions — is it right, versus is it enough. Where a walkthrough stalls is often a specific defect class showing through, which makes it usable as an input to finding what is wrong. → [Designing a skill](references/skill-design.md)
+
+**You are writing or rewriting the entry file itself** — the one file every match pays for in full, the one that decides whether the rest is ever reached. → [Writing the entry file](references/documents/skill-md-writing.md)
 
 **You are writing or rewriting skill text.** Any of the three kinds of work puts you here. Sentence-level and structure-level craft, shared by every file form. → [Writing skill text](references/documents/writing-craft.md)
 
@@ -67,30 +69,11 @@ By the kind of thing you are writing:
 
 Two more, entered by need rather than by situation:
 
-- **Directory layout, frontmatter, machine validation before delivery.** → [Packing a skill](references/general/standards.md)
-- **Naming, `description`, trigger surface — anything about getting loaded rather than being good once loaded.** → [Designing disclosure](references/general/disclosure.md)
+- **Where a piece of content goes, how the directories are layered, what to check before delivery.** → [Organizing a skill's structure](references/general/standards.md)
+- **Naming, `description`, trigger surface — anything about getting matched rather than being good once loaded.** → [Getting a skill matched](references/general/disclosure.md)
 
 ## Not this skill
 
 - Rewriting skill content as prose for people to read. Exposition, not skill work.
 - Running a skill to see whether it executes. That is test work; review reads text and does not load or execute the skill under judgement.
 - Typos, punctuation, and formatting on their own. Not one of the kinds of work above.
-
-## Contents
-
-- `SKILL.md` — this file: what this is, how to use it, this index
-- `references/`
-  - [skill-design.md](references/skill-design.md) — designing a skill, end to end
-  - [skill-modify.md](references/skill-modify.md) — modifying a skill
-  - [skill-review.md](references/skill-review.md) — reviewing a skill, including symptom tracing
-  - `documents/` — writing text
-    - [writing-craft.md](references/documents/writing-craft.md) — craft shared by every form
-    - [essay-writing.md](references/documents/essay-writing.md) — essay form
-    - [workflow-writing.md](references/documents/workflow-writing.md) — workflow form
-    - [template-writing.md](references/documents/template-writing.md) — template form
-  - `scripts/` — writing code
-    - [script-design.md](references/scripts/script-design.md) — whether to script, and how to design one
-    - [scripting-craft.md](references/scripts/scripting-craft.md) — script craft
-  - `general/` — applies across kinds
-    - [standards.md](references/general/standards.md) — packing specification
-    - [disclosure.md](references/general/disclosure.md) — disclosure design
