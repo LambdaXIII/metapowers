@@ -1,19 +1,17 @@
 # 场景卡片模板
 
-> 📍 本模板是 skill-master 技能的模板文件（快速测试工作使用）。
-
 ---
 
 ## 用途
 
-定义子代理的报告输出格式。主代理据此解析子代理返回的测试结论。
-子代理的 context 模板见 [execution-light.md](../references/quick-test/execution-light.md)。
+定义子代理的报告输出格式，适用于**加载被测技能**的单元。主代理据此解析子代理返回的测试结论。
+baseline 单元的报告结构与此不同（决策路径/困惑犹豫/断裂点/与有技能时可能不同的地方），见 [execution-light.md](../references/quick-test/execution-light.md) 的 Baseline Context 模板。
 
 ---
 
 ## 报告格式（子代理使用）
 
-子代理按以下格式输出结论。正常完成用前五节，遇到致命障碍时用「推演中止」节替代。
+子代理按以下格式输出结论。格式共五节：正常完成输出前四节；遇到致命障碍时，用第 5 节「推演中止」替代全部正常节。
 
 ```markdown
 # 测试报告：[Scenario ID]-[Unit ID]

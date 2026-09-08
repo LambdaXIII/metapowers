@@ -1,7 +1,5 @@
 # Full 模式执行
 
-> 📍 本文件是 skill-master 技能的参考文件。工作论述与主入口见 [skill-quick-test](../skill-quick-test.md)。
-
 ---
 
 ## 适用条件
@@ -49,7 +47,7 @@
 
 ## 子代理委派格式
 
-Context 字段结构与 Light 模式相同（框架声明、硬约束、使用场景、模拟背景、入口路径、用户想达成什么、加载规则、推演指引、失败行为、能力模拟、禁止事项——全部见 `execution-light.md`），**但有一处覆盖**：
+Context 字段结构与 Light 模式相同（框架声明、硬约束、使用场景、模拟背景、入口路径、用户想达成什么、加载规则、推演指引、失败行为、能力模拟、禁止事项——全部见 `execution-light.md`），**但有一处替换**：
 
 Light 模式 context 中的 `约束: 禁止写入任何文件。所有发现通过返回值报告。` 在 Full 模式下**替换为**：
 
@@ -89,4 +87,4 @@ Light 模式 context 中的 `约束: 禁止写入任何文件。所有发现通�
 
 ---
 
-返回测试册 → [skill-quick-test](../skill-quick-test.md)
+所属工作 → [快速测试一个技能](../skill-quick-test.md)

@@ -19,7 +19,7 @@ metadata:
 
 Skill Master is the method for making skills: turning a practice into one, repairing one that misbehaves, judging one that already exists, checking one can actually be used, and writing the text any of that needs.
 
-It is not a template to fill in and not a checklist to run. What it carries is the reasoning behind the choices — what belongs in a skill at all, which file a piece of content goes into, why a sentence should be cut. Read the part that matches what you are holding. Every file here is written to be read once, cold, by an agent with nothing else in hand.
+It is not a template to fill in and not a checklist to run. What it carries is the reasoning behind the choices — what belongs in a skill at all, which file a piece of content goes into, why a sentence should be cut. Read the file that matches what you are holding. Every file here is written to be read once, cold, by an agent with nothing else in hand.
 
 ### What a skill is
 
@@ -35,10 +35,10 @@ Three consequences follow from that, and everything in this skill assumes them:
 
 Four tests, applied to every sentence and every file:
 
-- **Useful** — delete it and the reader behaves differently. If nothing changes, it is a no-op; cut it.
-- **Complete** — the branches and failure modes the reader will actually hit are covered. A cold reader who hits an uncovered case has nothing to fall back on.
-- **Accurate** — every claim traces to a mechanism or to practice. Skill text is used as authority, so a wrong claim becomes a wrong action and nobody re-checks it.
-- **Clear** — the reader has no one to ask. Ambiguity gets filled in silently, and a wrong fill-in is never reported.
+- **Useful（有用）** — delete it and the reader behaves differently. If nothing changes, it is a no-op; cut it.
+- **Complete（全面）** — the branches and failure modes the reader will actually hit are covered. A cold reader who hits an uncovered case has nothing to fall back on.
+- **Accurate（准确）** — every claim traces to a mechanism or to practice. Skill text is used as authority, so a wrong claim becomes a wrong action and nobody re-checks it.
+- **Clear（清晰）** — the reader has no one to ask. Ambiguity gets filled in silently, and a wrong fill-in is never reported.
 
 Review judges a skill by these four. A modification has failed if it breaks any of them.
 
@@ -50,7 +50,7 @@ Start from what is in your hands.
 
 **A skill exists, something in it needs to change, and the change fits inside the structure already there.** Modification is not a small design. Its own problem is that every edit travels: along reference chains, across layers, into places the edit never named. → [Modifying a skill](references/skill-modify.md)
 
-**You need a verdict on a skill that already exists.** Finding what is wrong means setting what the skill claims against what it actually does, and against which file each rule is authoritative in. The output is a defect list, each item with a location and a reason. → [Finding what is wrong with a skill](references/skill-review.md)
+**You need a verdict on a skill that already exists.** Finding what is wrong means setting what the skill claims against what it actually does. The output is a defect list, each item with a location and a reason. → [Finding what is wrong with a skill](references/skill-review.md)
 
 **A skill misbehaves — it does not trigger, it triggers on the wrong tasks, its output is off.** Symptom tracing is the fast path of review, not a work of its own: trace the symptom back down the trigger chain, and the repair it points to is a modification job. → [Finding what is wrong with a skill](references/skill-review.md)
 
@@ -68,7 +68,7 @@ By the kind of thing you are writing:
 - **You are weighing whether a piece of content should be a script at all.** "This skill needs a script" is a symptom, not a requirement: three different causes hide behind it and their fixes do not overlap. → [To script or not](references/scripts/script-design.md)
 - **You have decided it should be a script.** It runs where you cannot see it — interpreter version, dependencies, external commands, working directory, path separators, none of it assumable. → [Writing skill scripts](references/scripts/scripting-craft.md)
 
-Two more, entered by need rather than by situation:
+Entered by need rather than by situation:
 
 - **How to structure a skill's files — where a piece of content goes, how the layers and references are organized.** → [Designing a skill's structure](references/general/structure.md)
 - **What the open standard and the runtime environment require, and how to verify compliance before delivery.** → [Keeping a skill package compliant](references/general/standards.md)
