@@ -15,7 +15,7 @@ description: |
   维护/整理 journal、将讨论中确认的设计决策写入 journal 文件。
 metadata:
   version: "5.0.4"
-  last_updated: "2026-08-23"
+  last_updated: "2026-09-09"
 ---
 
 # Journaling

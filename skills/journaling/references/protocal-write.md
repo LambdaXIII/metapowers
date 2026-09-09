@@ -69,5 +69,4 @@ Content that fails all three (quick-test results, build logs, transient findings
 1. 直接将笔记写入一个临时目录
 2. 委派子代理读取RULES.md并按照规范整理，如提炼tags、放置笔记、更新INDEX等
 
-这样你就可以很快地继续工作，并且最小化对当前话题的干扰了。   
-
+这样你就可以很快地继续工作，并且最小化对当前话题的干扰了。
