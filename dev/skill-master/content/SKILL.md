@@ -1,15 +1,16 @@
 ---
 name: skill-master
 description: |
-  Skill master (技能编写): for work on agent skills — deciding whether a
-  practice is worth making into one, how to organize and word it, why one
-  misbehaves, whether one is good enough, and whether an agent can actually
-  use it. Use when asked to design, write, modify, review, troubleshoot, or
-  quickly test (推演 / 验一下 / 走通) a skill, or when an agent asks
-  「这个技能别人能不能照着做完」. Not for rewriting skill content as prose.
+  Skill master (技能): guidance for any work whose object is a skill —
+  making one from a practice, using and judging one, repairing one, or
+  choosing between them. Use when asked to design, write, modify, review,
+  troubleshoot, quickly test (推演 / 验一下 / 走通), or evaluate (评估 /
+  怎么样 / 哪个更好) a skill, or whenever a skill itself is the question.
+  An agent asks after building or using one: 「这个技能别人能不能照着做完」
+  「这个技能用下来帮没帮上忙」. Not for rewriting skill content as prose.
 metadata:
   version: "1.0.0"
-  last_updated: "2026-09-08"
+  last_updated: "2026-09-15"
   author: "LambdaXIII"
   license: "MIT"
 ---
@@ -17,7 +18,7 @@ metadata:
 # Skill Master
 
 
-Skill Master is the method for making skills: turning a practice into one, repairing one that misbehaves, judging one that already exists, checking one can actually be used, and writing the text any of that needs.
+Skill Master is the method for working on skills, from the maker's side and the user's: turning a practice into one, repairing one that misbehaves, finding what is wrong with one you maintain, deciding whether to use one you have not tried, checking a cold agent can actually use one, looking back on one you have just used, and writing the text any of that needs.
 
 It is not a template to fill in and not a checklist to run. What it carries is the reasoning behind the choices — what belongs in a skill at all, which file a piece of content goes into, why a sentence should be cut. Read the file that matches what you are holding. Every file here is written to be read once, cold, by an agent with nothing else in hand.
 
@@ -40,17 +41,25 @@ Four tests, applied to every sentence and every file:
 - **Accurate（准确）** — every claim traces to a mechanism or to practice. Skill text is used as authority, so a wrong claim becomes a wrong action and nobody re-checks it.
 - **Clear（清晰）** — the reader has no one to ask. Ambiguity gets filled in silently, and a wrong fill-in is never reported.
 
-Review judges a skill by these four. A modification has failed if it breaks any of them.
+Review judges a skill by these four; pre-use evaluation weighs them for the task at hand, and post-use insights test them against what actually happened. A modification has failed if it breaks any of them.
 
 ## How to use it
 
-Start from what is in your hands.
+Start from what is in your hands. The situations split by which side of the skill you are on: its user, or its maker.
+
+### When you are using skills
+
+**You are deciding whether to use a skill you have not used — or picking one from several candidates.** The assessment draws on a few directions of evidence — the content itself, where it comes from, how actively it is kept up, what others say, how it fits your task, what you already have covering the same ground, what adopting it costs. Fast and rough is the design; how to act on the assessment is a decision after it. → [Evaluating a skill you have not used](references/skill-pre-assessment.md)
+
+**You have just used a skill on a task and want to record what the use actually showed — what held up, what fell short, what was wrong.** The evidence is the task process itself, still fresh; what comes out is a record of insights, each tied to something that happened. → [Evaluating a skill you have just used](references/skill-post-assessment.md)
+
+### When you are making skills
 
 **You have a practice, or a body of knowledge, and want it to become a skill.** Design is the whole path: whether it is worth making, what it is for, how the material gets organized into files, how the text gets written, how it gets delivered. This is also the entry when a skill exists but its structure itself has to move — its positioning, its name, its scope boundaries. → [Designing a skill](references/skill-design.md)
 
 **A skill exists, something in it needs to change, and the change fits inside the structure already there.** Modification is not a small design. Its own problem is that every edit travels: along reference chains, across layers, into places the edit never named. → [Modifying a skill](references/skill-modify.md)
 
-**You need a verdict on a skill that already exists.** Finding what is wrong means setting what the skill claims against what it actually does. The output is a defect list, each item with a location and a reason. → [Finding what is wrong with a skill](references/skill-review.md)
+**You maintain a skill and need to find what is wrong with it before fixing it.** Finding what is wrong means setting what the skill claims against what it actually does. The output is a defect list, each item with a location and a reason — the input modification consumes. → [Finding what is wrong with a skill](references/skill-review.md)
 
 **A skill misbehaves — it does not trigger, it triggers on the wrong tasks, its output is off.** Symptom tracing is the fast path of review, not a work of its own: trace the symptom back down the trigger chain, and the repair it points to is a modification job. → [Finding what is wrong with a skill](references/skill-review.md)
 
@@ -77,5 +86,5 @@ Entered by need rather than by situation:
 ## Not this skill
 
 - Rewriting skill content as prose for people to read. Exposition, not skill work.
-- Actually executing a skill's functions to see whether they run. Quick testing here rehearses without executing; running a skill on real targets is outside this skill.
+- Staging real executions of a skill to test it. Quick testing rehearses without executing, and post-evaluation only looks back at a use that already happened in the course of work — neither stages anything.
 - Typos, punctuation, and formatting on their own. Not one of the kinds of work above.
