@@ -4,7 +4,9 @@
 
 本仓库是**帮助 Agent 开发 Skill 的工程仓库**：一套通用 Agent 技能，以及产出这些技能的工程规范。开发与发布分离——`dev/` 是唯一开发操作空间，`skills/` 是发布快照（只读产出），开发侧文档不随技能分发。
 
-技能组共 7 个成员：agent-prompt-design、journaling、rehearsal、skill-exposition、skill-master、web-deep-research、web-entity-search。每个技能的行为契约与全体技能的包形态契约见 `openspec/specs/`。
+仓库当前开发 7 个技能：agent-prompt-design、journaling、rehearsal、skill-exposition、skill-master、web-deep-research、web-entity-search。每个技能的行为契约与技能包的形态、分组规格见 `openspec/specs/`。
+
+每个技能独立成立：不硬性依赖其他技能、仓库特定文件或运行环境特定信息，不硬编码开发环境的路径与工具名；技能之间只允许通过 description 等方式互相推荐，不允许命令式依赖。
 
 ## 2. 规范权威
 
@@ -29,7 +31,7 @@ metapowers/
 └── AGENTS.md
 ```
 
-- 技能内容（SKILL.md、references/ 等）的读写以 `dev/<name>/content/` 为根；包形态契约（content/ 条目白名单、frontmatter、description 构成等）以 `openspec/specs/skill-package/` 为权威。
+- 技能内容（SKILL.md、references/ 等）的读写以 `dev/<name>/content/` 为根；开发包结构以 `openspec/specs/skill-package/` 为权威，技能包组的声明以 `openspec/specs/skill-grouping/` 为权威。
 - `.agents/` 是本机工具设施，不是仓库资产：不入库、不在仓库文档中记述其设置与操作。
 
 ## 4. 工作纪律
@@ -57,13 +59,13 @@ metapowers/
 ## 6. 新建技能
 
 1. 与用户自由讨论技能的作用和目标，达成共识后确定命名。
-2. **先立规格变更**：提案 → delta 规格 → 落实 → 折回主树（技能组成员条款同步更新后，该技能才成为技能组成员）。
+2. **先立规格变更**：提案 → delta 规格 → 落实 → 折回主树。
 3. 初始化 `dev/<skill>/`（`content/`、`test-space/`、`CHANGELOG.md`），在 README 新建对应条目。
 
 ## 7. 分支与发布
 
 - `main` 不接受直接提交。开发在 feature 分支上进行（命名建议 `feat/<描述>`、`fix/<描述>`），合并回主线用 `--no-ff` 保留分支历史，禁止 squash。
-- 发布由用户发起：确认 `dev` 分支工作树干净 → **先删后拷**快照（先 `rm -rf skills/<name>/` 再 `cp -r dev/<name>/content/ skills/<name>/`，确保无残留）→ 在 `dev` 上独立提交发布快照并标注版本号 → 切 `main` `--no-ff` 合并。
+- 发布由用户发起：确认 `dev` 分支工作树干净 → **先删后拷**快照（先 `rm -rf skills/<name>/` 再 `cp -r dev/<name>/content/ skills/<name>/`）→ 核对发布快照与 `dev/<name>/content/` 逐文件一致：不缺 content/ 内任何文件、不含 content/ 外任何文件、文件内容逐字节相同 → 在 `dev` 上独立提交发布快照并标注版本号 → 切 `main` `--no-ff` 合并。
 - 发布前规格必须通过结构校验。
 - **skills.sh 分组**：新增技能是否进入 `skills.sh.json` 分组、进入哪个分组须与用户确认后更新；默认不入组，不擅自归组或新建分组。
 
