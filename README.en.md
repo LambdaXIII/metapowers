@@ -34,8 +34,8 @@ metapowers solves these problems — it provides a set of battle-tested **univer
 ## Features
 
 - **6 production-grade skills** — covering prompt design, deep research, skill exposition, skill testing, entity search, and long-term memory
-- **Development/release separation** — `dev/` is the workshop, `skills/` is the showroom; design docs never ship to runtime
-- **Design anchoring** — every skill has a SKILL-DESIGN.md recording design intent and key tradeoffs, preventing architectural drift
+- **Development/release separation** — `dev/` is the workshop, `skills/` is the showroom; development-side docs never ship to runtime
+- **Spec authority** — each skill's behavioral contract lives in the `openspec/specs/` specs as the single source of truth; changes go through the spec workflow and fold back into the main tree, preventing behavioral drift
 - **Strict documentation discipline** — skill content is unambiguous, self-contained, and never depends on conversation context
 - **Versioning standards** — Patch/Minor/Major with clear criteria, determined only when the feature is complete
 
@@ -93,10 +93,11 @@ metapowers/
 ├── dev/                    # Development workspace
 │   └── <skill-name>/
 │       ├── content/        # Skill content (= release package)
-│       ├── SKILL-DESIGN.md # Design anchor document
 │       ├── CHANGELOG.md    # Change log
-│       ├── test-space/     # Test cases
-│       └── research/       # Reference materials
+│       └── test-space/     # Test cases
+├── openspec/               # Specification system
+│   ├── specs/              # Behavioral contract specs (single source of truth)
+│   └── changes/            # Change workspace
 ├── skills/                 # Release directory
 │   └── <skill-name>/       # Copied from dev/<name>/content/
 └── AGENTS.md               # Engineering standards
@@ -110,19 +111,20 @@ metapowers/
 
 **Independent, with recommendations** — each skill stands alone. Skills may recommend each other in descriptions, but never form hard dependencies.
 
-**Development and release separated** — `dev/` keeps design docs and change logs; `skills/` ships clean skill packages only.
+**Development and release separated** — `dev/` keeps development-side docs and change logs; `skills/` ships clean skill packages only.
 
-**Design before code** — write SKILL-DESIGN.md to anchor the design direction, then write the `content/` implementation.
+**Spec first** — write the spec change (proposal → delta specs → implementation → fold back into the main tree) before writing `content/`.
 
 ---
 
 ## Contributing
 
 1. **Verify universality** — would this skill work for someone else, on a different project?
-2. **Follow the standards** — build directory structure, frontmatter, SKILL-DESIGN, and CHANGELOG per [AGENTS.md](AGENTS.md)
-3. **One branch, one change** — each feature branch corresponds to one logical change
-4. **Show the diff** — let maintainers see the full change before committing
-5. **Discuss first** — not sure if it fits? Open an Issue
+2. **Follow the standards** — build the package form per the [specs](openspec/specs/); work discipline lives in [AGENTS.md](AGENTS.md)
+3. **Changes go through the spec workflow** — propose a spec change for behavioral or wording changes, fold it back, then change content
+4. **One branch, one change** — each feature branch corresponds to one logical change
+5. **Show the diff** — let maintainers see the full change before committing
+6. **Discuss first** — not sure if it fits? Open an Issue
 
 ---
 
