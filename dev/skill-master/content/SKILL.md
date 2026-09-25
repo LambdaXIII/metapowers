@@ -8,11 +8,11 @@ description: |
   怎么样 / 哪个更好) a skill, or whenever a skill itself is the question.
   An agent asks after building or using one: 「这个技能别人能不能照着做完」
   「这个技能用下来帮没帮上忙」. Not for rewriting skill content as prose.
+license: "MIT"
 metadata:
   version: "1.0.0"
   last_updated: "2026-09-15"
   author: "LambdaXIII"
-  license: "MIT"
 ---
 
 # Skill Master

@@ -10,11 +10,11 @@ description: |
   material to pass it on.
 
   Does NOT trigger: reviewing, evaluating, testing, or creating skills.
+license: "MIT"
 metadata:
   version: "1.0.1"
   last_updated: "2026-08-23"
   author: "LambdaXIII"
-  license: "MIT"
 ---
 
 # Skill Exposition
