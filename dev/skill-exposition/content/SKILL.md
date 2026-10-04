@@ -10,11 +10,11 @@ description: |
   material to pass it on.
 
   Does NOT trigger: reviewing, evaluating, testing, or creating skills.
+license: "MIT"
 metadata:
   version: "1.0.1"
   last_updated: "2026-08-23"
   author: "LambdaXIII"
-  license: "MIT"
 ---
 
 # Skill Exposition
@@ -41,7 +41,7 @@ This section expands the description's trigger conditions — the description is
 
 **Does NOT trigger**:
 
-- The user wants skill-quality review, evaluation, or testing — that is a review-type responsibility (e.g. the domain of skill-quick-test), not exposition
+- The user wants skill-quality review, evaluation, or testing — that is skill work (e.g. the domain of skill-master), not exposition
 - The user wants to create a new skill — that is skill-creator's domain
 - The target is not a skill (content without SKILL.md, such as ordinary documents or codebases) — this skill only expounds skills
 

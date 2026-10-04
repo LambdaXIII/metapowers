@@ -41,6 +41,10 @@ The summary tells future-me *whether to open this file*. The body must deliver *
 
 A summary that accurately describes content but whose body is a shallow checklist has passed the summary check but failed the journal's purpose.
 
+## Title
+
+Advisory: organize the title as a proposition — delivering the note's judgment, not just indicating its topic. 「苹果的颜色」 indicates a topic; 「苹果是红的」 delivers a judgment — a glance at the title should already carry information. Not applicable when the note itself contains no proposition (e.g. a pure reference collection); a topic title is honest there.
+
 ---
 
 ## Body

@@ -2,7 +2,7 @@
 
 ## 定位
 
-本协议定义对 journal 条目进行内容操作——新建笔记、补充已有条目、更新 frontmatter。
+本协议定义对 journal 条目进行内容操作——新建笔记、补充已有条目、更新 frontmatter、收录现存文档。
 核心目标：内容就绪（entry 有完整 frontmatter，body 可读）+ 写入路径轻量。
 写得不完美没关系——维护协议兜底。关键是不打断主线工作。
 
@@ -20,11 +20,11 @@ Not everything belongs in the journal. Before committing content, check:
 
 Content that fails all three (quick-test results, build logs, transient findings) does not belong in the journal.
 
+收录现存文档时，价值判断按同一组判据处理——待收录内容与既有条目高度重叠或无长期价值，由此三问裁定，不设独立的收录准入流程。
+
 ### 2. 读取 journal 规则
 
-写入前必读 journal 规则文档——技能强制存在，即使为空；内容由 journal 自定（分类板块、标签板块、INDEX 结构板块、笔记元数据字段板块、写作需求板块等）。加载其中定义的规则并按之执行；为空或未定义相应板块时，用种子默认方案（目录/tag/元数据字段，见 ../templates/seed/）。
-
-规则文档不存在属异常（强制义务：必须存在）——此时从 ../templates/seed/ 复制规则文档种子到 `<journal-root>` 补齐（入口文件名由机制固定；只补缺失文件，不触发初始化协议的其他步骤，避免连带覆盖已有 INDEX）。
+读取并遵守 journal 规则是非只读操作的族义务——义务内容（规则文档必读、板块加载、种子默认、缺失补齐）单处定义于 [`protocal-operations.md`](protocal-operations.md)。
 
 ### 3. 编写 frontmatter 与 body
 
@@ -47,6 +47,8 @@ Content that fails all three (quick-test results, build logs, transient findings
 
 ## 额外说明
 
+- **收录现存文档**：拷贝文件到 journal 对应位置，再在其上修改调整（避免手工抄写）；frontmatter、summary、链接、分类等加工与写入流程一致。
+- **合并条目**（用户要求把重复条目并成一条）：这是用户引导下的普通操作，不是维护协议的触发。最小做法——确定保留方（信息更全或更新的一方）；将彼方与保留方缺异的实质内容并入保留方；收敛后的 summary 覆盖合并后的范围（按 Summary Anchoring 更新，见 `spec-note.md`）；冲突的矛盾点在正文中注明取舍理由而不是静默择一；被并条目移入临时保存目录并在原位置留一行指向保留方的关系注记；修复指向被并文件的所有引用，INDEX 登记同步。
 - **写得不完美没关系**——维护协议兜底。
 - **补充已有条目**：判断取决于条目何时写的——
   - 同 session（刚写的笔记）：用 Summary Anchoring 的 scope 检查（见 `spec-note.md`）——新内容仍在原 summary 范围内？是 → 扩展原条目（范围扩大则更新 summary）；否 → 新建条目。范围还在形成中，不必过度思考。

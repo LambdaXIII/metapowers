@@ -10,18 +10,18 @@ description: |
   会不会卡」; or after producing something, agent asks itself 「别人会不会卡住 /
   能不能被没上下文的人读懂 / will readers get stuck / can a newcomer follow this」.
   Not for typo/punctuation/format-only fixes.
+license: "MIT"
 metadata:
-  version: "2.1.0"
-  last_updated: "2026-09-02"
+  version: "2.2.0"
+  last_updated: "2026-10-05"
   author: "xiii_1991"
-  license: "MIT"
 ---
 
 # Rehearsal
 
 ## What this is
 
-**Rehearsal = dropping the author identity and walking the full "first contact → understanding → decision" chain from another perspective.**
+A reader receiving your deliverable goes through a chain of stages: **first contact** (they encounter the material with none of your context), **understanding** (they build their own picture of what it says), **decision** (they act on it — follow steps, choose, judge). **Rehearsal = dropping the author identity and walking that full chain from another perspective.**
 
 It is independent of the carrier — you can rehearse documents, code, UI flows, API designs, instruction sets, or any deliverable. It is also not limited to a particular reader — the reader can be an AI model, a real person, a student, a customer, a new colleague.
 
@@ -63,7 +63,7 @@ This section expands the description's trigger conditions — the description is
 
 **Read the general guide and follow its process:**
 
-→ [rehearsal-guide.md](references/rehearsal-guide.md) — full account of the method (principles, rehearsal steps P1–P5, four-direction reproduction, evaluation dimensions) plus an index of scenario-specific references.
+→ [rehearsal-guide.md](references/rehearsal-guide.md) — full account of the method (principles, rehearsal steps P1–P5, the four reproduction checks — shallower, skewed, excessive, or duplicated understanding — and evaluation dimensions) plus an index of scenario-specific references.
 
 ## Reference files
 
@@ -84,6 +84,7 @@ This section expands the description's trigger conditions — the description is
 
 **Load on demand:**
 
+- [agent-paired-reading.md](references/supplementary/agent-paired-reading.md) — segment-by-segment delegation: hand the material to a subagent one segment at a time, for long, strongly sequential materials where expectations formed in early segments are only confirmed — or contradicted — by later ones
 - [batch-execution.md](references/supplementary/batch-execution.md) — parallel-execution mode when rehearsal scenarios ≥ 5 (role-matrix design in the knowledge-base scenario document)
 - [defect-taxonomy.md](references/supplementary/defect-taxonomy.md) — for classifying and locating defects once found
 
@@ -105,6 +106,7 @@ rehearsal/
     │   ├── logic-chain-rehearsal.md
     │   └── plan-rehearsal.md
     └── supplementary/
+        ├── agent-paired-reading.md
         ├── batch-execution.md
         └── defect-taxonomy.md
 ```

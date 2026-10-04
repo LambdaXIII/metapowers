@@ -7,15 +7,15 @@ description: |
 
   Examples of write operations:
   - Creating a new journal
-  - Writing, editing, moving, archiving, or deleting journal entries
+  - Writing, editing, importing, moving, archiving, or deleting journal entries
   - Maintaining / organizing the journal
   - Writing design decisions confirmed in discussion into journal files
 
-  Write operations include: 创建/写入/编辑/移动/归档/删除 journal 条目、
+  Write operations include: 创建/写入/编辑/收录/移动/归档/删除 journal 条目、
   维护/整理 journal、将讨论中确认的设计决策写入 journal 文件。
 metadata:
-  version: "5.0.4"
-  last_updated: "2026-09-09"
+  version: "5.1.0"
+  last_updated: "2026-10-04"
 ---
 
 # Journaling
@@ -41,8 +41,8 @@ Operating without INDEX.md means operating blind.
 | Protocol | When to use | Load |
 |----------|-------------|------|
 | Init protocol | Creating a new journal | `references/protocal-init.md` |
-| Write protocol | Writing entries | `references/protocal-write.md` |
-| Import protocol | Importing external content | `references/protocal-import.md` |
+| Write protocol | Writing entries, including importing existing documents | `references/protocal-write.md` |
+| Non-read-only operations reference | Other operations that change journal state (move, rename, delete, etc.) — shared guidance for the operation family | `references/protocal-operations.md` |
 | Maintenance protocol | Maintaining / organizing the journal | `references/protocal-maintenance.md` |
 
 Other reference documents load on demand per the references within each protocol.
@@ -53,7 +53,7 @@ Other reference documents load on demand per the references within each protocol
 - [Write Protocol](references/protocal-write.md)
 - [Note Writing Guide](references/spec-note.md)
 - [Frontmatter Specification](references/spec-frontmatter.md)
-- [Import Protocol](references/protocal-import.md)
+- [Non-Read-Only Operations Reference](references/protocal-operations.md)
 - [Maintenance Protocol](references/protocal-maintenance.md)
 - [INDEX.md Specification](references/spec-index.md)
 - [INDEX Design Reference](references/design-index.md)
@@ -75,7 +75,7 @@ The `scripts/` directory provides dependency-free convenience tools (`frontmatte
 
 ## Operating Principles
 
-- **The journal serves you, not the user — reversible operations need no approval.** You write it and maintain it for your future self. Directory reorganization, tag merges — these depend on patterns only you see; the decision and execution are yours.
+- **The journal serves you, not the user — the autonomy domain covers writing and user-guided operations.** You write it for your future self. Entry placement, splits, cross-references — these depend on patterns only you see; within the autonomy domain the decision and execution are yours. Dedicated maintenance is outside the autonomy domain: it is triggered only by the user, as a dedicated action (see the maintenance protocol).
 
 - **Tags follow journal rules — the tag system is self-managed by the journal.** Before writing, read the tag-related content in the journal rules; when the rules define no tags, distill short words from content, purpose, etc. into the `tags` field.
 
@@ -85,4 +85,4 @@ The `scripts/` directory provides dependency-free convenience tools (`frontmatte
 
 - **Capture discussion decisions immediately.** When the user confirms a design decision, write it to the target project document in the same turn. Do not defer to the journal; a journal summary can follow later during maintenance.
 
-- **Deletion handling is judged by journal rules — this skill presets no archiving facility.** Before writing, read the journal rules' deletion/archiving conventions; during maintenance, deletions follow the maintenance protocol.
+- **Deletion handling is judged by journal rules — routed via the non-read-only operations reference.** Deletion gets minimal guidance there and executes per the journal rules' deletion conventions; this skill presets no deletion protocol and no deletion semantics.
