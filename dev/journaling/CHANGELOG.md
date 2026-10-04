@@ -1,5 +1,18 @@
 # Changelog
 
+## 5.1.0
+- protocal-write.md 新增「合并条目」最小指引（保留方判据、内容并入、summary 收敛、矛盾显式化、被并条目入临时保存并留关系注记、引用修复与 INDEX 同步）；protocal-maintenance.md 裁定句补合并指引指针
+- protocal-operations.md 删除指引补 journal 规则未定义删除约定时的缺省回退（移入临时保存目录、同步 INDEX 登记）
+- spec-rules.md 最小义务表述对齐操作参考口径（「写入/导入前必读」改「非只读操作前必读」）
+- 新增 references/protocal-operations.md（非只读操作参考：操作族概述、共享原则、族义务单处定义、收录/移动/删除最小指引、维护协议层级声明）
+- 移除 references/protocal-import.md（收录协议消解：P1 准入判断、REJECT/SUSPEND 控制流与协议内安全边界整体退役，防护归模型能力与平台层原则）
+- protocal-write.md 吸收录入（定位与额外说明补收录表述，「判断是否值得写」承接收录价值判断，第 2 步读取规则改为引用族义务）
+- protocal-maintenance.md 触发边界专项化（维护只由用户明确触发、建议专门会话执行、agent 不自行执行、提醒以维护备忘承接，补充泛化阅读认可声明）
+- SKILL.md 自治域收窄至写入与用户引导下的操作、协议表重排为 Init/Write/非只读操作参考/Maintenance、删除处理原则对齐操作参考路由、Linked Files 以 protocal-operations 替换 protocal-import、description 触发动词面补收录/导入、last_updated 更新
+- spec-note.md 新增 Title 建议（标题组织为命题形式，附对比例与不适用边界）
+- design-discovery-contract.md 注入模板扩为六要素（journal-root 声明、定位立场、价值裁量、读取路由、加载触发与操作边界、与其他记忆机制的分工）、新增「注入文本的设计方法」节（要素框架、写作原则、宿主提示词更改权限）与快照宿主适配说明、「已有合约的检测」节四维度表升级为要素覆盖检查
+- protocal-init.md Phase 3 回退方案模板同步六要素版、「合约已存在的情况」评估判据改为要素覆盖检查
+
 ## 5.0.4
 - protocal-write.md 新增「如果你能够委派子代理」节：主线话题仍在继续且能委派子代理时，先将笔记写入临时目录，再委派子代理读取规则文档并按规范整理，最小化对当前话题的干扰
 - 种子 INDEX.md 协议声明区新增「以本 INDEX 为线索，主动读取相关内容」引导提示，强化 INDEX 唯一入口导向
