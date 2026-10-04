@@ -34,8 +34,8 @@ metapowers 解决这些问题——它提供一套经过验证的**通用技能*
 ## 功能特性
 
 - **6 个生产级技能** —— 覆盖提示词设计、深度研究、技能阐述、技能测试、实体搜索、长期记忆
-- **开发与发布分离** —— `dev/` 是工地，`skills/` 是展厅；设计文档不随技能分发
-- **设计锚定制度** —— 每个技能一份 SKILL-DESIGN.md，记录设计意图和关键取舍，防止架构漂移
+- **开发与发布分离** —— `dev/` 是工地，`skills/` 是展厅；开发侧文档不随技能分发
+- **规格权威** —— 每个技能的行为契约以 `openspec/specs/` 规格为唯一权威，变更经规格流程提出并折回主树，防止行为漂移
 - **严格的文档纪律** —— 技能内容零歧义、自包含、不依赖会话上下文
 - **版本号有标准** —— Patch/Minor/Major 三级判定，功能完成后再统一确定
 
@@ -54,7 +54,6 @@ npx skills add LambdaXIII/metapowers -g # 推荐全局安装
 
 ```bash
 npx skills add LambdaXIII/metapowers --skill agent-prompt-design
-npx skills add LambdaXIII/metapowers --skill skill-quick-test
 npx skills add LambdaXIII/metapowers --skill skill-exposition
 npx skills add LambdaXIII/metapowers --skill web-deep-research
 npx skills add LambdaXIII/metapowers --skill web-entity-search
@@ -67,10 +66,6 @@ npx skills add LambdaXIII/metapowers --skill journaling
 ### agent-prompt-design
 
 Agent 系统提示词设计方法论。覆盖结构设计、内容编写、工具协议、安全加固到运营管理。特色：安全视为设计起点；推理模型时代（2026）专项策略；十大反模式诊断体系。
-
-### skill-quick-test
-
-通过子代理并行推演快速验证技能可用性。ISTQB 六步测试设计 + 能力模拟 + 隔离铁律。
 
 ### skill-exposition
 
@@ -88,6 +83,10 @@ Agent 系统提示词设计方法论。覆盖结构设计、内容编写、工�
 
 Agent 长期记忆的笔记本系统。结构化笔记 + 维护协议 + 渐进式披露。Journal 服务于 Agent 自身。
 
+### skill-master（开发中）
+
+设计、修改、审查、快速测试 agent 技能的全功能元技能。metapowers 自身技能开发方法论的产品化承载者。
+
 ---
 
 ## 项目结构
@@ -97,10 +96,11 @@ metapowers/
 ├── dev/                    # 开发空间
 │   └── <skill-name>/
 │       ├── content/        # 技能内容（= 发布包）
-│       ├── SKILL-DESIGN.md # 设计锚定文档
 │       ├── CHANGELOG.md    # 变更记录
-│       ├── test-space/     # 测试用例
-│       └── research/       # 参考资料
+│       └── test-space/     # 测试用例
+├── openspec/               # 规格体系
+│   ├── specs/              # 行为契约规格（唯一权威）
+│   └── changes/            # 变更工作区
 ├── skills/                 # 发布目录
 │   └── <skill-name>/       # 从 dev/<name>/content/ 复制
 └── AGENTS.md               # 工程规范
@@ -114,19 +114,20 @@ metapowers/
 
 **独立运行，互相推荐** —— 每个技能自成一体，技能之间只在 description 中互相推荐，不设计成硬性依赖。
 
-**开发与发布分离** —— `dev/` 保存设计文档和变更记录，`skills/` 只发布干净的技能包。
+**开发与发布分离** —— `dev/` 保存开发侧文档和变更记录，`skills/` 只发布干净的技能包。
 
-**文档先于代码** —— 先写 SKILL-DESIGN.md 锚定设计方向，再写 content/ 内容。
+**规格先行** —— 先立规格变更（提案 → delta 规格 → 落实 → 折回主树），再写 `content/` 内容。
 
 ---
 
 ## 贡献
 
 1. **确认通用性** —— 这个技能换一个人、换一个项目还能用吗？
-2. **遵循规范** —— 按 [AGENTS.md](AGENTS.md) 构建目录结构、frontmatter、SKILL-DESIGN 和 CHANGELOG
-3. **独立提交** —— 一个功能分支对应一个逻辑变更
-4. **展示 diff** —— 提交前让维护者看到完整变更
-5. **先讨论再写** —— 不确定是否适合？开 Issue 讨论
+2. **遵循规范** —— 包形态按 [specs](openspec/specs/) 构建，工作纪律见 [AGENTS.md](AGENTS.md)
+3. **变更走规格流程** —— 行为或表述的变更先立规格变更，折回主树后再改内容
+4. **独立提交** —— 一个功能分支对应一个逻辑变更
+5. **展示 diff** —— 提交前让维护者看到完整变更
+6. **先讨论再写** —— 不确定是否适合？开 Issue 讨论
 
 ---
 

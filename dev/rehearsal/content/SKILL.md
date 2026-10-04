@@ -10,11 +10,11 @@ description: |
   会不会卡」; or after producing something, agent asks itself 「别人会不会卡住 /
   能不能被没上下文的人读懂 / will readers get stuck / can a newcomer follow this」.
   Not for typo/punctuation/format-only fixes.
+license: "MIT"
 metadata:
   version: "2.1.0"
   last_updated: "2026-09-02"
   author: "xiii_1991"
-  license: "MIT"
 ---
 
 # Rehearsal

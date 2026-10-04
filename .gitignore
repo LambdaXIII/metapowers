@@ -8,8 +8,8 @@
 # 通用
 node_modules/
 .venv/
-
 __pycache__/
+
 # Agent 工具项目级隐藏目录（来源：journal research/2026-06-23-agent-project-dirs.md）
 .agents/
 .hermes/
@@ -51,6 +51,7 @@ __pycache__/
 .agent/
 .aider-desk/
 .claude-plugin/
+.workbuddy/
 
 # Agent skills 包管理器生成文件
 .skills.json
@@ -71,3 +72,4 @@ test-space/
 
 
 *.bak
+*.bak.md
