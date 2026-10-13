@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.1.1
+- SKILL.md 顶层新增 license 字段（CC-BY-NC-SA-4.0）
+
 ## 5.1.0
 - protocal-write.md 新增「合并条目」最小指引（保留方判据、内容并入、summary 收敛、矛盾显式化、被并条目入临时保存并留关系注记、引用修复与 INDEX 同步）；protocal-maintenance.md 裁定句补合并指引指针
 - protocal-operations.md 删除指引补 journal 规则未定义删除约定时的缺省回退（移入临时保存目录、同步 INDEX 登记）

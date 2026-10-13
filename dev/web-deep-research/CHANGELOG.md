@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.5.2
+- SKILL.md 顶层新增 license 字段（MIT）
+
 ## 2.5.1
 - description 从纯英文方法论阶段描述改写为中英双触发面（核心名含中文「深度调研」、用户问法「查透/彻底了解/深挖」+ agent 自问双路径，删方法论阶段名），反向限一条（Overkill for simple fact lookups）
 

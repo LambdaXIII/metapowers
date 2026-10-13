@@ -2,8 +2,6 @@
 
 # metapowers
 
-[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
-
 > Agent 技能开发工坊 —— 一套通用 Skill，以及产出这些 Skill 的工程规范。
 
 ---
@@ -133,5 +131,5 @@ metapowers/
 
 ## 许可
 
-[MIT](LICENSE)
+各技能采用独立许可证，见各技能 SKILL.md 中的 `license` 标注；仓库其他内容（规格、开发文档等）保留所有权利。
 

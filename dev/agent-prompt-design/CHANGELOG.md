@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.5
+- SKILL.md 顶层新增 license 字段（MIT）
+
 ## 1.0.4
 - description 结构收敛为「what + when-to-use + 反向一条」，触发/不触发场景清单移入正文
 

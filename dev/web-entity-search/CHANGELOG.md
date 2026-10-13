@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.3
+- SKILL.md 顶层新增 license 字段（MIT）
+
 ## 1.3.2
 - SKILL.md 正文全量英文化（核心流程、委派建议、Content Index 七行表格、Instructions、Capability Boundaries），实质内容与中文原版逐节对照一致
 - description 补中英双触发面：加入中文说明句与中英触发词（「查一下 / 搜索 / 是什么 / 搜一下 / 了解一下」+ what is X? / look up / search for）

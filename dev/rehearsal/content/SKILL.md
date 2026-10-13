@@ -10,10 +10,10 @@ description: |
   会不会卡」; or after producing something, agent asks itself 「别人会不会卡住 /
   能不能被没上下文的人读懂 / will readers get stuck / can a newcomer follow this」.
   Not for typo/punctuation/format-only fixes.
-license: "MIT"
+license: "CC-BY-NC-SA-4.0"
 metadata:
-  version: "2.2.0"
-  last_updated: "2026-10-05"
+  version: "2.2.1"
+  last_updated: "2026-10-14"
   author: "xiii_1991"
 ---
 

@@ -7,9 +7,10 @@ description: >-
   Use when the user wants a topic researched thoroughly (「深度调研 / 查透 /
   彻底了解 / 深挖」) or when the agent judges something worth digging into in
   depth. Overkill for simple fact lookups.
+license: "MIT"
 metadata:
-  version: "2.5.1"
-  last_updated: "2026-08-23"
+  version: "2.5.2"
+  last_updated: "2026-10-14"
   author: "Ĉalio"
 ---
 

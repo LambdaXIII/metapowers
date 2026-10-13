@@ -2,8 +2,6 @@
 
 # metapowers
 
-[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
-
 > An agent skill development workshop — a set of universal Skills and the engineering standards that produce them.
 
 ---
@@ -130,4 +128,4 @@ metapowers/
 
 ## License
 
-[MIT](LICENSE)
+Each skill carries its own license, declared in the `license` field of its SKILL.md; all other repository content (specs, development docs, etc.) reserves all rights.

@@ -6,9 +6,10 @@ description: >-
   Triggers: 「查一下 / 搜索 / 是什么 / 搜一下 / 了解一下」+ a named entity
   (person, company, work, product, event, concept); or "what is X?" /
   "look up" / "search for" a named entity.
+license: "MIT"
 metadata:
-  version: "1.3.2"
-  last_updated: "2026-08-23"
+  version: "1.3.3"
+  last_updated: "2026-10-14"
   author: "Ĉalio"
 ---
 

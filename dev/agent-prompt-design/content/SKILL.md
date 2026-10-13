@@ -5,12 +5,13 @@ description: |
   writing, tool protocols, safety hardening, operations. Use when the user
   asks for a system prompt or an Agent instruction set — 「帮我写系统提示词 /
   这个 agent 需要什么指令 / 设计 agent 的 prompt」/ "write a system prompt" —
-  or wants an existing Agent's instruction conflicts, tool overload, or
-  security holes diagnosed. Not for ordinary one-off prompts.
+or wants an existing Agent's instruction conflicts, tool overload, or
+security holes diagnosed. Not for ordinary one-off prompts.
 
+license: "MIT"
 metadata:
-  version: "1.0.4"
-  last_updated: "2026-08-23"
+  version: "1.0.5"
+  last_updated: "2026-10-14"
   author: "Ĉalio"
 ---
 
