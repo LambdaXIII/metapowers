@@ -1,8 +1,8 @@
 # 写入口文件
 
-**入口文件**（`SKILL.md`）是技能里唯一必须存在的那个文件：加载器靠它的 frontmatter 认出技能，读者靠它的正文决定去哪。这里讲这个文件怎么组织、怎么写，包括它 frontmatter 里的 `description` 怎么定稿。
+**入口文件**（`SKILL.md`）是技能里唯一必须存在的那个文件：加载器靠它的 frontmatter 认出技能，读者靠它的正文决定去哪。
 
-一句内容该不该留在入口文件（而不是下沉到支撑文件），判据在[设计一个技能的结构](../general/structure.md)的分层节；`description` 里某个词该留该删的判据，在[让技能被正确命中](../general/disclosure.md)。本文件讲怎么把这些落到文件上。
+一句内容该不该留在入口文件（而不是下沉到支撑文件），判据在[设计一个技能的结构](../general/structure.md)的分层节；`description` 里某个词该留该删的判据，在[让技能被正确命中](../general/disclosure.md)。
 
 ## 它只承担三件事
 
