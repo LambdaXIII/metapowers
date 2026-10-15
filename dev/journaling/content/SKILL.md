@@ -15,8 +15,8 @@ description: |
   维护/整理 journal、将讨论中确认的设计决策写入 journal 文件。
 license: "CC-BY-NC-SA-4.0"
 metadata:
-  version: "5.1.1"
-  last_updated: "2026-10-14"
+  version: "5.1.2"
+  last_updated: "2026-10-15"
 ---
 
 # Journaling
@@ -41,36 +41,9 @@ Operating without INDEX.md means operating blind.
 
 | Protocol | When to use | Load |
 |----------|-------------|------|
-| Init protocol | Creating a new journal | `references/protocal-init.md` |
-| Write protocol | Writing entries, including importing existing documents | `references/protocal-write.md` |
-| Non-read-only operations reference | Other operations that change journal state (move, rename, delete, etc.) — shared guidance for the operation family | `references/protocal-operations.md` |
-| Maintenance protocol | Maintaining / organizing the journal | `references/protocal-maintenance.md` |
-
-Other reference documents load on demand per the references within each protocol.
-
-## Linked Files
-- [Init Protocol](references/protocal-init.md)
-- [Discovery Contract Design Guide](references/design-discovery-contract.md)
-- [Write Protocol](references/protocal-write.md)
-- [Note Writing Guide](references/spec-note.md)
-- [Frontmatter Specification](references/spec-frontmatter.md)
-- [Non-Read-Only Operations Reference](references/protocal-operations.md)
-- [Maintenance Protocol](references/protocal-maintenance.md)
-- [INDEX.md Specification](references/spec-index.md)
-- [INDEX Design Reference](references/design-index.md)
-- [Rules Specification](references/spec-rules.md)
-- [Rule Design Guide](references/design-rules.md)
-- [Project Dashboard Pattern](references/patterns/dashboard.md)
-- [Layered Rules Pattern](references/patterns/layered-rules.md)
-- [Note Tags Pattern](references/patterns/note-tags.md)
-- [Maintenance Memo Pattern](references/patterns/maintenance-memo.md)
-- [Classification Systems](references/patterns/classification-systems/)
-- [Script Tools Guide](references/script-tools.md)
-- [Templates](templates/seed/)
-
-## Scripts
-
-The `scripts/` directory provides dependency-free convenience tools (`frontmatter`, `check-links`), in both Python and Node.js versions. Full guide in `references/script-tools.md`.
+| Init protocol | Creating a new journal | `references/protocol-init.md` |
+| Operations protocol | Any operation that changes journal state — creating, editing, importing, moving, archiving, deleting entries. Day-to-day entry work (edit, move, delete, merge) routes here, not to maintenance. | `references/protocol-operations.md` |
+| Maintenance protocol | Dedicated maintenance / reorganization of the journal, triggered explicitly by the user | `references/protocol-maintenance.md` |
 
 ---
 
@@ -86,4 +59,43 @@ The `scripts/` directory provides dependency-free convenience tools (`frontmatte
 
 - **Capture discussion decisions immediately.** When the user confirms a design decision, write it to the target project document in the same turn. Do not defer to the journal; a journal summary can follow later during maintenance.
 
-- **Deletion handling is judged by journal rules — routed via the non-read-only operations reference.** Deletion gets minimal guidance there and executes per the journal rules' deletion conventions; this skill presets no deletion protocol and no deletion semantics.
+- **Deletion handling is judged by journal rules — routed via the operations protocol.** Deletion gets minimal guidance there and executes per the journal rules' deletion conventions; this skill presets no deletion protocol and no deletion semantics — the operations protocol carries only a safety fallback for when journal rules are silent.
+
+---
+
+## Scripts
+
+The `scripts/` directory provides dependency-free convenience tools (`frontmatter`, `check-links`), in both Python and Node.js versions. Full guide in `references/script-tools.md`. Take them on demand only — during mainline work there is no reason to stop and run checks or validations specially.
+
+---
+
+## References
+
+Load on demand; every entry states when to read it.
+
+**Protocols**
+- [Init Protocol](references/protocol-init.md) — creating a new journal
+- [Operations Protocol](references/protocol-operations.md) — any journal-state-changing operation: creating, editing, importing, moving, archiving, deleting entries
+- [Maintenance Protocol](references/protocol-maintenance.md) — user-triggered dedicated maintenance / reorganization
+
+**Design guides**
+- [Discovery Contract Design](references/design-discovery-contract.md) — designing or judging a discovery contract (the injection text that routes a host agent to its journal); the init protocol's discovery phase links here
+- [Rule Design Guide](references/design-rules.md) — designing the journal's organization scheme (where content goes, naming, how it is found) before writing RULES.md
+- [INDEX Design Reference](references/design-index.md) — designing INDEX structure and dashboards, including the INDEX-structure section of RULES.md
+
+**Specifications**
+- [Note Writing Guide](references/spec-note.md) — how to write a good entry; the writing flow itself lives in the Operations protocol
+- [Frontmatter Specification](references/spec-frontmatter.md) — frontmatter format and grammar, including custom-field guidance
+- [INDEX.md Specification](references/spec-index.md) — INDEX structure rules
+- [Rules Specification](references/spec-rules.md) — writing RULES.md rule text: principles and reminders for recording the organization scheme
+
+**Tools & templates**
+- [Script Tools Guide](references/script-tools.md) — running the `frontmatter` / `check-links` scripts
+- [Seed Templates](templates/seed/) — default scheme wherever journal rules leave a section undefined; source for bootstrapping the rules document
+
+**Patterns** — read the summary first, open the full file only when it fits
+- [Project Dashboard Pattern](references/patterns/dashboard.md) — building a dashboard-style INDEX
+- [Layered Rules Pattern](references/patterns/layered-rules.md) — organizing RULES.md into layers
+- [Note Tags Pattern](references/patterns/note-tags.md) — defining tag conventions
+- [Maintenance Memo Pattern](references/patterns/maintenance-memo.md) — tracking maintenance backlog (used by the maintenance protocol)
+- [Classification Systems](references/patterns/classification-systems/) — choosing a classification system for entries

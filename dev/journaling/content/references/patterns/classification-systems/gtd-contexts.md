@@ -1,6 +1,6 @@
 # GTD Contexts
 
-> 按可用手段（工具、地点、精力水平）分类，而非按内容主题。传统上下文包括 @computer、@calls、@errands、@agenda、@home、@anywhere。与所有其他系统的分类维度都不同——它回答的不是"这是什么"而是"我能在这里做什么"。
+> 系统需要回答「我现在能做什么」（按工具、地点、精力分流）而非「这是什么」时用：按可用手段归入 @context。
 
 **创建者**: David Allen（Getting Things Done）  
 **核心分类维度**: 可用手段（工具 / 地点 / 精力状态）
