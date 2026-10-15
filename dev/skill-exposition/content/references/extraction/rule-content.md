@@ -1,6 +1,6 @@
 # 规则/决策型内容的提取提醒
 
-> 梳理时遇到规则/条件/阈值类内容时按需加载。本文只讲「怎么提取不失真」；怎么写进说明文由你自行发挥（行文见 general/readability.md）。
+> 梳理时遇到规则/条件/阈值类内容时按需加载（行文层面的启发见 [general/readability.md](../general/readability.md)）。
 
 ## 这是什么
 
