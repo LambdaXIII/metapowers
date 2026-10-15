@@ -10,10 +10,10 @@ description: |
   会不会卡」; or after producing something, agent asks itself 「别人会不会卡住 /
   能不能被没上下文的人读懂 / will readers get stuck / can a newcomer follow this」.
   Not for typo/punctuation/format-only fixes.
-license: "MIT"
+license: "CC-BY-NC-SA-4.0"
 metadata:
-  version: "2.2.0"
-  last_updated: "2026-10-05"
+  version: "2.2.2"
+  last_updated: "2026-10-15"
   author: "xiii_1991"
 ---
 
@@ -29,8 +29,8 @@ It is independent of the carrier — you can rehearse documents, code, UI flows,
 
 Decide before reading further:
 
-- **Simple, quick rehearsal** — if you only need a fast sanity check over a deliverable, delegate it to a subagent: have the subagent load this skill and run the rehearsal. You do not need to read the rest of this skill.
-- **Complex material or comprehensive coverage** — if the rehearsal material is complex, or you want full coverage and rigorous evaluation, continue reading and follow the full process below.
+- **Delegate the simulated reading** — for simple material with a clear purpose, hand the material to a subagent and let it do the reading: the subagent reads as a reader with none of your context and does not know a rehearsal is running — give it only the material and a reading identity, never this skill, the method, or the evaluation dimensions. The lightness comes from the delegation, not from a shorter process: you keep the surrounding work — setting up the intent baseline, reading what comes back, and evaluating it. Forms and operating methods: the「委派推演」section of [rehearsal-guide.md](references/rehearsal-guide.md).
+- **Complex material or comprehensive coverage** — if the rehearsal material is complex, or you want full coverage and rigorous evaluation, continue reading and follow the full process below. Self-simulation works standalone; delegation is a form choice, not a prerequisite.
 
 ## Why it works
 
@@ -38,7 +38,7 @@ The author has a fatal blind spot: **you know "what conclusion should be drawn",
 
 ## Trigger conditions
 
-This section expands the description's trigger conditions — the description is what the loader matches against; the clauses below let the agent decide after loading whether to start this rehearsal / verify whether the trigger is reasonable or whether something was missed.
+This section expands the description's trigger conditions — use the clauses below to decide, once this skill is in play, whether to start the rehearsal, whether the trigger was reasonable, or whether something was missed.
 
 **Triggers** (any one suffices):
 
@@ -71,7 +71,7 @@ This section expands the description's trigger conditions — the description is
 
 - [rehearsal-guide.md](references/rehearsal-guide.md) — general guide, full method + scenario-specific references
 
-**Scenario documents (load on demand)**: matched by rehearsal carrier type — full routing and decision criteria in the "Scenario-specific references" section of [rehearsal-guide.md](references/rehearsal-guide.md).
+**Scenario documents (load on demand)**: matched by rehearsal carrier type — full routing and decision criteria in the 「场景特化参考」(scenario-specific references) section of [rehearsal-guide.md](references/rehearsal-guide.md).
 
 - [Document/guide quality rehearsal](references/scenarios/doc-guide-rehearsal.md) — single-document rehearsal + full-process cross-document rehearsal, five-dimension evaluation criteria
 - [Design-methodology document rehearsal](references/scenarios/design-doc-rehearsal.md) — four-dimension verification framework: logical correctness, clear thread, internal consistency, reproducible deep understanding
@@ -97,16 +97,5 @@ rehearsal/
 └── references/
     ├── rehearsal-guide.md
     ├── scenarios/
-    │   ├── doc-guide-rehearsal.md
-    │   ├── design-doc-rehearsal.md
-    │   ├── knowledge-base-rehearsal.md
-    │   ├── prompt-instruction-rehearsal.md
-    │   ├── interaction-rehearsal.md
-    │   ├── api-design-rehearsal.md
-    │   ├── logic-chain-rehearsal.md
-    │   └── plan-rehearsal.md
     └── supplementary/
-        ├── agent-paired-reading.md
-        ├── batch-execution.md
-        └── defect-taxonomy.md
 ```

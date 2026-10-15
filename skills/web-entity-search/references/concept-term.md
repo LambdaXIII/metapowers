@@ -1,6 +1,6 @@
-# 概念/术语模板
+# 概念/术语搜索指引
 
-📍 `web-entity-search` · 搜索抽象概念、专业术语、思想流派 · [← 回 SKILL.md](../../SKILL.md)
+[← 回 SKILL.md](../SKILL.md)
 
 ## 搜索指引
 

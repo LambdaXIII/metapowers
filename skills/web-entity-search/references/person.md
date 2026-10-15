@@ -1,6 +1,6 @@
-# 人物模板
+# 人物搜索指引
 
-📍 `web-entity-search` · 搜索公众人物、历史人物、创作者 · [← 回 SKILL.md](../../SKILL.md)
+[← 回 SKILL.md](../SKILL.md)
 
 ## 搜索指引
 
