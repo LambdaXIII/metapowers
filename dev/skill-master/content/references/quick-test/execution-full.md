@@ -12,7 +12,7 @@
 
 委派子代理前**必须**完成以下全部步骤：
 
-- [ ] 用 `templates/test-plan.md` 写入 `test-plan.md` 到临时目录
+- [ ] 用[测试计划模板](../../templates/test-plan.md)写入 `test-plan.md` 到本轮目录
 - [ ] 计划中包含每个场景的预期效果
 - [ ] 计划路径告知用户
 
@@ -22,9 +22,8 @@
 
 ## 目录结构
 
-1. 检查环境变量 `SKILL_TEST_DIR`
-2. 如果未设置，使用默认路径：`<cwd>/.quick-tests/`
-3. 创建本轮目录：`<temp-dir>/round-<id>/`
+1. 取临时目录 `<temp-dir>`：环境变量 `SKILL_TEST_DIR`，未设置时默认 `<cwd>/.quick-tests/`
+2. 创建本轮目录：`<temp-dir>/round-<id>/`
 
 ```
 <temp-dir>/round-001/
@@ -39,7 +38,7 @@
 
 ## 测试计划文档
 
-使用 templates/test-plan.md 模板写入 `test-plan.md`。
+按[测试计划模板](../../templates/test-plan.md)填报，写入 `test-plan.md`。
 
 计划中包含场景的完整字段（使用场景描述、模拟背景、入口路径、用户想达成什么、预期效果、测试单元列表）、覆盖检查结果和模式判定摘要。预期效果写在计划中，但**不通过子代理 context 传递**。
 
@@ -75,15 +74,15 @@ Light 模式 context 中的 `约束: 禁止写入任何文件。所有发现通�
 
 ---
 
-## 计划闸门验证
+## 计划闸门复核
 
-全部子代理完成后，进入汇总前验证：临时目录中 `test-plan.md` 是否存在？
+全部子代理完成后，进入汇总前复核：本轮目录中 `test-plan.md` 是否存在？
 - 存在 → 进入 summarization.md
 - 不存在 → 补写 test-plan.md 后再进入汇总（计划中的预期效果是汇总的对比基准）
 
 ## 下一步
 
-计划闸门验证通过 + 全部子代理完成且报告已读取 → summarization.md
+计划闸门复核通过 + 全部子代理完成且报告已读取 → summarization.md
 
 ---
 

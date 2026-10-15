@@ -1,6 +1,14 @@
 # Changelog
 
-## 未定版
+## 1.0.1
+- SKILL.md metadata.version 1.0.0 → 1.0.1（last_updated 同步）
+- summarization.md「报告输出」节与 scenario-design.md「场景卡片格式」处补具名模板指针（`templates/summary-report.md`、`templates/scenario-card.md`）；skill-quick-test.md 模板泛指句改逐文件指针
+- 宣布式自述删除（skill-md-writing.md、disclosure.md、structure.md、standards.md、scope-analysis.md、scenario-design.md、scoring-rubric.md）；skill-review.md 三问中的「此文件是权威还是转述」改「这里是权威还是转述」，scope-analysis.md 取材标「来源」改「取自」
+- standards.md 仓库层示例改中性表述、`content/` 改技能根表述；「验证」改工作定名（skill-quick-test.md、scenario-design.md、execution-full.md、error-patterns.md、templates/test-plan.md）
+- 测试临时目录记法统一为 `SKILL_TEST_DIR` ＋ `<temp-dir>/round-<id>/` ＋默认 `<cwd>/.quick-tests/`（skill-quick-test.md、execution-full.md、summarization.md、execution-light.md）；execution-light.md 并发控制补最大并发数取值与分批策略
+- skill-quick-test.md「六步测试设计」表与「方法目录」表合一；error-patterns.md E4 回链约定收窄为「叶子方法文件须带回链」
+- templates/test-plan.md 新增「打分定制」字段；scoring-rubric.md 定制维度落点改指该字段，skill-quick-test.md 方法目录「可选评分标准」改「可选打分标准」
+- 「验证」一词退出正文（essay-writing.md、template-writing.md、workflow-writing.md、writing-craft.md、script-design.md、scripting-craft.md、skill-design.md、skill-modify.md、skill-review.md 及快速测试册各文件），按语境改为校验／检验／核实
 - SKILL.md 开场三块并一段：删「What a skill is」与「What makes one good」两节——加载机制与三层成本的权威论述在 structure.md「按加载成本分层」，内容四判据的操作化分布在审查/写作/设计各册；开场保留一段（身份、消费方式、内容四判据名目），入口收敛为「开场段 → 情形路由 → Not this skill」
 - structure.md 新增总纲节「先看清文档集合的整体形状」（根不被指向、树干递归切分、横向互指成网、单链合法环不合法四要点），「按加载成本分层」改述为图上的推荐配置并删「组织方向因此确定」断言，开篇衔接句改指整体形状
 - 新增使用侧两工作：skill-pre-assessment.md（评估一个没用过的技能，七个证据方向支持「用不用 / 选哪个」判定，评估与解读分离）与 skill-post-assessment.md（评估一个刚用完的技能，产出带本次实证的洞察记录）；SKILL.md 路由按委托方立场分使用侧/制作侧两组，前提句改判定归属三分，「Not this skill」真实执行排除条改述

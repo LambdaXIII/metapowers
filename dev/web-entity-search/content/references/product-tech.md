@@ -1,6 +1,6 @@
-# 产品/技术模板
+# 产品/技术搜索指引
 
-📍 `web-entity-search` · 搜索具体产品、软件、硬件、技术方案 · [← 回 SKILL.md](../../SKILL.md)
+[← 回 SKILL.md](../SKILL.md)
 
 ## 搜索指引
 

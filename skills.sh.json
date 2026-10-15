@@ -6,7 +6,6 @@
       "title": "metapowers",
       "description": "Production-grade agent skills and the engineering standards behind them.",
       "skills": [
-        "agent-prompt-design",
         "skill-exposition",
         "web-deep-research",
         "rehearsal",

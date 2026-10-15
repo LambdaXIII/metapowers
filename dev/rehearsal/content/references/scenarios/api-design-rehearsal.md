@@ -7,6 +7,8 @@
 - 配置文件的字段和格式设计
 - 任何"调用者通过规范文档接入"的契约
 
+不适用：给人阅读的文档/指南 → [doc-guide-rehearsal.md](doc-guide-rehearsal.md)；操作链路（UI/CLI/表单）→ [interaction-rehearsal.md](interaction-rehearsal.md)；接口背后的执行逻辑 → [logic-chain-rehearsal.md](logic-chain-rehearsal.md)。
+
 ## 本载体的核心差异：接口契约边界
 
 API 是接口契约——定义了调用者和实现之间的边界。本载体的推演范围（P1S1 范围确定的具体化）**严格限制在接口层面**：
