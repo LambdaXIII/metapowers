@@ -31,7 +31,7 @@ metapowers solves these problems — it provides a set of battle-tested **univer
 
 ## Features
 
-- **6 production-grade skills** — covering prompt design, deep research, skill exposition, skill testing, entity search, and long-term memory
+- **5 production-grade skills** — covering deep research, skill exposition, skill testing, entity search, and long-term memory
 - **Development/release separation** — `dev/` is the workshop, `skills/` is the showroom; development-side docs never ship to runtime
 - **Spec authority** — each skill's behavioral contract lives in the `openspec/specs/` specs as the single source of truth; changes go through the spec workflow and fold back into the main tree, preventing behavioral drift
 - **Strict documentation discipline** — skill content is unambiguous, self-contained, and never depends on conversation context
@@ -51,7 +51,6 @@ npx skills add LambdaXIII/metapowers -g # recommended: global install
 Or install individual skills:
 
 ```bash
-npx skills add LambdaXIII/metapowers --skill agent-prompt-design
 npx skills add LambdaXIII/metapowers --skill skill-exposition
 npx skills add LambdaXIII/metapowers --skill web-deep-research
 npx skills add LambdaXIII/metapowers --skill web-entity-search
@@ -62,7 +61,7 @@ npx skills add LambdaXIII/metapowers --skill journaling
 
 ## Skills
 
-### agent-prompt-design
+### agent-prompt-design (in development)
 
 A methodology for designing agent system prompts. Covers structure design, content writing, tool protocols, security hardening, and operations. Highlights: security as a design starting point; reasoning-model era (2026) strategies; a ten-anti-pattern diagnostic system.
 
