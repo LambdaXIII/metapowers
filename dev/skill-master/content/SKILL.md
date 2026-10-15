@@ -8,40 +8,17 @@ description: |
   怎么样 / 哪个更好) a skill, or whenever a skill itself is the question.
   An agent asks after building or using one: 「这个技能别人能不能照着做完」
   「这个技能用下来帮没帮上忙」. Not for rewriting skill content as prose.
-license: "MIT"
+license: "CC-BY-NC-SA-4.0"
 metadata:
-  version: "1.0.0"
-  last_updated: "2026-09-15"
+  version: "1.0.1"
+  last_updated: "2026-10-15"
   author: "LambdaXIII"
 ---
 
 # Skill Master
 
 
-Skill Master is the method for working on skills, from the maker's side and the user's: turning a practice into one, repairing one that misbehaves, finding what is wrong with one you maintain, deciding whether to use one you have not tried, checking a cold agent can actually use one, looking back on one you have just used, and writing the text any of that needs.
-
-It is not a template to fill in and not a checklist to run. What it carries is the reasoning behind the choices — what belongs in a skill at all, which file a piece of content goes into, why a sentence should be cut. Read the file that matches what you are holding. Every file here is written to be read once, cold, by an agent with nothing else in hand.
-
-### What a skill is
-
-A skill is a directory an agent loads to gain a capability. The loader reads two fields — `name` and `description` — and holds them in context for the whole session. When a task matches, the loader pulls in the body of `SKILL.md` in full. Anything deeper is read only after something already loaded points at it.
-
-Three consequences follow from that, and everything in this skill assumes them:
-
-- **Layer is cost.** Text in `SKILL.md` is paid on every match. Text behind a link is paid only when followed. Where you put a piece of content decides which of those happens.
-- **A reference is a load path.** Following a link *is* the read. A link to nothing means that knowledge cannot be reached, and nothing reports it.
-- **Any file may be read on its own.** The reader was not in the conversation that produced it and has nothing else in hand. A file has to carry enough for the reader to act on it alone.
-
-### What makes one good
-
-Four tests, applied to every sentence and every file:
-
-- **Useful（有用）** — delete it and the reader behaves differently. If nothing changes, it is a no-op; cut it.
-- **Complete（全面）** — the branches and failure modes the reader will actually hit are covered. A cold reader who hits an uncovered case has nothing to fall back on.
-- **Accurate（准确）** — every claim traces to a mechanism or to practice. Skill text is used as authority, so a wrong claim becomes a wrong action and nobody re-checks it.
-- **Clear（清晰）** — the reader has no one to ask. Ambiguity gets filled in silently, and a wrong fill-in is never reported.
-
-Review judges a skill by these four; pre-use evaluation weighs them for the task at hand, and post-use insights test them against what actually happened. A modification has failed if it breaks any of them.
+Skill Master is the method for working on skills, whether using them or making them. It carries the reasoning behind the choices, not a template to fill in, and every file here stands on its own. Whatever the work, the skill it targets is judged by the same four criteria: Useful（有用）, Complete（全面）, Accurate（准确）, Clear（清晰）.
 
 ## How to use it
 

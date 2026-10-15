@@ -1,6 +1,6 @@
 # Academic Research
 
-📍 `web-deep-research` · 学术 / 高专业性话题特化策略 · [← 回 SKILL.md](../SKILL.md)
+[← 回 SKILL.md](../SKILL.md)
 
 ---
 

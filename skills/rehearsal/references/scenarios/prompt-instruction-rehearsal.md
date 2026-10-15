@@ -5,6 +5,8 @@
 - 给 AI 模型的系统提示词或任务指令
 - 给人类执行者的操作指令或规范文档
 
+不适用：给人阅读的文档/指南 → [doc-guide-rehearsal.md](doc-guide-rehearsal.md)；读者按方法论执行设计的设计方法论文档 → [design-doc-rehearsal.md](design-doc-rehearsal.md)；确定性执行路径（代码、规则流程）→ [logic-chain-rehearsal.md](logic-chain-rehearsal.md)。
+
 ## 本载体的核心差异：双维度推演
 
 提示词推演横跨两个维度，且**必须同时推演**：

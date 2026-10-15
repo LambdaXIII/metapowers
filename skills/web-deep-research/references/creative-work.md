@@ -1,6 +1,6 @@
 # Creative Work Research
 
-📍 `web-deep-research` · 影视 / 动漫 / 游戏 / 书籍特化策略 · [← 回 SKILL.md](../SKILL.md)
+[← 回 SKILL.md](../SKILL.md)
 
 ---
 

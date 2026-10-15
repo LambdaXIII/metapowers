@@ -2,8 +2,6 @@
 
 # metapowers
 
-[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
-
 > Agent 技能开发工坊 —— 一套通用 Skill，以及产出这些 Skill 的工程规范。
 
 ---
@@ -33,7 +31,7 @@ metapowers 解决这些问题——它提供一套经过验证的**通用技能*
 
 ## 功能特性
 
-- **6 个生产级技能** —— 覆盖提示词设计、深度研究、技能阐述、技能测试、实体搜索、长期记忆
+- **5 个生产级技能** —— 覆盖深度研究、技能阐述、技能测试、实体搜索、长期记忆
 - **开发与发布分离** —— `dev/` 是工地，`skills/` 是展厅；开发侧文档不随技能分发
 - **规格权威** —— 每个技能的行为契约以 `openspec/specs/` 规格为唯一权威，变更经规格流程提出并折回主树，防止行为漂移
 - **严格的文档纪律** —— 技能内容零歧义、自包含、不依赖会话上下文
@@ -53,7 +51,6 @@ npx skills add LambdaXIII/metapowers -g # 推荐全局安装
 也可按需安装单个技能：
 
 ```bash
-npx skills add LambdaXIII/metapowers --skill agent-prompt-design
 npx skills add LambdaXIII/metapowers --skill skill-exposition
 npx skills add LambdaXIII/metapowers --skill web-deep-research
 npx skills add LambdaXIII/metapowers --skill web-entity-search
@@ -63,7 +60,7 @@ npx skills add LambdaXIII/metapowers --skill journaling
 
 ## 技能目录
 
-### agent-prompt-design
+### agent-prompt-design（开发中）
 
 Agent 系统提示词设计方法论。覆盖结构设计、内容编写、工具协议、安全加固到运营管理。特色：安全视为设计起点；推理模型时代（2026）专项策略；十大反模式诊断体系。
 
@@ -133,5 +130,5 @@ metapowers/
 
 ## 许可
 
-[MIT](LICENSE)
+各技能采用独立许可证，见各技能 SKILL.md 中的 `license` 标注；仓库其他内容（规格、开发文档等）保留所有权利。
 

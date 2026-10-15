@@ -12,8 +12,8 @@ description: |
   Does NOT trigger: reviewing, evaluating, testing, or creating skills.
 license: "MIT"
 metadata:
-  version: "1.0.1"
-  last_updated: "2026-08-23"
+  version: "1.0.2"
+  last_updated: "2026-10-15"
   author: "LambdaXIII"
 ---
 
@@ -50,7 +50,8 @@ This section expands the description's trigger conditions — the description is
 ## How to use
 
 1. Read [exposition-guide.md](references/exposition-guide.md) — the general guide, required reading. Contains the full method: sorting → pitfalls → organizing → effect mentions
-2. Load reference files on demand (see routing table below) — judge for yourself, load anytime, they offer heuristics rather than requirements
+2. Load reference files on demand (see the reference files list below) — judge for yourself, load anytime, they offer heuristics rather than requirements
+3. Before delivering, check the material against the checklist in exposition-guide.md §5「效果提及」
 
 ## Reference files
 
@@ -66,14 +67,14 @@ This section expands the description's trigger conditions — the description is
 - [extraction/example-content.md](references/extraction/example-content.md) — when encountering example-type content
 - [extraction/rationale-content.md](references/extraction/rationale-content.md) — when encountering design-thinking-type content
 
-**Structure-pattern handbook (on demand, load while organizing):**
+**Structure-pattern handbook (on demand, load while organizing; pick one by the pattern-selection table in exposition-guide.md §4):**
 
 - [structure/pattern-learning-path.md](references/structure/pattern-learning-path.md) — learning-path pattern (default; outline included in the general guide)
 - [structure/pattern-golden-circle.md](references/structure/pattern-golden-circle.md) — principle-first pattern (WHY→HOW→WHAT)
 - [structure/pattern-knowledge-types.md](references/structure/pattern-knowledge-types.md) — group-by-knowledge-type pattern
 - [structure/pattern-progressive-disclosure.md](references/structure/pattern-progressive-disclosure.md) — progressive-disclosure pattern (overview→detail)
 - [structure/pattern-iceberg.md](references/structure/pattern-iceberg.md) — understanding-depth layering pattern (phenomenon→principle)
-- [structure/pattern-scenario-driven.md](references/structure/pattern-scenario-driven.md) — reader-scenario/problem-driven pattern
+- [structure/pattern-scenario-driven.md](references/structure/pattern-scenario-driven.md) — learner-scenario/problem-driven pattern
 - [structure/pattern-5w1h.md](references/structure/pattern-5w1h.md) — six-dimension coverage pattern
 - [structure/pattern-functional-decomposition.md](references/structure/pattern-functional-decomposition.md) — capability-tree pattern
 

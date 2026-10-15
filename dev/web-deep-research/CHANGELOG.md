@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.5.3
+- workflow.md 删重复小节标题「三层编号体系」与自述导语；Phase 3 消解闸门补「重要 Q」判定标准与「低置信度消解」切换条件；Phase 4「输出形态」补显式选择判据、报告章节名统一为「资料来源与摘要」「交叉比对与发现」
+- references/search-strategy.md 更名 references/orchestration.md（H1 与 SKILL.md Content Index 行同步名实，自述块收敛为加载时机）；person-biography.md 删跨文档「出发点一致」叙事；全部 references/templates 头部「📍 …」声明行收敛为一行回链
+- templates/report-template.md 新增「后续建议」节；SKILL.md Content Index 补三行领域文档的 Phase-0 加载时机注解与模板行节名
+- 冷读收口：SKILL.md 概述层与正文对齐（Phase 3 五类资料含「经验」、Phase 4 交付形态按判据选择、Phase 2↔3 迭代显式化）；四份含硬约束的领域参考导语标明强制条款；Q 状态表补「保持开放」、单来源口径消歧
+- metadata.version 2.5.2 → 2.5.3
+
+## 2.5.2
+- SKILL.md 顶层新增 license 字段（MIT）
+
 ## 2.5.1
 - description 从纯英文方法论阶段描述改写为中英双触发面（核心名含中文「深度调研」、用户问法「查透/彻底了解/深挖」+ agent 自问双路径，删方法论阶段名），反向限一条（Overkill for simple fact lookups）
 

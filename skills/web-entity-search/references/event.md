@@ -1,6 +1,6 @@
-# 事件模板
+# 事件搜索指引
 
-📍 `web-entity-search` · 搜索已发生的事件、运动、灾难、里程碑 · [← 回 SKILL.md](../../SKILL.md)
+[← 回 SKILL.md](../SKILL.md)
 
 ## 搜索指引
 

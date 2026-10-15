@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.3.4
+- SKILL.md Content Index 兜底行补分类兜底判据；metadata.version 1.3.3 → 1.3.4
+- references/ 七份 H1 由「{类型}模板」改为「{类型}搜索指引」，与 templates/ 孪生拉开身份差；general.md 删「此模板用于……」用途宣布块，「专用模板」指代改为 `references/` 与 `templates/` 文件族
+- references/ 八份文件头「📍 ……」声明行收敛为一行 `[← 回 SKILL.md](../SKILL.md)`，回链由 `../../SKILL.md` 修正为 `../SKILL.md`
+- workflow.md 补度量口径（一轮搜索 / 一个结果）、无用户通道时的指代推断出口、「最相关」判定标准、重判回边上限，删「一手来源可单源直填」例外；补单来源统一处置——存在性与置信度分离，单来源照样填入并标注「单来源，未经交叉验证」
+- references/creative-work.md「类型/题材」改必填；templates/ person 补活跃期名位、company 补起源回退、creative-work 创作者补开发媒介、concept-term「为什么重要」改不省略、event 持续标注落值
+- 冷读收口：多类型判定补分界（线索分散选最相关 vs 本体横跨走兜底）、高度争议标注补形态与判定线、维度来源与模板加载时机指称修正
+
+## 1.3.3
+- SKILL.md 顶层新增 license 字段（MIT）
+
 ## 1.3.2
 - SKILL.md 正文全量英文化（核心流程、委派建议、Content Index 七行表格、Instructions、Capability Boundaries），实质内容与中文原版逐节对照一致
 - description 补中英双触发面：加入中文说明句与中英触发词（「查一下 / 搜索 / 是什么 / 搜一下 / 了解一下」+ what is X? / look up / search for）
