@@ -1,10 +1,10 @@
 # Controversial Topics Research
 
-📍 `web-deep-research` · 争议性话题特化策略 · [← 回 SKILL.md](../SKILL.md)
+[← 回 SKILL.md](../SKILL.md)
 
 ---
 
-研究争议性话题时，通用线索追踪流程依然适用——但以下方面可以参考。
+研究争议性话题时，通用线索追踪流程依然适用——但以下方面可以参考。**「硬约束」小节为强制条款，不属可选参考。**
 
 ---
 
