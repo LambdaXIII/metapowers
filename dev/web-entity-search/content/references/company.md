@@ -1,6 +1,6 @@
-# 公司/机构模板
+# 公司/机构搜索指引
 
-📍 `web-entity-search` · 搜索企业、组织、政府机构 · [← 回 SKILL.md](../../SKILL.md)
+[← 回 SKILL.md](../SKILL.md)
 
 ## 搜索指引
 
