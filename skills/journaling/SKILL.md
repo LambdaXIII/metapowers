@@ -13,9 +13,10 @@ description: |
 
   Write operations include: 创建/写入/编辑/收录/移动/归档/删除 journal 条目、
   维护/整理 journal、将讨论中确认的设计决策写入 journal 文件。
+license: "CC-BY-NC-SA-4.0"
 metadata:
-  version: "5.1.0"
-  last_updated: "2026-10-04"
+  version: "5.1.2"
+  last_updated: "2026-10-16"
 ---
 
 # Journaling
