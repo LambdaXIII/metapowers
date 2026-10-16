@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.1.2
+- spec-rules.md 与 design-index.md 补「读取时必要信息可直接写在 INDEX」的启发性提示——RULES 设计层援引读写披露不对称的既有论述（spec-index.md）说明纯提示可设计为专门板块，INDEX 设计层以门面信息角度补「绝对必要、表述精简准确」的取舍边界
+
 ## 5.1.1
 - SKILL.md 顶层新增 license 字段（CC-BY-NC-SA-4.0）
 
