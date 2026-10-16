@@ -15,8 +15,8 @@ description: |
   维护/整理 journal、将讨论中确认的设计决策写入 journal 文件。
 license: "CC-BY-NC-SA-4.0"
 metadata:
-  version: "5.1.1"
-  last_updated: "2026-10-14"
+  version: "5.1.2"
+  last_updated: "2026-10-16"
 ---
 
 # Journaling
