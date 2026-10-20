@@ -9,8 +9,8 @@ description: >-
   depth. Overkill for simple fact lookups.
 license: "MIT"
 metadata:
-  version: "2.5.3"
-  last_updated: "2026-10-15"
+  version: "2.5.4"
+  last_updated: "2026-10-21"
   author: "Ĉalio"
 ---
 

@@ -8,8 +8,8 @@ description: >-
   "look up" / "search for" a named entity.
 license: "MIT"
 metadata:
-  version: "1.3.4"
-  last_updated: "2026-10-15"
+  version: "1.3.5"
+  last_updated: "2026-10-21"
   author: "Ĉalio"
 ---
 

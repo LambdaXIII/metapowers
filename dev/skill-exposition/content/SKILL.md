@@ -12,8 +12,8 @@ description: |
   Does NOT trigger: reviewing, evaluating, testing, or creating skills.
 license: "MIT"
 metadata:
-  version: "1.0.2"
-  last_updated: "2026-10-15"
+  version: "1.0.3"
+  last_updated: "2026-10-21"
   author: "LambdaXIII"
 ---
 

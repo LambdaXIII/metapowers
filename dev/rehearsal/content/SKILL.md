@@ -12,8 +12,8 @@ description: |
   Not for typo/punctuation/format-only fixes.
 license: "CC-BY-NC-SA-4.0"
 metadata:
-  version: "2.2.2"
-  last_updated: "2026-10-15"
+  version: "2.2.3"
+  last_updated: "2026-10-21"
   author: "xiii_1991"
 ---
 

@@ -1,6 +1,6 @@
 # Changelog
 
-## 未定版
+## 1.3.5
 - SKILL.md 删除「Just a thin layer……」设计定性与「Core flow」重复导读（五步流程由 references/workflow.md 唯一承载）
 
 ## 1.3.4

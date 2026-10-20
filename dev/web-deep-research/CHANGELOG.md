@@ -1,6 +1,6 @@
 # Changelog
 
-## 未定版
+## 2.5.4
 - 元语境自述清洗：SKILL.md 删两条无指向的范围否定项（tool selection / troubleshooting）；creative-work.md、person-biography.md 删「以下按…组织」自述，creative-work.md 删「新增」变更注记；policy-law.md「我国法律层级」改「中国法律层级」；report-template.md 编号说明只保留「章节标题不编号」约束；workflow.md 术语表按全篇 `[S#]` 实际用法统一为「来源 S」，清除「线索 S」
 
 ## 2.5.3

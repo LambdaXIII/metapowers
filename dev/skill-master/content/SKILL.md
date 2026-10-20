@@ -10,8 +10,8 @@ description: |
   「这个技能用下来帮没帮上忙」. Not for rewriting skill content as prose.
 license: "CC-BY-NC-SA-4.0"
 metadata:
-  version: "1.0.1"
-  last_updated: "2026-10-15"
+  version: "1.0.2"
+  last_updated: "2026-10-21"
   author: "LambdaXIII"
 ---
 

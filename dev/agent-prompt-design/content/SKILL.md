@@ -10,8 +10,8 @@ security holes diagnosed. Not for ordinary one-off prompts.
 
 license: "MIT"
 metadata:
-  version: "1.0.5"
-  last_updated: "2026-10-14"
+  version: "1.0.6"
+  last_updated: "2026-10-21"
   author: "Ĉalio"
 ---
 
