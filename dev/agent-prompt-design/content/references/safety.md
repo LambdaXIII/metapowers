@@ -1,8 +1,7 @@
 # 安全与防护参考
 
 > Agent 系统提示词安全深度指南：提示注入防御、安全框架、生产检查清单。
-> 综合整理自 arXiv:2603.25056、OWASP、Dust Blog、AgDex、orchestrator.dev 等来源。
-> 
+>
 > 📍 本文件是 [agent-prompt-design skill](../SKILL.md) 的参考文件。主入口和决策树请见 SKILL.md。
 
 ## 目录
@@ -358,7 +357,7 @@ Refusal categories:
 
 ## 6. 三层边界框架
 
-> **需要可直接使用的模板？** 跳转到 [templates/three-layer-boundary.md](../templates/three-layer-boundary.md)。本节解释三层边界的设计原理和为什么这样设计。
+> **需要可直接使用的模板？** 跳转到 [templates/three-layer-boundary.md](../templates/three-layer-boundary.md)。
 
 ### 6.1 框架定义
 

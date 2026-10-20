@@ -1,5 +1,18 @@
 # Changelog
 
+## 5.2.0
+- SKILL.md 新增 Scripts and Facilities（技能脚本与库设施的读写路径分工、「设施表面化不裁决」「非静态非强制」两判据）与 Searching the Journal（符号链接检索空结果警示、六条检索纪律）两节；protocol-operations.md 补四条（可发现链路的领域页归属判据、状态复核原地刷新、整文件覆盖拒写处理、畅想记录标注纪律）；protocol-maintenance.md 承接句去除——lookup 检索设施设计讨论（2026-10-19）与后续 journal 实践裁定的回写入库
+- 全族协议合并：写入协议与非只读操作参考合并为唯一「操作协议」（protocol-operations.md，共同逻辑＋各操作差异指引），protocal-write.md 退役，日常整理（编辑/移动/删除/合并）不再误入维护协议
+- 发现合约归位：design-discovery-contract.md 重写为发现合约论述（模板、要素清单、检测清单单处承载），protocol-init.md P3 收敛为纯步骤并引用论述
+- 自述清扫：references/ 全域删除文档自述、设计理由与历史叙事（design-rules、design-index、spec-note、spec-rules、spec-frontmatter、script-tools、protocol-init），术语定义与路由归位正文与 SKILL.md；patterns 摘要改判据式；templates/seed/RULES.md 头部改写为正文句
+- maintenance 换轴：protocol-maintenance.md 概述锚定核心命题（真正整理、沉淀、优化知识，非把文件改合规），交付检查重组为主检（知识沉淀质量）＋底线（形式合规）
+- 文件改名：protocal-*.md 改名为 protocol-*.md（init/maintenance/operations）
+- SKILL.md 路由承载面：章节重排（原则→脚本→参考目录），Linked Files 更名 References 并按功能分组载明加载时机，协议表三行覆盖全族路由，Scripts 节补按需取用语义，last_updated 更新
+- 冷读推演修复：操作协议删除节补安全缺省的收束（临时保存目录约定、入链引用修复）与标题指代落定（frontmatter `title` 字段），init P3 完成条件区分有约/无约两态，发现合约论述统一写入授权表述、分离能力判别与执行授权、对齐要素表与模板口径、去除工具参数字面
+
+## 5.1.2
+- spec-rules.md 与 design-index.md 补「读取时必要信息可直接写在 INDEX」的启发性提示——RULES 设计层援引读写披露不对称的既有论述（spec-index.md）说明纯提示可设计为专门板块，INDEX 设计层以门面信息角度补「绝对必要、表述精简准确」的取舍边界
+
 ## 5.1.1
 - SKILL.md 顶层新增 license 字段（CC-BY-NC-SA-4.0）
 

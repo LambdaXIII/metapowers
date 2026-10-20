@@ -1,8 +1,5 @@
 # 系统提示词运营与管理参考
 
-> **来源：** Agent Prompt Design Skill RESEARCH.md §6（运营与管理）
-> **整理日期：** 2026-06-17
-> 
 > 📍 本文件是 [agent-prompt-design skill](../SKILL.md) 的参考文件。主入口和决策树请见 SKILL.md。
 
 ## 目录

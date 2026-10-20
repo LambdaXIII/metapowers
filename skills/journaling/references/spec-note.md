@@ -1,10 +1,5 @@
 # Note Writing Guide
 
-> Methodology for writing journal entries. 此文件是笔记编写指南——告诉你怎么写好一条笔记。
-> 写作流程见 `protocal-write.md`。Frontmatter 格式规范见 `spec-frontmatter.md`。
-
----
-
 ## Summary Anchoring
 
 The summary is the primary tool for granularity control. It must be verified at three checkpoints during a note's lifecycle:
@@ -62,7 +57,7 @@ Free markdown. Guidelines:
 - **Crossing time boundaries:** If an entry naturally spans two time directions (e.g., completed decisions + future plans), add a `## Future` section for the forward-looking content, and split during maintenance.
 - Don't aim for perfect granularity at write time
 - An entry that grows too long or covers too many topics is fine — split during maintenance
-- The maintenance protocol (`protocal-maintenance.md`) handles splitting, merging, and reorganizing
+- The maintenance protocol (`protocol-maintenance.md`) handles splitting, merging, and reorganizing
 - Write first, refine later
 
 ---

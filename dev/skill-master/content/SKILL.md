@@ -10,15 +10,15 @@ description: |
   「这个技能用下来帮没帮上忙」. Not for rewriting skill content as prose.
 license: "CC-BY-NC-SA-4.0"
 metadata:
-  version: "1.0.1"
-  last_updated: "2026-10-15"
+  version: "1.0.2"
+  last_updated: "2026-10-21"
   author: "LambdaXIII"
 ---
 
 # Skill Master
 
 
-Skill Master is the method for working on skills, whether using them or making them. It carries the reasoning behind the choices, not a template to fill in, and every file here stands on its own. Whatever the work, the skill it targets is judged by the same four criteria: Useful（有用）, Complete（全面）, Accurate（准确）, Clear（清晰）.
+Skill Master is the method for working on skills, whether using them or making them. Whatever the work, the skill it targets is judged by the same four criteria: Useful（有用）, Complete（全面）, Accurate（准确）, Clear（清晰）.
 
 ## How to use it
 

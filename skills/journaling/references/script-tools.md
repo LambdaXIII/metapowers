@@ -1,11 +1,5 @@
 # Script Tools Guide
 
-> scripts/ 目录下零依赖脚本工具的完整指南——命令参考、输出格式、行为说明。双版本（`.py` 与 `.mjs`）行为完全一致，输出格式相同。Python 需要 3.8+，Node.js 需要 18+。
->
-> 快速入门与场景路由见 SKILL.md 的 Scripts 节；每个脚本的 `--help` 含精简用法。
-
----
-
 ## 工具清单
 
 ```
@@ -19,7 +13,7 @@ scripts/
 - `frontmatter` — 读取、验证、合并写入、整体替换 YAML frontmatter
 - `check-links` — 提取 journal 全部链接、检查目标、分析入链/出链关系
 
-两版本 API、行为、输出格式完全一致，可互换使用。
+两版本 API、行为、输出格式完全一致，可互换使用；每个脚本的 `--help` 含精简用法。
 
 ---
 

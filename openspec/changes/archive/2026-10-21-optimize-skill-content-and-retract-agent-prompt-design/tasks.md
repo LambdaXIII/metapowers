@@ -63,5 +63,5 @@
 - [x] 7.1 机械面验收：病灶签名 grep 在五技能 content/ 内归零（自述/出处注记/整理日期/口吻词；示例引文逐条核豁免）；改名与回链后全量链接可解析；四点 spec 冲突（定位词、「验证」、「学习者」术语、「一手来源直填」）复核归零；frontmatter 与 CHANGELOG 体例合规
 - [x] 7.2 冷读面验收：五技能各一轮冷读推演（用 rehearsal 场景文档推演技能内容），只修高/中危发现，低危记 CHANGELOG 或留观
 - [x] 7.3 一致性核对：skill-grouping delta 成员枚举与 skills.sh.json 实际清单一致；`openspec validate --all` 全绿
-- [ ] 7.4 向用户展示完整 diff，获明确同意后合并（`--no-ff` 回 dev）；其余技能快照刷新与 main 合并属发布流程，由用户发起
-- [ ] 7.5 经用户确认后归档本 change（`/openspec-archive-change` 把 skill-grouping delta 折回主树）
+- [x] 7.4 向用户展示完整 diff，获明确同意后合并（`--no-ff` 回 dev）；其余技能快照刷新与 main 合并属发布流程，由用户发起
+- [x] 7.5 经用户确认后归档本 change（`/openspec-archive-change` 把 skill-grouping delta 折回主树）

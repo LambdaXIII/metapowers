@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.6
+- 内容层元语境清洗：删除 references/ 与 templates/ 中的来源/整理日期块、「Based on …（§N）」溯源行、综合整理句与 RESEARCH.md 悬空指针；model-specific.md 文末改为面向读者的来源表
+- 硬缺陷修复：structure-design.md 与 tool-design.md 的代码围栏闭合失配（闭合围栏统一为裸 ```），deepmind-reasoning.md 删除空的「Lightweight version」节并同步清理指向该节的链接
+- 冷读附注：model-specific.md §2.2 表格被 blockquote 隔断、anti-patterns.md 反模式 4 的复制残留交叉引用，均按原意修正
+
 ## 1.0.5
 - SKILL.md 顶层新增 license 字段（MIT）
 

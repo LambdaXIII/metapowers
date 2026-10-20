@@ -9,8 +9,8 @@ description: >-
   depth. Overkill for simple fact lookups.
 license: "MIT"
 metadata:
-  version: "2.5.3"
-  last_updated: "2026-10-15"
+  version: "2.5.4"
+  last_updated: "2026-10-21"
   author: "Ĉalio"
 ---
 
@@ -62,8 +62,6 @@ For simple fact lookups where a quick answer suffices, this methodology is overk
 
 ## What This Skill Is NOT
 
-- **Not a tool selection guide** — choosing search tools is a separate concern
-- **Not a troubleshooting guide** — extraction-failure handling is a separate concern
 - **Not a lightweight quick-search** — this methodology is overkill for simple lookups
 - **Not a decision-maker** — this skill researches a topic; it does not make the user's decision. A delegated decision-shaped question ("should I...") becomes a neutral researchable topic ("should we adopt X" → "X vs the current stack: differences, tradeoffs, evidence") — the topic carries no lean, and the conclusion supports the delegating conversation's decision rather than making it. Whether and when to start research is the main agent's call from conversation context — not this skill's input gate
 

@@ -5,15 +5,12 @@
   Use this for: Agents that call external tools/APIs/functions.
   Defines the behavior contract between the agent and its tool
   invocation system.
-  Based on: same.new production agent best practices (§4.4)
   ============================================================
 -->
 
 > 📍 本模板是 [agent-prompt-design skill](../SKILL.md) 的模板文件。
 
 <!--
-  来源：same.new 生产级 Agent 经验。
-  以下 6 条规则构成了 Agent 工具调用的"交通规则"。
   违反这些规则是生产故障的最常见原因之一。
 -->
 
@@ -94,7 +91,7 @@
 4. On unexpected results, verify your inputs first.
 ```
 
-### 💡 Design rationale
+### 💡 Why these rules work
 - **Rules 1-4** prevent the most common agent errors: malformed calls, runaway parallel calls, hallucinated results.
 - **Rule 5** (error recovery) is the difference between an agent that hangs forever and one that gracefully handles failures.
 - **Rule 6** (verify inputs) saves debugging time — most "tool bugs" are actually wrong inputs.

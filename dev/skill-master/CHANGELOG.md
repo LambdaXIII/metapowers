@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.2
+- 内容层元语境清洗：删包级设计陈述与版面指代（SKILL.md 开场段、structure.md 总纲、scenario-design.md 步骤自述、trigger-check.md 定位节、error-patterns.md 文档分工、scoring-rubric.md 定位与「被调用方」节）；execution-full.md 两份委派模板就地写全，不再以「与 Light 相同、仅一处替换」的补丁写法引用
+
 ## 1.0.1
 - SKILL.md metadata.version 1.0.0 → 1.0.1（last_updated 同步）
 - summarization.md「报告输出」节与 scenario-design.md「场景卡片格式」处补具名模板指针（`templates/summary-report.md`、`templates/scenario-card.md`）；skill-quick-test.md 模板泛指句改逐文件指针

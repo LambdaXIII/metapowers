@@ -1,8 +1,5 @@
 # 系统提示词反模式与常见错误参考
 
-> **来源：** Agent Prompt Design Skill RESEARCH.md §8（反模式与常见错误）
-> **整理日期：** 2026-06-17
-> 
 > 📍 本文件是 [agent-prompt-design skill](../SKILL.md) 的参考文件。主入口和决策树请见 SKILL.md。
 
 ## 目录
@@ -57,7 +54,7 @@ You specialize in: CRM data migration, API integration troubleshooting, report c
 Your goal: resolve at least 80% of issues in the first interaction.
 ```
  
--> **深入阅读：** 精确的角色定义方法论见 [content-writing.md §3](content-writing.md#3-角色定义)。
+> **深入阅读：** 精确的角色定义方法论见 [content-writing.md §3](content-writing.md#3-角色定义)。
 > 
 > 🔄 修复后请回到 [§3 诊断工作流](#3-诊断工作流agent-异常行为-5-步排查) 继续排查剩余反模式，或用 [§4 自查清单](#4-系统提示词提交前自查清单14-项) 全面验证。
 
@@ -92,7 +89,7 @@ When handling a request:
 4. Verify core question is answered before closing
 ```
  
--> **深入阅读：** 用工具封装业务逻辑的方法论见 [tool-design.md §1](tool-design.md#1-工具作为契约)。
+> **深入阅读：** 用工具封装业务逻辑的方法论见 [tool-design.md §1](tool-design.md#1-工具作为契约)。
 > 
 > 🔄 修复后请回到 [§3 诊断工作流](#3-诊断工作流agent-异常行为-5-步排查) 继续排查剩余反模式，或用 [§4 自查清单](#4-系统提示词提交前自查清单14-项) 全面验证。
 
@@ -216,7 +213,7 @@ Anthropic 的"正确海拔"原则：**足够具体以有效引导行为，又足
 - Bad news structure: acknowledge impact → explain reason → offer next step
 ```
  
--> **深入阅读：** 清晰直接的指令编写方法见 [content-writing.md §1](content-writing.md#1-五条铁律-five-iron-rules)。
+> **深入阅读：** 清晰直接的指令编写方法见 [content-writing.md §1](content-writing.md#1-五条铁律-five-iron-rules)。
 > 
 > 🔄 修复后请回到 [§3 诊断工作流](#3-诊断工作流agent-异常行为-5-步排查) 继续排查剩余反模式，或用 [§4 自查清单](#4-系统提示词提交前自查清单14-项) 全面验证。
 
@@ -251,7 +248,7 @@ then append JSON section at the end.
 requires explanation, switch to mixed mode. Do NOT attempt both simultaneously.
 ```
  
--> **深入阅读：** 精确的角色定义方法论见 [content-writing.md §3](content-writing.md#3-角色定义)。
+> **深入阅读：** 「一个思想，一条指令」与可验证条件见 [content-writing.md §1 铁律四](content-writing.md#14-铁律四一个思想一条指令-one-thought-one-instruction)。
 > 
 > 🔄 修复后请回到 [§3 诊断工作流](#3-诊断工作流agent-异常行为-5-步排查) 继续排查剩余反模式，或用 [§4 自查清单](#4-系统提示词提交前自查清单14-项) 全面验证。
 
@@ -286,7 +283,7 @@ requires explanation, switch to mixed mode. Do NOT attempt both simultaneously.
 - run_report() — available when user mentions "report" or "analytics"
 ```
  
--> **深入阅读：** 最小可行工具集的选型标准见 [tool-design.md §3](tool-design.md#3-最小可行工具集)。
+> **深入阅读：** 最小可行工具集的选型标准见 [tool-design.md §3](tool-design.md#3-最小可行工具集)。
 > 
 > 🔄 修复后请回到 [§3 诊断工作流](#3-诊断工作流agent-异常行为-5-步排查) 继续排查剩余反模式，或用 [§4 自查清单](#4-系统提示词提交前自查清单14-项) 全面验证。
 
@@ -321,7 +318,7 @@ requires explanation, switch to mixed mode. Do NOT attempt both simultaneously.
 - Run for more than 30 minutes without user interaction
 ```
  
--> **深入阅读：** 三层边界框架的设计原理见 [safety.md §6](safety.md#6-三层边界框架)；可直接使用的模板见 [templates/three-layer-boundary.md](../templates/three-layer-boundary.md)。
+> **深入阅读：** 三层边界框架的设计原理见 [safety.md §6](safety.md#6-三层边界框架)；可直接使用的模板见 [templates/three-layer-boundary.md](../templates/three-layer-boundary.md)。
 > 
 > 🔄 修复后请回到 [§3 诊断工作流](#3-诊断工作流agent-异常行为-5-步排查) 继续排查剩余反模式，或用 [§4 自查清单](#4-系统提示词提交前自查清单14-项) 全面验证。
 

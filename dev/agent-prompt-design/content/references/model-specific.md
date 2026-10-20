@@ -185,9 +185,9 @@ Gemini 3.5 的 **Deep Think** 模式与 Claude 的 Adaptive Thinking 有本质�
 | **推理机制** | 内部推理预算（token 分配） | **并行假设探索**（多路径同时考虑） |
 | **对外暴露** | 推理过程不对外暴露 | 推理链可作为输出的一部分 |
 | **CoT 提示** | ❌ 有害（干扰内部推理） | ✅ 有益（结构化模板提升表现） |
+| **控制方式** | `thinking_budget` (token 数) | `deep_think: true` + 推理模板 |
 
 > ⚠️ **适用边界：** 对 Gemini Deep Think（推理模型），9 步模板应视作**假设空间框架**而非强制性步骤序列。保留步骤 1/3/4/5/7（问题分析、假设探索、评估），精简步骤 8/9（流程控制型指令，避免与原生推理机制冲突）。详见 [reasoning-models-2026.md §5.2](reasoning-models-2026.md#52-矛盾解析为何-cot-对-claude-46-有害但对-gemini-deep-think-可能有益)。
-| **控制方式** | `thinking_budget` (token 数) | `deep_think: true` + 推理模板 |
 
 **关键建议：** 对 Gemini 使用官方发布的 **9 步强制性预行动推理链**（详见 `templates/deepmind-reasoning.md`）：
 
@@ -567,4 +567,13 @@ Grok 的实时信息能力（X 平台集成）需要特殊的提示词指引：
 
 ---
 
-> **参考来源：** Anthropic "Effective Context Engineering" (Sep 2025)、Google DeepMind "Gemini 3 Pro System Instructions" (Nov 2025)、OpenAI "A Practical Guide to Building Agents" (2025)、xAI "Prompt Caching Best Practices"、SurePrompts "Advanced Prompt Engineering in 2026"、arXiv:2603.25056。详见 `RESEARCH.md` §10 参考资料。
+## 参考来源
+
+| 来源 | 内容 | 链接 |
+|------|------|------|
+| arXiv:2603.25056 | "The System Prompt Is the Attack Surface" (Mar 2026) | https://arxiv.org/html/2603.25056 |
+| Anthropic | "Effective Context Engineering for AI Agents" (Sep 2025) | https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents |
+| OpenAI | "A Practical Guide to Building Agents" (2025) | https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents |
+| SurePrompts | "Advanced Prompt Engineering in 2026" | https://sureprompts.com/blog/advanced-prompt-engineering-2026-claude-gpt5-gemini |
+| Google DeepMind | "Gemini 3 Pro System Instructions" (Nov 2025) | 未处置（未找到稳定一手链接） |
+| xAI | "Prompt Caching Best Practices" | 未处置（未找到公开链接） |

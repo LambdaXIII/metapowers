@@ -1,8 +1,7 @@
 # 工具定义与调用设计参考
 
 > Agent 系统提示词中工具定义与调用的完整方法论。
-> 综合整理自 Anthropic、OpenAI、DeepMind、same.new 等来源。
-> 
+>
 > 📍 本文件是 [agent-prompt-design skill](../SKILL.md) 的参考文件。主入口和决策树请见 SKILL.md。
 
 
@@ -66,7 +65,7 @@ Anthropic 指出：工具定义了 Agent 与其**行动空间**和**信息空间
 ├── 如果人类工程师需要看文档才能区分 → 重叠太大，合并
 ├── 如果同一任务可以用两个工具完成 → 重叠太大，合并或拆分职责
 └── 如果两个工具服务于不同的调用场景 → 合理
-```markdown
+```
 
 ### 2.2 参数描述的黄金法则
 
@@ -89,7 +88,7 @@ Anthropic 指出：工具定义了 Agent 与其**行动空间**和**信息空间
 ├── 没有它，Agent 能否完成任务（通过其他路径）？
 ├── 它的定义消耗多少 token？
 └── 保留它 vs 移除它，对用户体验的影响是什么？
-```markdown
+```
 
 **每多一个工具，Agent 的选择难度就增加一分**——臃肿的工具库会导致：
 - Agent 花费更多 token 在工具选择推理上（而非任务本身）
@@ -168,7 +167,7 @@ OpenAI 将 Agent 工具分为三个基本类别：
   4. 等待工具结果后再继续
   5. 实现错误恢复（最多 3 次重试）
 </tool_calling>
-```markdown
+```
 
 ### 5.1 每条规则的设计原理
 
@@ -193,7 +192,7 @@ OpenAI 将 Agent 工具分为三个基本类别：
 ✅ Agent 先解释再调用:
   "用户想要查找笔记本电脑。我将使用 search_products 工具搜索相关产品。"
   → search_products(query="laptop")
-```markdown
+```
 
 #### 规则 3：一次只调用一个工具（除非明确允许并行调用）
 
@@ -242,7 +241,7 @@ DeepMind Gemini 3 Pro 系统指令（2025 年 11 月发布）定义了智能错�
     ├── 400 参数非法
     ├── 逻辑错误（数据不符合预期）
     └── 策略: 改变策略，不重复相同的失败调用
-```markdown
+```
 
 ### 6.2 系统提示词中的表述
 
@@ -253,7 +252,7 @@ DeepMind Gemini 3 Pro 系统指令（2025 年 11 月发布）定义了智能错�
 - All other errors (404, 401, 400, logic errors):
   → MUST change strategy, do NOT repeat the same failed call
   → Try alternative approach or inform the user
-```markdown
+```
 
 ### 6.3 重试策略的理性边界
 
@@ -292,7 +291,7 @@ DeepMind Gemini 3 Pro 系统指令（2025 年 11 月发布）定义了智能错�
 ├── 输出格式与约束: 10-15%
 ├── 安全与边界: 10-15%
 └── Few-Shot 示例: 5-10%
-```markdown
+```
 
 **工具定义是注意力预算的最大消耗者**——这意味着优化工具定义的 token 效率是优化系统提示词整体效率的最佳切入点。
 
@@ -319,7 +318,7 @@ DeepMind Gemini 3 Pro 系统指令（2025 年 11 月发布）定义了智能错�
   - 场景 A 工具（如：Git 操作）
   - 场景 B 工具（如：数据库查询）
   - 场景 C 工具（如：邮件发送）
-```markdown
+```
 
 ---
 

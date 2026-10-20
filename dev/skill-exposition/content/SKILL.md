@@ -12,8 +12,8 @@ description: |
   Does NOT trigger: reviewing, evaluating, testing, or creating skills.
 license: "MIT"
 metadata:
-  version: "1.0.2"
-  last_updated: "2026-10-15"
+  version: "1.0.3"
+  last_updated: "2026-10-21"
   author: "LambdaXIII"
 ---
 
@@ -30,8 +30,6 @@ The deliverable lets humans learn to use the skill. What humans do after learnin
 **Behavior boundaries**: read source files only, never modify; do not execute or test the skill being expounded; do not judge whether the skill is good or bad.
 
 ## Trigger conditions
-
-This section expands the description's trigger conditions — the description is what the loader (the skill loading/matching mechanism) matches against; the clauses below let the agent decide after loading whether to start this exposition.
 
 **Triggers** (any one suffices):
 
