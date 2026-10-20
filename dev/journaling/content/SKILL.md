@@ -15,8 +15,8 @@ description: |
   维护/整理 journal、将讨论中确认的设计决策写入 journal 文件。
 license: "CC-BY-NC-SA-4.0"
 metadata:
-  version: "5.1.2"
-  last_updated: "2026-10-16"
+  version: "5.2.0"
+  last_updated: "2026-10-21"
 ---
 
 # Journaling
@@ -41,36 +41,9 @@ Operating without INDEX.md means operating blind.
 
 | Protocol | When to use | Load |
 |----------|-------------|------|
-| Init protocol | Creating a new journal | `references/protocal-init.md` |
-| Write protocol | Writing entries, including importing existing documents | `references/protocal-write.md` |
-| Non-read-only operations reference | Other operations that change journal state (move, rename, delete, etc.) — shared guidance for the operation family | `references/protocal-operations.md` |
-| Maintenance protocol | Maintaining / organizing the journal | `references/protocal-maintenance.md` |
-
-Other reference documents load on demand per the references within each protocol.
-
-## Linked Files
-- [Init Protocol](references/protocal-init.md)
-- [Discovery Contract Design Guide](references/design-discovery-contract.md)
-- [Write Protocol](references/protocal-write.md)
-- [Note Writing Guide](references/spec-note.md)
-- [Frontmatter Specification](references/spec-frontmatter.md)
-- [Non-Read-Only Operations Reference](references/protocal-operations.md)
-- [Maintenance Protocol](references/protocal-maintenance.md)
-- [INDEX.md Specification](references/spec-index.md)
-- [INDEX Design Reference](references/design-index.md)
-- [Rules Specification](references/spec-rules.md)
-- [Rule Design Guide](references/design-rules.md)
-- [Project Dashboard Pattern](references/patterns/dashboard.md)
-- [Layered Rules Pattern](references/patterns/layered-rules.md)
-- [Note Tags Pattern](references/patterns/note-tags.md)
-- [Maintenance Memo Pattern](references/patterns/maintenance-memo.md)
-- [Classification Systems](references/patterns/classification-systems/)
-- [Script Tools Guide](references/script-tools.md)
-- [Templates](templates/seed/)
-
-## Scripts
-
-The `scripts/` directory provides dependency-free convenience tools (`frontmatter`, `check-links`), in both Python and Node.js versions. Full guide in `references/script-tools.md`.
+| Init protocol | Creating a new journal | `references/protocol-init.md` |
+| Operations protocol | Any operation that changes journal state — creating, editing, importing, moving, archiving, deleting entries. Day-to-day entry work (edit, move, delete, merge) routes here, not to maintenance. | `references/protocol-operations.md` |
+| Maintenance protocol | Dedicated maintenance / reorganization of the journal, triggered explicitly by the user | `references/protocol-maintenance.md` |
 
 ---
 
@@ -86,4 +59,59 @@ The `scripts/` directory provides dependency-free convenience tools (`frontmatte
 
 - **Capture discussion decisions immediately.** When the user confirms a design decision, write it to the target project document in the same turn. Do not defer to the journal; a journal summary can follow later during maintenance.
 
-- **Deletion handling is judged by journal rules — routed via the non-read-only operations reference.** Deletion gets minimal guidance there and executes per the journal rules' deletion conventions; this skill presets no deletion protocol and no deletion semantics.
+- **Deletion handling is judged by journal rules — routed via the operations protocol.** Deletion gets minimal guidance there and executes per the journal rules' deletion conventions; this skill presets no deletion protocol and no deletion semantics — the operations protocol carries only a safety fallback for when journal rules are silent.
+
+---
+
+## Scripts and Facilities
+
+**Skill scripts** (`scripts/` in this skill) — dependency-free convenience tools (`frontmatter`, `check-links`), in both Python and Node.js versions. They serve the **write and maintenance paths**; take them on demand only — during mainline work there is no reason to stop and run checks or validations specially. Full guide in `references/script-tools.md`.
+
+**Library facilities** (`<journal-root>/scripts/`) — tools the journal owns, stored inside the journal itself alongside its entries, serving the **read path**. Reading a journal never requires loading this skill, so a retrieval helper cannot be skill-owned: when the journal needs one, it belongs to the journal. Before building anything, check the journal's rules document for facilities that already exist and how they are meant to be used.
+
+- **Facilities surface; they never adjudicate.** A lookup tool may rank, filter and report hits, but it must not decide a judgment the journal's rules reserve for a reader (meta-context leakage is the standing example). Mechanizing a judgment gate is a downgrade, not a robustness win — write the *signals* such a check would look for into the journal as recognition aids instead.
+- **Facilities are non-static and non-mandatory.** They evolve with the journal's actual use; changing one is an ordinary journal write, on par with writing an entry. They never become a required step in a protocol, and a facility's absence is not a defect to be fixed.
+
+## Searching the Journal
+
+A recursive search over journal content **can come back empty while the content is there**: the journal root is commonly reached through a symlink or another layer of indirection, and `ripgrep` / `grep -r` do not follow a link encountered *during traversal* (a path passed directly as an argument is resolved normally). The empty result then reads as "not recorded" — which is how a real entry gets declared missing.
+
+- Search **from inside the journal**, or pass `<journal-root>` (or a subdirectory of it) as the search path argument.
+- Searching from a parent directory: follow links explicitly — `rg --follow`, `grep -R`.
+- Use the journal's own retrieval facility when it has one; it encodes the exclusions ad hoc searches forget (the recycle directory, the meta files, dot-files).
+- **An empty result is never evidence of absence.** Re-run from the correct root before concluding a topic was never recorded.
+- Match on the **entry-level fields** (`title` / `summary`) before prose: they exist so a reader can decide without opening the file, so a hit there means "this entry is about it" while a prose-only hit means "it merely mentions it".
+- Naming and content may live in different languages — file names are often ASCII slugs while entries are written in the user's language. A query in the content language never matches file names; search both forms.
+
+---
+
+## References
+
+Load on demand; every entry states when to read it.
+
+**Protocols**
+- [Init Protocol](references/protocol-init.md) — creating a new journal
+- [Operations Protocol](references/protocol-operations.md) — any journal-state-changing operation: creating, editing, importing, moving, archiving, deleting entries
+- [Maintenance Protocol](references/protocol-maintenance.md) — user-triggered dedicated maintenance / reorganization
+
+**Design guides**
+- [Discovery Contract Design](references/design-discovery-contract.md) — designing or judging a discovery contract (the injection text that routes a host agent to its journal); the init protocol's discovery phase links here
+- [Rule Design Guide](references/design-rules.md) — designing the journal's organization scheme (where content goes, naming, how it is found) before writing RULES.md
+- [INDEX Design Reference](references/design-index.md) — designing INDEX structure and dashboards, including the INDEX-structure section of RULES.md
+
+**Specifications**
+- [Note Writing Guide](references/spec-note.md) — how to write a good entry; the writing flow itself lives in the Operations protocol
+- [Frontmatter Specification](references/spec-frontmatter.md) — frontmatter format and grammar, including custom-field guidance
+- [INDEX.md Specification](references/spec-index.md) — INDEX structure rules
+- [Rules Specification](references/spec-rules.md) — writing RULES.md rule text: principles and reminders for recording the organization scheme
+
+**Tools & templates**
+- [Script Tools Guide](references/script-tools.md) — running the `frontmatter` / `check-links` scripts
+- [Seed Templates](templates/seed/) — default scheme wherever journal rules leave a section undefined; source for bootstrapping the rules document
+
+**Patterns** — read the summary first, open the full file only when it fits
+- [Project Dashboard Pattern](references/patterns/dashboard.md) — building a dashboard-style INDEX
+- [Layered Rules Pattern](references/patterns/layered-rules.md) — organizing RULES.md into layers
+- [Note Tags Pattern](references/patterns/note-tags.md) — defining tag conventions
+- [Maintenance Memo Pattern](references/patterns/maintenance-memo.md) — tracking maintenance backlog
+- [Classification Systems](references/patterns/classification-systems/) — choosing a classification system for entries
