@@ -12,8 +12,8 @@ description: |
   Not for typo/punctuation/format-only fixes.
 license: "CC-BY-NC-SA-4.0"
 metadata:
-  version: "2.2.2"
-  last_updated: "2026-10-15"
+  version: "2.2.3"
+  last_updated: "2026-10-21"
   author: "xiii_1991"
 ---
 
@@ -38,7 +38,7 @@ The author has a fatal blind spot: **you know "what conclusion should be drawn",
 
 ## Trigger conditions
 
-This section expands the description's trigger conditions — use the clauses below to decide, once this skill is in play, whether to start the rehearsal, whether the trigger was reasonable, or whether something was missed.
+Use the clauses below to decide, once this skill is in play, whether to start the rehearsal, whether the trigger was reasonable, or whether something was missed.
 
 **Triggers** (any one suffices):
 
@@ -55,7 +55,7 @@ This section expands the description's trigger conditions — use the clauses be
 
 **Clarification** (the following is **not** a non-trigger):
 
-- Pure code runtime-logic verification (no need to simulate a "person's" perspective) — rehearse per `references/scenarios/logic-chain-rehearsal.md`. logic-chain-rehearsal is a scenario document under this skill's references, not another skill; do not fail to trigger this skill because "no human simulation is needed". When a deliverable contains both documentation and code examples, do both the document rehearsal and the logic-chain rehearsal.
+- Pure code runtime-logic verification (no need to simulate a "person's" perspective) — rehearse per `references/scenarios/logic-chain-rehearsal.md`; do not fail to trigger this skill because "no human simulation is needed". When a deliverable contains both documentation and code examples, do both the document rehearsal and the logic-chain rehearsal.
 
 **Edge cases**: if unsure whether to trigger, trigger by default — a rehearsal that finds nothing costs nothing, but skipping one may let a deliverable go out with problems that could have been found.
 
@@ -63,7 +63,7 @@ This section expands the description's trigger conditions — use the clauses be
 
 **Read the general guide and follow its process:**
 
-→ [rehearsal-guide.md](references/rehearsal-guide.md) — full account of the method (principles, rehearsal steps P1–P5, the four reproduction checks — shallower, skewed, excessive, or duplicated understanding — and evaluation dimensions) plus an index of scenario-specific references.
+→ [rehearsal-guide.md](references/rehearsal-guide.md) — full method.
 
 ## Reference files
 
@@ -88,14 +88,3 @@ This section expands the description's trigger conditions — use the clauses be
 - [batch-execution.md](references/supplementary/batch-execution.md) — parallel-execution mode when rehearsal scenarios ≥ 5 (role-matrix design in the knowledge-base scenario document)
 - [defect-taxonomy.md](references/supplementary/defect-taxonomy.md) — for classifying and locating defects once found
 
-
-## Directory tree
-
-```
-rehearsal/
-├── SKILL.md
-└── references/
-    ├── rehearsal-guide.md
-    ├── scenarios/
-    └── supplementary/
-```

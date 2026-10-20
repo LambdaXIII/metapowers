@@ -8,17 +8,15 @@ description: >-
   "look up" / "search for" a named entity.
 license: "MIT"
 metadata:
-  version: "1.3.4"
-  last_updated: "2026-10-15"
+  version: "1.3.5"
+  last_updated: "2026-10-21"
   author: "Ĉalio"
 ---
 
 # Web Entity Search
 
 Answer "what is X?" — via web search, produce a structured answer with confidence checking.
-Not a research report, no chain tracing. Just a thin layer that adds framework and discipline over a direct search.
-
-**Core flow:** disambiguation → classification → fill dimensions per the type's reference → confidence re-check → output per template.
+Not a research report, no chain tracing.
 
 > **Delegation advice:** This skill is simple structured search; strongly recommend delegating a sub-agent to load this skill and execute independently — avoids occupying the main agent's context and keeps the search uninterrupted. Topics are usually self-contained and rarely depend on conversation history.
 > When delegating, pass only the task description — do **not** read this skill's files and relay them to the sub-agent. Let the sub-agent load the skill itself and follow the workflow inside the Skill.
