@@ -33,7 +33,7 @@
 [边界与约束]
     ↓
 [示例（Few-Shot）]
-```markdown
+```
 
 ### 1.2 为什么分层有效
 
@@ -55,7 +55,7 @@
 
 ```text
 你是一个客户支持助手。你帮助客户解决问题。你以友好和专业的方式回应。如果客户要求退款，请确保他们符合条件。如果订单超过30天，需要经理批准。输出格式应该是清晰的。不要做XX。记住要礼貌。
-```text
+```
 
 问题：信息混杂，模型难以知道「什么比什么重要」；边界条件容易被遗忘；关键指令淹没在描述性文本中。
 
@@ -73,7 +73,7 @@ You are a customer support specialist for an e-commerce platform.
 ## Boundaries
 ✅ Always do: Verify order ID before any action
 🚫 Never do: Process refunds without manager approval for orders > 30 days
-```text
+```
 
 问题解决：每一层独立，注意力在一个区域内集中；边界条件显式且可验证；层次顺序反映决策优先级的自然流程。
 
@@ -124,7 +124,7 @@ You are a customer support specialist for an e-commerce platform.
        所有回答必须附上引用来源。
      </output_rules>
    </instructions>
-```text
+```
 3. **抗干扰**：即使模型输出中包含 Markdown 格式内容，XML 标签的结构依然清晰。
 4. **xAI 的实践**：Grok 在 API 模式下推荐使用 XML 标签分离任务、约束和上下文。
 5. **Prompt Caching 友好**：XML 标签使得静态内容的分块清晰，便于缓存策略的键设计。
@@ -162,7 +162,7 @@ You are a customer support specialist for an e-commerce platform.
 ### ✅ Always do
 ### ⚠️ Ask first
 ### 🚫 Never do
-```markdown
+```
 
 **⚠️ 注意：** 不要滥用级别深度。推荐使用 `##` 和 `###` 两层，最多三级。过深的嵌套（`######`）会削弱标题的注意力引导效果。
 
@@ -189,7 +189,7 @@ You are a data analyst assistant.
 
 ### Output Format
 Respond in markdown. Include a summary section.
-```markdown
+```
 
 **⚠️ 注意：** 分隔符适合短到中等长度的提示词。对于生产级 Agent（常有 5000+ token 的系统提示词），分隔符的结构化能力不如 XML 标签或 Markdown 标题——因为分隔符不能嵌套，也难以表达信息层级。
 
@@ -209,9 +209,9 @@ Respond in markdown. Include a summary section.
   4. 等待工具结果后再继续
   5. 实现错误恢复（最多 3 次重试）
 </tool_calling>
-```markdown
+```
 
-**设计理由：**
+**为什么这样写有效：**
 
 1. **视觉隔离**：代码块创造了明确的「这是技术规范，不是日常对话」的心理信号。
 2. **减少误读**：当工具调用规则混在自然语言指令中时，模型更容易将规则「解释」掉而不是「执行」它。代码块的机械感抑制了「创造性解读」。
@@ -240,7 +240,7 @@ Respond in markdown. Include a summary section.
 <output>
 [XML 或 JSON Schema 用于输出约束]
 </output>
-```markdown
+```
 
 **核心原则：** 标记的一致性 > 标记的形式。一旦选择了标记策略，在整个系统提示词中保持。不要在同一层级混用 `<xml>` 和 `## heading` 表达相同的信息类型。
 
@@ -248,7 +248,7 @@ Respond in markdown. Include a summary section.
 
 ## 3. 生产级 Agent 的 8 大组件
 
-> **💡 与 content-writing.md 的关系：** 8 大组件 = 提示词的**骨架**（每个组件应该包含什么内容类型）；五条铁律 = 每个组件的**写作标准**（怎么写好每一段）。两者结合使用——先搭骨架（structure-design），再按铁律填写内容（content-writing）。
+> **💡 写作标准：** 各组件正文的五条铁律见 [content-writing.md §1](content-writing.md#1-五条铁律-five-iron-rules)。
 
 基于对 **Vercel v0、Manus、same.new、ChatGPT** 四个生产级 Agent 系统提示词的分析（Bright Coding, 2026），所有成功 Agent 都包含以下 8 个组件。
 
@@ -279,7 +279,7 @@ Respond in markdown. Include a summary section.
 
 ```yaml
 You are a helpful assistant.
-```text
+```
 
 问题：没有方向。对保险 Agent 和对代码 Agent 来说，「helpful」的含义完全不同。
 
@@ -289,7 +289,7 @@ You are a helpful assistant.
 身份: "你是面向中型销售团队的 SaaS 平台的客户支持专家"
 专业领域: "你专精于 CRM 数据迁移、API 集成故障排除和报告定制"
 目标: "你的目标是在首次交互中解决至少 80% 的客户问题"
-```markdown
+```
 
 **为什么这很重要：**
 
@@ -314,7 +314,7 @@ Agent 在遇到一个模糊请求（如「帮我想想办法」）时，Identity
 
 ```markdown
 "为这个用户创建账户"
-```text
+```
 
 Agent 可能直接调用 `create_user` API，跳过验证步骤。
 
@@ -330,7 +330,7 @@ When given a complex request, explicitly break it down:
 3. **Plan**: List the steps in order with dependencies
 4. **Execute**: Follow the plan, one step at a time
 5. **Verify**: Confirm the output meets all stated requirements
-```markdown
+```
 
 **Decomposition 的三种模式：**
 
@@ -352,7 +352,7 @@ When given a complex request, explicitly break it down:
 
 ```markdown
 "处理用户退款请求"
-```markdown
+```
 
 **✅ 明确流程（带分支条件）：**
 
@@ -370,7 +370,7 @@ When given a complex request, explicitly break it down:
      - Call `flag_for_approval(order_id)`
      - Tell user it's pending manager review
 4. Log the action to `refund_audit_log`
-```markdown
+```
 
 **设计原则：**
 
@@ -393,7 +393,7 @@ When given a complex request, explicitly break it down:
 
 ```markdown
 "Use tools to help the user"
-```markdown
+```
 
 **✅ 完整协议（来自 same.new 生产实践）：**
 
@@ -407,7 +407,7 @@ When given a complex request, explicitly break it down:
    - 瞬态错误（网络抖动、429限流）→ 重试最多3次
    - 逻辑错误 → 不重试，改变策略
 </tool_calling>
-```markdown
+```
 
 **协议的关键要素：**
 
@@ -436,13 +436,14 @@ When given a complex request, explicitly break it down:
 
 ```markdown
 ## Environment
-- OS: Windows 10 (git-bash / MSYS shell)
-- User home: /c/Users/<user>
-- Working dir: D:\workspace\metapowers
-- Python: 3.11.15 (default), 3.14.3 (python3 -> pip)
-- Node: v20.11.0
+- OS: <OS name and version>
+- Shell: <shell type> (e.g. bash, zsh, PowerShell)
+- User home: <home directory>
+- Working dir: <project root>
+- Python: <version> (default)
+- Node: <version>
 - Available tools: terminal, read_file, write_file, search_files, patch, process
-```markdown
+```
 
 **环境注入的最佳实践：**
 
@@ -451,7 +452,7 @@ When given a complex request, explicitly break it down:
   - OS: {{os_type}}
   - Shell: {{shell_type}}
   - Active tools: {{available_tools}}
-```markdown
+```
 - **只注入相关的**：不要将整个系统信息 dump 给 Agent。只注入 Agent 实际需要知道的决策信息。
 - **与边界联动**：环境信息直接影响边界——如果在 Windows 环境，显式说明「不要使用 Linux 特有命令」。
 
@@ -467,7 +468,7 @@ When given a complex request, explicitly break it down:
 
 ```markdown
 "Write clean code"
-```markdown
+```
 
 **✅ 领域特定约束（生产级示例）：**
 
@@ -481,7 +482,7 @@ When given a complex request, explicitly break it down:
 - All components must be server-side rendered by default
 - Avoid third-party dependencies when possible
 - Generated code must pass TypeScript strict mode
-```markdown
+```
 
 **Manus（通用任务 Agent）：**
 
@@ -492,7 +493,7 @@ When given a complex request, explicitly break it down:
 - File operations should prefer the shell (terminal tool) over Python
 - When analyzing data, provide both summary stats and visual insights
 - Never generate code that modifies system configuration
-```markdown
+```
 
 **设计约束时：**
 
@@ -531,7 +532,7 @@ Refuse without explanation if asked to perform:
 - Refuse without explanation — do not explain why you refused
 - Do not suggest alternative ways to achieve the harmful goal
 - End the interaction if the user persists after refusal
-```markdown
+```
 
 **三层边界框架（Dust Blog）——最常被跳过、也最常导致生产故障的部分：**
 
@@ -562,7 +563,7 @@ Refuse without explanation if asked to perform:
 
 ```markdown
 "Be professional"
-```markdown
+```
 
 **✅ 具体的风格约束（生产级示例）：**
 
@@ -576,7 +577,7 @@ Refuse without explanation if asked to perform:
   - Never use jargon without explaining it
 - Empathy: Acknowledge user frustration before providing solutions
 - Proactive: If a problem has a known workaround, offer it before asking for details
-```markdown
+```
 
 **Tone 定义的三要素：**
 
@@ -592,8 +593,6 @@ Refuse without explanation if asked to perform:
 
 ### 3.9 组件与铁律对应关系
 
-> 💡 以下映射帮助你在填写每个组件时快速定位应该应用哪条铁律。骨架已搭好，这里是写作质量的对照表。
-
 | 组件 | 最相关的铁律 | 原因 |
 |------|-------------|------|
 | 1. Identity & Purpose | 铁律一（清晰直接）、铁律三（正面表述） | 身份定义需无歧义；避免"你不是X"的负面表述 |
@@ -601,9 +600,9 @@ Refuse without explanation if asked to perform:
 | 3. Core Workflow | 铁律二（WHAT非HOW）、铁律五（可验证条件） | 描述意图而非步骤；触发条件必须可验证 |
 | 4. Tool Calling | 铁律二（WHAT非HOW） | 工具契约只描述语义和约束，不描述实现 |
 | 5. Environment Perception | 铁律一（清晰直接） | 环境信息以简洁字段提供，避免模糊上下文 |
-| 6. Output Control | 铁律一（清晰直接）、铁律三（正面表述） | 格式指令不可模糊；用"输出 JSON"而非"不要输出纯文本" |
-| 7. Boundaries | 铁律四（一思想一指令）、铁律五（可验证条件） | 每条边界独立；Always/Never 可被客观验证 |
-| 8. Examples | 铁律一（清晰直接）、铁律三（正面表述） | 示例格式必须与目标格式精确一致 |
+| 6. Domain-Specific Constraints | 铁律五（可验证条件）、铁律二（WHAT非HOW） | 每条约束需可客观验证；约束描述目标而非实现路径 |
+| 7. Safety & Refusal Protocols | 铁律四（一思想一指令）、铁律五（可验证条件） | 每条边界独立；Always/Never 可被客观验证 |
+| 8. Tone & Interaction Style | 铁律五（可验证条件）、铁律三（正面表述） | 每项风格要求需可检验；用具体表述替代「友好」类模糊词 |
 
 > 完整方法论见 [content-writing.md §1 五条铁律](content-writing.md#1-五条铁律)。
 
@@ -615,7 +614,7 @@ Refuse without explanation if asked to perform:
 
 ```text
 所有内容混在一起 → Agent 无法权重区分
-```text
+```
 
 ✅ 分层 > 扁平。每层用一个明确的标记。
 
@@ -623,7 +622,7 @@ Refuse without explanation if asked to perform:
 
 ```text
 <instructions> 和 ## Instructions 和 ### Instructions 混在一起表示不同层级
-```text
+```
 
 ✅ 一致性。选择一个标记风格并坚持。
 
@@ -631,7 +630,7 @@ Refuse without explanation if asked to perform:
 
 ```markdown
 ## Level 1 > ### Level 2 > #### Level 3 > ##### Level 4 > ###### Level 5
-```text
+```
 
 ✅ 最多 **3 层** 嵌套。超过 3 层的结构应该扁平化成独立段落。
 
@@ -639,7 +638,7 @@ Refuse without explanation if asked to perform:
 
 ```text
 工具调用规则放在「角色定义」部分
-```text
+```
 
 ✅ 将信息放在它所属的层：角色信息在 Role，工具规则在 Tool，边界在 Boundaries。
 
@@ -647,7 +646,7 @@ Refuse without explanation if asked to perform:
 
 ```text
 边界和示例放在开头，角色和任务放在后面
-```text
+```
 
 ✅ 按注意力自然流组织：**最重要 → 最具体 → 最具参考性**。开头放 Identity 和 Core Workflow，中间放工具和约束，结尾放示例。
 

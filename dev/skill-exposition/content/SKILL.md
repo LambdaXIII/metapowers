@@ -31,8 +31,6 @@ The deliverable lets humans learn to use the skill. What humans do after learnin
 
 ## Trigger conditions
 
-This section expands the description's trigger conditions — the description is what the loader (the skill loading/matching mechanism) matches against; the clauses below let the agent decide after loading whether to start this exposition.
-
 **Triggers** (any one suffices):
 
 - The user's first message contains verbs such as 「阐述 / 整理成文档 / 生成方法论 / 输出为文档 / 学会」, and the target is a skill (or aspects of a skill, or multiple skills)

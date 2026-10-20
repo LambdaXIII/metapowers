@@ -3,7 +3,6 @@
   generic-agent.md
   通用 Agent 系统提示词模板
   Use this for: Most production AI agents (single or multi-agent).
-  Based on: Dust Blog, OpenAI, Anthropic best practices (§7.1)
   ============================================================
 -->
 

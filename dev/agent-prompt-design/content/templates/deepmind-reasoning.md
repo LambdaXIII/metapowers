@@ -4,7 +4,6 @@
   DeepMind Gemini 3 Pro — 强制预行动推理模板
   Use this for: High-reliability complex multi-step agents
   (financial analysis, medical diagnosis, legal reasoning, etc.)
-  Based on: Google DeepMind System Instructions (§7.2)
   ============================================================
 -->
 
@@ -86,19 +85,14 @@ Before taking any action (tool calls OR user responses), you MUST methodically r
 
 ### ❌ When NOT to use this template (full 9-step)
 - **Simple single-step tasks** (e.g., "summarize this text") — the 9-step overhead wastes tokens and latency
-- **Reasoning models apply here *only* to the full 9-step:** native reasoning + full external reasoning can interact unpredictably (see SurePrompts 2026). If your target is a reasoning model, skip to the 🪶 Lightweight version below — it provides just enough structure without competing with the model's own reasoning.
+- **Reasoning models apply here *only* to the full 9-step:** native reasoning + full external reasoning can interact unpredictably (see SurePrompts 2026). If your target is a reasoning model, use the step subset described under *For reasoning model targets* below.
 - **Real-time conversational agents** where latency < 1s is required
 
 ### ⚠️ Token cost warning
 This template adds ~400-600 tokens to every prompt. For high-traffic agents, consider:
-- Using the lightweight version below
 - Applying it only to specific "high-risk" sub-workflows rather than globally
 
 ### 🧠 For reasoning model targets
 If your agent uses a model with native strong reasoning (DeepMind Gemini 3 Pro, Claude Opus, GPT-5.4 Reasoner, etc.):
 - **Do NOT use the full 9-step version above** — it may interfere with the model's internal reasoning.
-- **Use the 🪶 Lightweight 4-step version below** — it gives just enough structural guardrails (dependency ordering, outcome evaluation, persistence strategy, response inhibition) without duplicating or competing with the model's native reasoning.
-→ Jump directly to *Lightweight version* below.
-
-### 🪶 Lightweight version (4-step — for reasoning models)
-For reasoning models, or scenarios where full 9-step is too heavy but some structured reasoning is still needed:
+- **Keep only steps 1, 4, 8, and 9** (dependency ordering, outcome evaluation, persistence strategy, response inhibition) — that subset gives structural guardrails without duplicating or competing with the model's native reasoning.

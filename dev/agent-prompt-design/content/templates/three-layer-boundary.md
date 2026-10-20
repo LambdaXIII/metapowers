@@ -5,7 +5,6 @@
   Use this for: Defining explicit behavioral boundaries in any
   agent system prompt. Can be embedded inside generic-agent.md
   or used standalone.
-  Based on: Dust Blog, "How to Write AI Agent Instructions" (§7.3)
   方法论解释见: references/safety.md §6
   ============================================================
 -->

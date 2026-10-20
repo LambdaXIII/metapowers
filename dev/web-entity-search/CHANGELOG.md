@@ -1,5 +1,8 @@
 # Changelog
 
+## 未定版
+- SKILL.md 删除「Just a thin layer……」设计定性与「Core flow」重复导读（五步流程由 references/workflow.md 唯一承载）
+
 ## 1.3.4
 - SKILL.md Content Index 兜底行补分类兜底判据；metadata.version 1.3.3 → 1.3.4
 - references/ 七份 H1 由「{类型}模板」改为「{类型}搜索指引」，与 templates/ 孪生拉开身份差；general.md 删「此模板用于……」用途宣布块，「专用模板」指代改为 `references/` 与 `templates/` 文件族

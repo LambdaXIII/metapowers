@@ -1,5 +1,8 @@
 # Changelog
 
+## 未定版
+- 元语境自述清洗：SKILL.md 删两条无指向的范围否定项（tool selection / troubleshooting）；creative-work.md、person-biography.md 删「以下按…组织」自述，creative-work.md 删「新增」变更注记；policy-law.md「我国法律层级」改「中国法律层级」；report-template.md 编号说明只保留「章节标题不编号」约束；workflow.md 术语表按全篇 `[S#]` 实际用法统一为「来源 S」，清除「线索 S」
+
 ## 2.5.3
 - workflow.md 删重复小节标题「三层编号体系」与自述导语；Phase 3 消解闸门补「重要 Q」判定标准与「低置信度消解」切换条件；Phase 4「输出形态」补显式选择判据、报告章节名统一为「资料来源与摘要」「交叉比对与发现」
 - references/search-strategy.md 更名 references/orchestration.md（H1 与 SKILL.md Content Index 行同步名实，自述块收敛为加载时机）；person-biography.md 删跨文档「出发点一致」叙事；全部 references/templates 头部「📍 …」声明行收敛为一行回链
