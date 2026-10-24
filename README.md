@@ -55,6 +55,7 @@ npx skills add LambdaXIII/metapowers --skill skill-exposition
 npx skills add LambdaXIII/metapowers --skill skill-master
 npx skills add LambdaXIII/metapowers --skill web-deep-research
 npx skills add LambdaXIII/metapowers --skill web-entity-search
+npx skills add LambdaXIII/metapowers --skill rehearsal
 npx skills add LambdaXIII/metapowers --skill journaling
 ```
 ---
@@ -76,6 +77,10 @@ Agent 系统提示词设计方法论。覆盖结构设计、内容编写、工�
 ### web-entity-search
 
 快速结构化实体搜索，填补直接搜索和深度研究之间的空白。覆盖 7 种实体类型，≥ 2 个来源即停止。
+
+### rehearsal
+
+交付前推演：以读者首遇视角通读交付物，找出别人会卡住的地方。适用于一切给人读、给人用的产物——文档、提示词、方案、API/UI 设计、教程、知识库、指令集。
 
 ### journaling
 

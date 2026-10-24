@@ -55,6 +55,7 @@ npx skills add LambdaXIII/metapowers --skill skill-exposition
 npx skills add LambdaXIII/metapowers --skill skill-master
 npx skills add LambdaXIII/metapowers --skill web-deep-research
 npx skills add LambdaXIII/metapowers --skill web-entity-search
+npx skills add LambdaXIII/metapowers --skill rehearsal
 npx skills add LambdaXIII/metapowers --skill journaling
 ```
 
@@ -77,6 +78,10 @@ Systematic deep web research. Clue-chain tracing + cross-referencing by informat
 ### web-entity-search
 
 Fast structured entity search that fills the gap between direct search and deep research. Covers 7 entity types. Core discipline: stop at ≥ 2 sources.
+
+### rehearsal
+
+Rehearse a deliverable from its reader's first-contact perspective to find where others would get stuck. For anything made to be read or used by others — documents, prompts, plans, API/UI designs, tutorials, knowledge bases, instruction sets.
 
 ### journaling
 
