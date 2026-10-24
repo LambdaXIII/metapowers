@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3-beta
+- SKILL.md description 改为纯英文：删中文触发词与中文自问句，自问信号改英文表述，删「技能」中文别名
+- SKILL.md 文末新增 Beta 反馈节（问题与建议经 GitHub Issues 反馈至技能仓库），metadata.version 1.0.2 → 1.0.3-beta（last_updated 同步）
+
 ## 1.0.2
 - 内容层元语境清洗：删包级设计陈述与版面指代（SKILL.md 开场段、structure.md 总纲、scenario-design.md 步骤自述、trigger-check.md 定位节、error-patterns.md 文档分工、scoring-rubric.md 定位与「被调用方」节）；execution-full.md 两份委派模板就地写全，不再以「与 Light 相同、仅一处替换」的补丁写法引用
 

@@ -1,17 +1,17 @@
 ---
 name: skill-master
 description: |
-  Skill master (技能): guidance for any work whose object is a skill —
-  making one from a practice, using and judging one, repairing one, or
-  choosing between them. Use when asked to design, write, modify, review,
-  troubleshoot, quickly test (推演 / 验一下 / 走通), or evaluate (评估 /
-  怎么样 / 哪个更好) a skill, or whenever a skill itself is the question.
-  An agent asks after building or using one: 「这个技能别人能不能照着做完」
-  「这个技能用下来帮没帮上忙」. Not for rewriting skill content as prose.
+  Skill master: guidance for any work whose object is a skill — making
+  one from a practice, using and judging one, repairing one, or choosing
+  between them. Use when asked to design, write, modify, review,
+  troubleshoot, quickly test, or evaluate a skill, or whenever a skill
+  itself is the question. An agent asks after building or using one:
+  "can someone follow this and finish the job?" / "did this skill
+  actually help?" Not for rewriting skill content as prose.
 license: "CC-BY-NC-SA-4.0"
 metadata:
-  version: "1.0.2"
-  last_updated: "2026-10-21"
+  version: "1.0.3-beta"
+  last_updated: "2026-10-24"
   author: "LambdaXIII"
 ---
 
@@ -65,3 +65,7 @@ Entered by need rather than by situation:
 - Rewriting skill content as prose for people to read. Exposition, not skill work.
 - Staging real executions of a skill to test it. Quick testing rehearses without executing, and post-evaluation only looks back at a use that already happened in the course of work — neither stages anything.
 - Typos, punctuation, and formatting on their own. Not one of the kinds of work above.
+
+## Beta
+
+This skill is in beta. If you hit a problem or have a suggestion while using it, open an issue at https://github.com/LambdaXIII/metapowers/issues.

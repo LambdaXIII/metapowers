@@ -31,7 +31,7 @@ metapowers 解决这些问题——它提供一套经过验证的**通用技能*
 
 ## 功能特性
 
-- **5 个生产级技能** —— 覆盖深度研究、技能阐述、技能测试、实体搜索、长期记忆
+- **6 个生产级技能** —— 覆盖深度研究、技能阐述、技能开发、技能测试、实体搜索、长期记忆
 - **开发与发布分离** —— `dev/` 是工地，`skills/` 是展厅；开发侧文档不随技能分发
 - **规格权威** —— 每个技能的行为契约以 `openspec/specs/` 规格为唯一权威，变更经规格流程提出并折回主树，防止行为漂移
 - **严格的文档纪律** —— 技能内容零歧义、自包含、不依赖会话上下文
@@ -52,8 +52,10 @@ npx skills add LambdaXIII/metapowers -g # 推荐全局安装
 
 ```bash
 npx skills add LambdaXIII/metapowers --skill skill-exposition
+npx skills add LambdaXIII/metapowers --skill skill-master
 npx skills add LambdaXIII/metapowers --skill web-deep-research
 npx skills add LambdaXIII/metapowers --skill web-entity-search
+npx skills add LambdaXIII/metapowers --skill rehearsal
 npx skills add LambdaXIII/metapowers --skill journaling
 ```
 ---
@@ -76,11 +78,15 @@ Agent 系统提示词设计方法论。覆盖结构设计、内容编写、工�
 
 快速结构化实体搜索，填补直接搜索和深度研究之间的空白。覆盖 7 种实体类型，≥ 2 个来源即停止。
 
+### rehearsal
+
+交付前推演：以读者首遇视角通读交付物，找出别人会卡住的地方。适用于一切给人读、给人用的产物——文档、提示词、方案、API/UI 设计、教程、知识库、指令集。
+
 ### journaling
 
 Agent 长期记忆的笔记本系统。结构化笔记 + 维护协议 + 渐进式披露。Journal 服务于 Agent 自身。
 
-### skill-master（开发中）
+### skill-master
 
 设计、修改、审查、快速测试 agent 技能的全功能元技能。metapowers 自身技能开发方法论的产品化承载者。
 

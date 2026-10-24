@@ -31,7 +31,7 @@ metapowers solves these problems — it provides a set of battle-tested **univer
 
 ## Features
 
-- **5 production-grade skills** — covering deep research, skill exposition, skill testing, entity search, and long-term memory
+- **6 production-grade skills** — covering deep research, skill exposition, skill development, skill testing, entity search, and long-term memory
 - **Development/release separation** — `dev/` is the workshop, `skills/` is the showroom; development-side docs never ship to runtime
 - **Spec authority** — each skill's behavioral contract lives in the `openspec/specs/` specs as the single source of truth; changes go through the spec workflow and fold back into the main tree, preventing behavioral drift
 - **Strict documentation discipline** — skill content is unambiguous, self-contained, and never depends on conversation context
@@ -52,8 +52,10 @@ Or install individual skills:
 
 ```bash
 npx skills add LambdaXIII/metapowers --skill skill-exposition
+npx skills add LambdaXIII/metapowers --skill skill-master
 npx skills add LambdaXIII/metapowers --skill web-deep-research
 npx skills add LambdaXIII/metapowers --skill web-entity-search
+npx skills add LambdaXIII/metapowers --skill rehearsal
 npx skills add LambdaXIII/metapowers --skill journaling
 ```
 
@@ -77,9 +79,17 @@ Systematic deep web research. Clue-chain tracing + cross-referencing by informat
 
 Fast structured entity search that fills the gap between direct search and deep research. Covers 7 entity types. Core discipline: stop at ≥ 2 sources.
 
+### rehearsal
+
+Rehearse a deliverable from its reader's first-contact perspective to find where others would get stuck. For anything made to be read or used by others — documents, prompts, plans, API/UI designs, tutorials, knowledge bases, instruction sets.
+
 ### journaling
 
 A notebook system for agent long-term memory. Structured notes + maintenance protocols + progressive disclosure. The journal serves the agent itself.
+
+### skill-master
+
+A full-featured meta-skill for designing, modifying, reviewing, and quick-testing agent skills. The productized carrier of metapowers' own skill development methodology.
 
 ---
 
