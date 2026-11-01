@@ -76,6 +76,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.85 s
 .opt input[type="checkbox"]:checked { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-6.5' fill='none' stroke='%23fdfbf6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-size: 100% 100%; }
 .opt input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .opt-text { flex: 1; line-height: 1.75; }
+.rec { flex: none; align-self: flex-start; margin: .28rem 0 0 .25rem; padding: .1rem .55rem; border: 1px solid var(--accent); border-radius: 999px; color: var(--accent); font-size: .75rem; font-weight: 600; letter-spacing: .06em; line-height: 1.7; white-space: nowrap; }
 .qa textarea, .comment-block textarea { width: 100%; margin-top: .75rem; padding: .625rem .875rem; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: inherit; font: inherit; font-size: .9375rem; line-height: 1.7; resize: vertical; caret-color: var(--accent); transition: border-color 150ms ease, box-shadow 150ms ease; }
 .qa textarea::placeholder, .comment-block textarea::placeholder { color: #7d7362; }
 .qa textarea:hover, .comment-block textarea:hover { border-color: #cfc5b0; }
@@ -181,15 +182,27 @@ def fence_close_re(fence):
 
 def parse_option(lineno, text, issues):
     rest = text[1:].strip()
+    recommended = False
+    if rest.startswith("["):
+        if rest.startswith("[x] "):
+            recommended = True
+            rest = rest[4:]
+        else:
+            issues.append((
+                lineno,
+                "选项行前缀无法识别",
+                "推荐标记只写 `[x] `，如 `- [x] my-id \u2014 文本`；选项 id 不要以 `[` 开头",
+            ))
+            return {"id": "", "text": None, "line": lineno, "recommended": False}
     if EM_DASH not in rest:
         issues.append((
             lineno,
             "选项行缺少 `\u2014` 分隔",
             "写成 `- <选项id> \u2014 <选项文本>`，id 与文本之间用一个 `\u2014`",
         ))
-        return {"id": rest.strip(), "text": None, "line": lineno}
+        return {"id": rest.strip(), "text": None, "line": lineno, "recommended": recommended}
     opt_id, opt_text = rest.split(EM_DASH, 1)
-    return {"id": opt_id.strip(), "text": opt_text.strip(), "line": lineno}
+    return {"id": opt_id.strip(), "text": opt_text.strip(), "line": lineno, "recommended": recommended}
 
 
 def parse_qa_block(open_line, body, issues, seen_ids):
@@ -316,7 +329,7 @@ def parse_qa_block(open_line, body, issues, seen_ids):
             invalid = True
         if not invalid:
             option_ids[opt_id] = lineno
-            block["options"].append({"id": opt_id, "text": opt_text})
+            block["options"].append({"id": opt_id, "text": opt_text, "recommended": opt["recommended"]})
 
     if block["type"] == "yes-no" and options:
         counts = {}
@@ -515,13 +528,13 @@ def render_widget(block, position):
         '<section class="qa" data-qid="%s" data-type="%s" role="group" aria-label="第 %d 题">' % (escaped_id, html.escape(qtype, quote=True), position + 1),
     ]
     if qtype == "yes-no":
-        pairs = [(opt["id"], opt["text"]) for opt in options] if options else [("yes", "是"), ("no", "否")]
-        for opt_id, opt_text in pairs:
-            parts.append(render_choice("radio", qid, opt_id, opt_text))
+        pairs = [(opt["id"], opt["text"], opt["recommended"]) for opt in options] if options else [("yes", "是", False), ("no", "否", False)]
+        for opt_id, opt_text, opt_rec in pairs:
+            parts.append(render_choice("radio", qid, opt_id, opt_text, opt_rec))
     elif options:
         input_type = "radio" if qtype == "radio" else "checkbox"
         for opt in options:
-            parts.append(render_choice(input_type, qid, opt["id"], opt["text"]))
+            parts.append(render_choice(input_type, qid, opt["id"], opt["text"], opt["recommended"]))
     has_controls = bool(options) or qtype == "yes-no"
     parts.append(
         '<textarea class="free" rows="2" placeholder="%s"></textarea>'
@@ -531,15 +544,17 @@ def render_widget(block, position):
     return "\n".join(parts)
 
 
-def render_choice(input_type, qid, opt_id, opt_text):
+def render_choice(input_type, qid, opt_id, opt_text, recommended=False):
+    badge = '<span class="rec">推荐</span>' if recommended else ""
     return (
         '<label class="opt"><input type="%s" name="%s" value="%s">'
-        '<span class="opt-text">%s</span></label>'
+        '<span class="opt-text">%s</span>%s</label>'
         % (
             input_type,
             html.escape("q-" + qid, quote=True),
             html.escape(opt_id, quote=True),
             inline(opt_text),
+            badge,
         )
     )
 
