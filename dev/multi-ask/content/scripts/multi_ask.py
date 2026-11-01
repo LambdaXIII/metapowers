@@ -1,0 +1,844 @@
+#!/usr/bin/env python3
+import argparse
+import html
+import json
+import re
+import sys
+import webbrowser
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from pathlib import Path
+
+FIELD_NAMES = ("id", "type", "options")
+TYPES = ("radio", "checkbox", "yes-no")
+EM_DASH = "\u2014"
+
+FENCE_RE = re.compile(r"^( {0,3})(`{3,}|~{3,})(.*)$")
+FIELD_RE = re.compile(r"^([A-Za-z_][A-Za-z0-9_-]*)\s*:\s*(.*)$")
+HEADING_RE = re.compile(r"^(#{1,6})\s+(.*?)\s*$")
+LIST_RE = re.compile(r"^\s*([-*+]|\d{1,9}[.)])\s+(.*)$")
+LINK_RE = re.compile(r"\[([^\]]*)\]\(([^)\s]+)\)")
+BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
+ITALIC_RE = re.compile(r"(?<![*\w])\*(?!\*)(.+?)(?<!\*)\*(?![*\w])")
+UNDERSCORE_RE = re.compile(r"(?<![\w_])_([^_]+)_(?![\w_])")
+CODE_SPAN_RE = re.compile(r"`([^`]+)`")
+
+PAGE_TEMPLATE = """<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>问卷 · __NAME__</title>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; background: #f4f6f9; color: #1b1f24; font: 16px/1.75 -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif; }
+.top { position: sticky; top: 0; z-index: 2; background: rgba(244, 246, 249, .94); border-bottom: 1px solid #e2e7ee; padding: 10px 24px; font-size: 13px; color: #6b7686; }
+.doc { max-width: 820px; margin: 0 auto; padding: 28px 24px 8px; }
+.doc h1 { font-size: 28px; line-height: 1.35; margin: 8px 0 20px; }
+.doc h2 { font-size: 20px; margin: 34px 0 10px; padding-top: 10px; border-top: 1px solid #e6eaf1; }
+.doc h3 { font-size: 17px; margin: 24px 0 8px; }
+.doc h4, .doc h5, .doc h6 { font-size: 16px; margin: 20px 0 6px; }
+.doc p { margin: 12px 0; }
+.doc a { color: #2b64c8; }
+.doc code { background: #eef1f6; padding: 1px 5px; border-radius: 4px; font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: .9em; }
+.doc pre { background: #eef1f6; padding: 12px 14px; border-radius: 8px; overflow-x: auto; font-size: 13px; line-height: 1.6; }
+.doc pre code { background: none; padding: 0; }
+.doc blockquote { margin: 14px 0; padding: 2px 16px; border-left: 3px solid #c7d2e2; color: #4a5567; }
+.doc hr { border: 0; border-top: 1px solid #e2e7ee; margin: 28px 0; }
+.doc ul, .doc ol { padding-left: 24px; margin: 12px 0; }
+.doc li { margin: 4px 0; }
+.qa, .comment-block { background: #fff; border: 1px solid #dde3ec; border-radius: 10px; padding: 14px 16px 16px; margin: 22px 0; box-shadow: 0 1px 2px rgba(20, 30, 50, .04); }
+.qa-id { font-size: 12px; color: #7b8697; margin-bottom: 10px; letter-spacing: .02em; }
+.qa-id code { background: #f1f4f9; color: #56637a; }
+.opt { display: flex; gap: 10px; align-items: baseline; padding: 7px 10px; border-radius: 7px; cursor: pointer; }
+.opt:hover { background: #f2f6fc; }
+.opt input { margin: 0; flex: none; transform: translateY(1px); }
+.opt-id { flex: none; font-family: ui-monospace, Consolas, monospace; font-size: 12px; color: #7b8697; background: #f1f4f9; border-radius: 4px; padding: 0 5px; }
+.opt-text { flex: 1; }
+.qa textarea, .comment-block textarea { width: 100%; margin-top: 10px; padding: 8px 10px; border: 1px solid #d7dee9; border-radius: 7px; font: inherit; font-size: 14px; line-height: 1.6; resize: vertical; background: #fbfcfe; color: inherit; }
+.qa textarea:focus, .comment-block textarea:focus { outline: 2px solid #b9cdf0; outline-offset: 1px; }
+.actions { position: sticky; bottom: 0; display: flex; align-items: center; gap: 14px; max-width: 820px; margin: 0 auto; padding: 12px 24px 16px; background: linear-gradient(to top, #f4f6f9 70%, rgba(244, 246, 249, 0)); }
+button { background: #2b64c8; color: #fff; border: 0; border-radius: 8px; padding: 9px 20px; font: inherit; font-size: 15px; cursor: pointer; }
+button:disabled { background: #9fb2d3; cursor: default; }
+#status { font-size: 14px; color: #2f7a4c; }
+</style>
+</head>
+<body>
+<header class="top">__NAME__</header>
+<main class="doc">
+__BODY__
+<section class="comment-block">
+<div class="qa-id">总评</div>
+<textarea id="global" rows="4" placeholder="整份问卷的总体意见（可选）"></textarea>
+</section>
+</main>
+<div class="actions">
+<button id="submit" type="button">提交答卷</button>
+<span id="status" role="status"></span>
+</div>
+<script>
+(function () {
+  var button = document.getElementById('submit');
+  var status = document.getElementById('status');
+  button.addEventListener('click', async function () {
+    var answers = [];
+    document.querySelectorAll('section.qa').forEach(function (el) {
+      var selected = [];
+      if (el.dataset.type === 'checkbox') {
+        el.querySelectorAll('input[type="checkbox"]:checked').forEach(function (input) {
+          selected.push(input.value);
+        });
+      } else {
+        var picked = el.querySelector('input:checked');
+        if (picked) { selected = [picked.value]; }
+      }
+      answers.push({ id: el.dataset.qid, selected: selected, text: el.querySelector('textarea').value });
+    });
+    var payload = { answers: answers, global_comment: document.getElementById('global').value };
+    button.disabled = true;
+    try {
+      var res = await fetch('/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) { throw new Error('bad status'); }
+      status.textContent = '已提交，可以关闭本页。';
+      document.querySelectorAll('textarea, input').forEach(function (el) { el.disabled = true; });
+    } catch (e) {
+      button.disabled = false;
+      status.textContent = '提交失败，请重试。';
+    }
+  });
+})();
+</script>
+</body>
+</html>
+"""
+
+DONE_PAGE = """<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>答卷已提交</title>
+<style>
+body { margin: 0; display: flex; min-height: 100vh; align-items: center; justify-content: center; background: #f4f6f9; color: #1b1f24; font: 16px/1.75 -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif; }
+div { text-align: center; }
+p { color: #6b7686; }
+</style>
+</head>
+<body>
+<div>
+<h1>答卷已提交</h1>
+<p>可以关闭本页，回到终端查看答卷路径。</p>
+</div>
+</body>
+</html>
+"""
+
+
+def fence_close_re(fence):
+    return re.compile(r"^ {0,3}" + re.escape(fence[0]) + "{" + str(len(fence)) + r",}\s*$")
+
+
+def parse_option(lineno, text, issues):
+    rest = text[1:].strip()
+    if EM_DASH not in rest:
+        issues.append((
+            lineno,
+            "选项行缺少 `\u2014` 分隔",
+            "写成 `- <选项id> \u2014 <选项文本>`，id 与文本之间用一个 `\u2014`",
+        ))
+        return {"id": rest.strip(), "text": None, "line": lineno}
+    opt_id, opt_text = rest.split(EM_DASH, 1)
+    return {"id": opt_id.strip(), "text": opt_text.strip(), "line": lineno}
+
+
+def parse_qa_block(open_line, body, issues, seen_ids):
+    block = {"id": None, "type": None, "options": [], "start": open_line, "end": open_line}
+    fields = {}
+    seen_fields = {}
+    options = []
+    options_started = False
+
+    for lineno, raw in body:
+        text = raw.strip()
+        if not text:
+            continue
+        if text[0] in "-*+":
+            if text[0] != "-":
+                issues.append((
+                    lineno,
+                    "选项行以 `%s` 开头" % text[0],
+                    "选项行必须写成 `- <选项id> \u2014 <选项文本>`，以 `-` 开头",
+                ))
+                continue
+            if not options_started:
+                issues.append((
+                    lineno,
+                    "选项行出现在 `options:` 之前",
+                    "把选项行写在 `options:` 行之下，或删除该行",
+                ))
+                continue
+            options.append(parse_option(lineno, text, issues))
+            continue
+        match = FIELD_RE.match(text)
+        if not match:
+            issues.append((
+                lineno,
+                "无法解析的行",
+                "字段写成 `id: \u2026` / `type: \u2026` / `options:`，选项写成 `- <选项id> \u2014 <选项文本>`",
+            ))
+            continue
+        key, value = match.group(1), match.group(2).strip()
+        if key not in FIELD_NAMES:
+            issues.append((
+                lineno,
+                "未知字段 `%s`" % key,
+                "问题块只接受 `id`/`type`/`options` 三个字段，删除该行",
+            ))
+            continue
+        if key in seen_fields:
+            issues.append((
+                lineno,
+                "字段 `%s` 重复" % key,
+                "每个问题块只保留一处 `%s`" % key,
+            ))
+            continue
+        seen_fields[key] = lineno
+        if key == "options":
+            options_started = True
+            if value:
+                issues.append((
+                    lineno,
+                    "`options:` 行后不应直接写内容",
+                    "选项另起一行，写成 `- <选项id> \u2014 <选项文本>`",
+                ))
+        else:
+            fields[key] = (value, lineno)
+
+    if "id" not in fields:
+        issues.append((open_line, "问题块缺少 `id` 字段", "在问题块首行写 `id: <名称>`"))
+    else:
+        qid, lineno = fields["id"]
+        if not qid:
+            issues.append((lineno, "问题块 `id` 为空", "在 `id:` 后写名称，如 `answer-naming`"))
+        elif any(ch.isspace() for ch in qid):
+            issues.append((lineno, "问题块 id `%s` 含空格" % qid, "改用不含空格的 id，如 `answer-naming`"))
+        elif qid in seen_ids:
+            issues.append((
+                lineno,
+                "问题块 id `%s` 与第 %d 行重复" % (qid, seen_ids[qid]),
+                "同一问卷内问题块 id 必须唯一，另取一个 id，如 `%s-2`" % qid,
+            ))
+        else:
+            seen_ids[qid] = lineno
+            block["id"] = qid
+
+    if "type" not in fields:
+        issues.append((open_line, "问题块缺少 `type` 字段", "写 `type: radio`、`type: checkbox` 或 `type: yes-no`"))
+    else:
+        qtype, lineno = fields["type"]
+        if qtype not in TYPES:
+            issues.append((
+                lineno,
+                "`type` 取值 `%s` 不合法" % qtype,
+                "改为 `radio`（单选）、`checkbox`（多选）或 `yes-no`（判断）",
+            ))
+        else:
+            block["type"] = qtype
+
+    option_ids = {}
+    for opt in options:
+        opt_id = opt["id"]
+        opt_text = opt["text"]
+        lineno = opt["line"]
+        if opt_text is None:
+            continue
+        invalid = False
+        if not opt_id:
+            issues.append((lineno, "选项 id 为空", "在 `-` 之后写选项 id，如 `- my-id \u2014 说明文本`"))
+            invalid = True
+        elif any(ch.isspace() for ch in opt_id):
+            issues.append((
+                lineno,
+                "选项 id `%s` 含空格" % opt_id,
+                "改用不含空格的 id，如 `my-id`；选项文本写在 `\u2014` 之后",
+            ))
+            invalid = True
+        elif opt_id in option_ids:
+            issues.append((
+                lineno,
+                "选项 id `%s` 在问题块内重复（另见第 %d 行）" % (opt_id, option_ids[opt_id]),
+                "同一问题块内选项 id 必须唯一，改掉其中一个",
+            ))
+            invalid = True
+        if not invalid and not opt_text:
+            issues.append((lineno, "选项文本为空", "在 `\u2014` 之后写选项文本"))
+            invalid = True
+        if not invalid:
+            option_ids[opt_id] = lineno
+            block["options"].append({"id": opt_id, "text": opt_text})
+
+    if block["type"] == "yes-no" and options:
+        counts = {}
+        for opt in options:
+            counts[opt["id"]] = counts.get(opt["id"], 0) + 1
+        missing = [name for name in ("yes", "no") if name not in counts]
+        extra = [name for name in counts if name not in ("yes", "no")]
+        if missing:
+            issues.append((
+                open_line,
+                "`yes-no` 题缺少选项 %s" % "、".join("`%s`" % name for name in missing),
+                "补上 `- yes \u2014 是` 与 `- no \u2014 否`，或删掉整个 `options` 使用默认的「是/否」",
+            ))
+        if extra:
+            issues.append((
+                open_line,
+                "`yes-no` 题出现多余选项 %s" % "、".join("`%s`" % name for name in extra),
+                "`yes-no` 只接受 `yes` 与 `no`，删掉多余选项或改用 `type: radio`",
+            ))
+
+    return block
+
+
+def parse_blocks(text):
+    lines = text.split("\n")
+    blocks = []
+    issues = []
+    seen_ids = {}
+    index = 0
+    total = len(lines)
+    while index < total:
+        fence_match = FENCE_RE.match(lines[index])
+        if not fence_match:
+            index += 1
+            continue
+        fence = fence_match.group(2)
+        info = fence_match.group(3).strip()
+        closing = fence_close_re(fence)
+        cursor = index + 1
+        while cursor < total and not closing.match(lines[cursor]):
+            cursor += 1
+        closed = cursor < total
+        end_line = cursor + 1 if closed else total
+        if info == "qa":
+            body = [(number + 1, lines[number]) for number in range(index + 1, cursor if closed else total)]
+            block = parse_qa_block(index + 1, body, issues, seen_ids)
+            block["start"] = index + 1
+            block["end"] = end_line
+            blocks.append(block)
+            if not closed:
+                issues.append((index + 1, "qa 块缺少闭合围栏", "在块末补上一行 ` ``` ` 结束围栏"))
+                break
+        elif not closed:
+            break
+        index = end_line
+    return blocks, issues
+
+
+def load_questionnaire(path):
+    qpath = Path(path)
+    if not qpath.is_file():
+        print("%s:1: 问卷文件不存在 \u2192 检查路径是否正确" % path)
+        return None
+    try:
+        content = qpath.read_text(encoding="utf-8-sig")
+    except UnicodeDecodeError:
+        print("%s:1: 问卷不是 UTF-8 编码 \u2192 转存为 UTF-8 后重试" % path)
+        return None
+    content = content.replace("\r\n", "\n").replace("\r", "\n")
+    blocks, issues = parse_blocks(content)
+    if issues:
+        issues.sort(key=lambda item: item[0])
+        for line, message, fix in issues:
+            print("%s:%d: %s \u2192 %s" % (path, line, message, fix))
+        return None
+    return blocks, content
+
+
+def is_hr(text):
+    return re.fullmatch(r"(?:-{3,}|\*{3,}|_{3,})", re.sub(r"\s+", "", text)) is not None
+
+
+def render_link(text, url):
+    if url.lower().startswith(("javascript:", "data:", "vbscript:")):
+        return text
+    return '<a href="%s" target="_blank" rel="noreferrer">%s</a>' % (url, text)
+
+
+def inline(text):
+    codes = []
+
+    def stash(match):
+        codes.append(match.group(1))
+        return "\ue000%d\ue001" % (len(codes) - 1)
+
+    out = CODE_SPAN_RE.sub(stash, text)
+    out = html.escape(out)
+    out = LINK_RE.sub(lambda match: render_link(match.group(1), match.group(2)), out)
+    out = BOLD_RE.sub(r"<strong>\1</strong>", out)
+    out = ITALIC_RE.sub(r"<em>\1</em>", out)
+    out = UNDERSCORE_RE.sub(r"<em>\1</em>", out)
+    out = re.sub(
+        "\ue000(\\d+)\ue001",
+        lambda match: "<code>%s</code>" % html.escape(codes[int(match.group(1))]),
+        out,
+    )
+    return out
+
+
+def is_block_start(line):
+    text = line.strip()
+    if not text:
+        return True
+    if FENCE_RE.match(line):
+        return True
+    if text[0] in "|>":
+        return True
+    return bool(HEADING_RE.match(text) or LIST_RE.match(line) or is_hr(text))
+
+
+def render_markdown(lines):
+    out = []
+    index = 0
+    total = len(lines)
+    while index < total:
+        line = lines[index]
+        text = line.strip()
+        if not text:
+            index += 1
+            continue
+        fence_match = FENCE_RE.match(line)
+        if fence_match:
+            closing = fence_close_re(fence_match.group(2))
+            cursor = index + 1
+            body = []
+            while cursor < total and not closing.match(lines[cursor]):
+                body.append(lines[cursor])
+                cursor += 1
+            out.append('<pre class="code"><code>%s</code></pre>' % html.escape("\n".join(body)))
+            index = cursor + 1
+            continue
+        if text[0] == "|":
+            body = []
+            while index < total and lines[index].strip().startswith("|"):
+                body.append(lines[index])
+                index += 1
+            out.append('<pre class="table"><code>%s</code></pre>' % html.escape("\n".join(body)))
+            continue
+        if is_hr(text):
+            out.append("<hr>")
+            index += 1
+            continue
+        heading = HEADING_RE.match(text)
+        if heading:
+            level = len(heading.group(1))
+            out.append("<h%d>%s</h%d>" % (level, inline(heading.group(2)), level))
+            index += 1
+            continue
+        if text[0] == ">":
+            body = []
+            while index < total and lines[index].strip().startswith(">"):
+                body.append(re.sub(r"^\s*>\s?", "", lines[index]))
+                index += 1
+            out.append("<blockquote>%s</blockquote>" % render_markdown(body))
+            continue
+        list_match = LIST_RE.match(line)
+        if list_match:
+            ordered = list_match.group(1)[0].isdigit()
+            items = []
+            while index < total:
+                item_match = LIST_RE.match(lines[index])
+                if not item_match:
+                    break
+                items.append(item_match.group(2))
+                index += 1
+            tag = "ol" if ordered else "ul"
+            out.append("<%s>%s</%s>" % (tag, "".join("<li>%s</li>" % inline(item) for item in items), tag))
+            continue
+        paragraph = []
+        while index < total and not is_block_start(lines[index]):
+            paragraph.append(lines[index].strip())
+            index += 1
+        if not paragraph:
+            index += 1
+            continue
+        out.append("<p>%s</p>" % inline(" ".join(paragraph)))
+    return "\n".join(out)
+
+
+def render_widget(block, position):
+    qid = block.get("id") or ""
+    qtype = block.get("type") or "radio"
+    options = block.get("options") or []
+    escaped_id = html.escape(qid, quote=True)
+    parts = [
+        '<section class="qa" data-qid="%s" data-type="%s">' % (escaped_id, html.escape(qtype, quote=True)),
+        '<div class="qa-id">#%d \u00b7 <code>%s</code></div>' % (position + 1, html.escape(qid)),
+    ]
+    if qtype == "yes-no":
+        pairs = [(opt["id"], opt["text"]) for opt in options] if options else [("yes", "是"), ("no", "否")]
+        for opt_id, opt_text in pairs:
+            parts.append(render_choice("radio", qid, opt_id, opt_text))
+    elif options:
+        input_type = "radio" if qtype == "radio" else "checkbox"
+        for opt in options:
+            parts.append(render_choice(input_type, qid, opt["id"], opt["text"]))
+    has_controls = bool(options) or qtype == "yes-no"
+    parts.append(
+        '<textarea class="free" rows="2" placeholder="%s"></textarea>'
+        % ("补充（可选）" if has_controls else "作答（可选）")
+    )
+    parts.append("</section>")
+    return "\n".join(parts)
+
+
+def render_choice(input_type, qid, opt_id, opt_text):
+    return (
+        '<label class="opt"><input type="%s" name="%s" value="%s">'
+        '<span class="opt-id">%s</span><span class="opt-text">%s</span></label>'
+        % (
+            input_type,
+            html.escape("q-" + qid, quote=True),
+            html.escape(opt_id, quote=True),
+            html.escape(opt_id),
+            inline(opt_text),
+        )
+    )
+
+
+def render_page(content, blocks):
+    lines = content.split("\n")
+    parts = []
+    position = 0
+    for index, block in enumerate(blocks):
+        parts.append(render_markdown(lines[position:block["start"] - 1]))
+        parts.append(render_widget(block, index))
+        position = block["end"]
+    parts.append(render_markdown(lines[position:]))
+    return "\n".join(part for part in parts if part)
+
+
+def build_page(name, content, blocks):
+    return PAGE_TEMPLATE.replace("__NAME__", html.escape(name)).replace("__BODY__", render_page(content, blocks))
+
+
+def normalize_answers(blocks, payload):
+    submitted = {}
+    raw = payload.get("answers")
+    if isinstance(raw, list):
+        for item in raw:
+            if isinstance(item, dict) and isinstance(item.get("id"), str):
+                submitted[item["id"]] = item
+    answers = []
+    for block in blocks:
+        item = submitted.get(block["id"]) or {}
+        allowed = [opt["id"] for opt in block["options"]]
+        if block["type"] == "yes-no" and not allowed:
+            allowed = ["yes", "no"]
+        chosen = item.get("selected")
+        selected = []
+        if isinstance(chosen, list):
+            for value in chosen:
+                if value in allowed and value not in selected:
+                    selected.append(value)
+        if block["type"] in ("radio", "yes-no") and len(selected) > 1:
+            selected = selected[:1]
+        text = item.get("text")
+        answers.append({
+            "id": block["id"],
+            "selected": selected,
+            "text": text if isinstance(text, str) else "",
+        })
+    return answers
+
+
+def write_answers(qpath, answers, global_comment):
+    pattern = re.compile(r"^" + re.escape(qpath.stem) + r"\.answers\.(\d+)\.json$")
+    numbers = []
+    for entry in qpath.parent.iterdir():
+        match = pattern.match(entry.name)
+        if match and entry.is_file():
+            numbers.append(int(match.group(1)))
+    filename = "%s.answers.%03d.json" % (qpath.stem, max(numbers) + 1 if numbers else 1)
+    target = qpath.parent / filename
+    data = {
+        "questionnaire": qpath.name,
+        "answers": answers,
+        "global_comment": global_comment,
+    }
+    target.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return target
+
+
+def cmd_validate(path):
+    loaded = load_questionnaire(path)
+    if loaded is None:
+        return 1
+    blocks, _ = loaded
+    print("OK: %d 题" % len(blocks))
+    return 0
+
+
+def cmd_show(path):
+    loaded = load_questionnaire(path)
+    if loaded is None:
+        return 1
+    blocks, content = loaded
+    qpath = Path(path)
+    page = build_page(qpath.name, content, blocks).encode("utf-8")
+    state = {}
+
+    class Handler(BaseHTTPRequestHandler):
+        def _send(self, status, body, content_type="text/html; charset=utf-8"):
+            data = body if isinstance(body, bytes) else body.encode("utf-8")
+            self.send_response(status)
+            self.send_header("Content-Type", content_type)
+            self.send_header("Content-Length", str(len(data)))
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            self.wfile.write(data)
+
+        def do_GET(self):
+            if self.path in ("/", "/index.html"):
+                self._send(200, page)
+            else:
+                self._send(404, "not found", "text/plain; charset=utf-8")
+
+        def do_POST(self):
+            if self.path != "/submit":
+                self._send(404, "not found", "text/plain; charset=utf-8")
+                return
+            try:
+                length = int(self.headers.get("Content-Length") or 0)
+            except ValueError:
+                length = 0
+            raw = self.rfile.read(length) if length > 0 else b""
+            try:
+                payload = json.loads(raw.decode("utf-8"))
+            except (UnicodeDecodeError, ValueError):
+                payload = None
+            if not isinstance(payload, dict):
+                self._send(400, "invalid payload", "text/plain; charset=utf-8")
+                return
+            state["payload"] = payload
+            self._send(200, DONE_PAGE)
+
+        def log_message(self, *args):
+            pass
+
+    try:
+        server = HTTPServer(("127.0.0.1", 0), Handler)
+    except OSError as error:
+        print("%s:1: 无法启动本地服务（%s） \u2192 检查本机端口占用后重试" % (path, error))
+        return 1
+
+    url = "http://127.0.0.1:%d/" % server.server_port
+    try:
+        opened = False
+        try:
+            opened = webbrowser.open(url)
+        except Exception:
+            opened = False
+        if opened:
+            print("问卷已就绪：%s" % url, flush=True)
+        else:
+            print("浏览器未能自动打开，请手动访问：%s" % url, flush=True)
+        try:
+            while "payload" not in state:
+                server.handle_request()
+        except KeyboardInterrupt:
+            print("已中断，未写答卷。", flush=True)
+            return 130
+    finally:
+        server.server_close()
+
+    payload = state["payload"]
+    answers = normalize_answers(blocks, payload)
+    global_comment = payload.get("global_comment")
+    target = write_answers(qpath, answers, global_comment if isinstance(global_comment, str) else "")
+    print(str(target), flush=True)
+    return 0
+
+
+def quote_lines(prefix, value):
+    parts = value.split("\n")
+    lines = [("> " + prefix + parts[0]).rstrip()]
+    for extra in parts[1:]:
+        lines.append(("> " + extra).rstrip() if extra else ">")
+    return lines
+
+
+def option_label(block, opt_id):
+    for opt in block["options"]:
+        if opt["id"] == opt_id:
+            return opt["text"]
+    if block["type"] == "yes-no":
+        return "是" if opt_id == "yes" else "否"
+    return opt_id
+
+
+def render_answer(block, answer):
+    qid = block["id"]
+    if answer is None:
+        return ["> **[%s]** 未答" % qid]
+    selected = answer["selected"]
+    text = answer["text"].strip()
+    if selected:
+        labels = "；".join(option_label(block, opt_id) for opt_id in selected)
+        lines = quote_lines("**[%s]** 选：" % qid, labels)
+        if text:
+            lines.extend(quote_lines("补充：", text))
+        return lines
+    if text:
+        return quote_lines("**[%s]** 答：" % qid, text)
+    return ["> **[%s]** 未答" % qid]
+
+
+def check_answers(blocks, data):
+    issues = []
+    by_id = {block["id"]: block for block in blocks}
+    raw = data.get("answers")
+    if not isinstance(raw, list):
+        return [(1, "答卷缺少 `answers` 数组", "答卷需含 `answers` 数组，每项形如 `{\"id\": \"\u2026\", \"selected\": [], \"text\": \"\"}`")]
+    seen = {}
+    for index, item in enumerate(raw):
+        if not isinstance(item, dict) or not isinstance(item.get("id"), str):
+            issues.append((1, "`answers` 第 %d 项缺少字符串 `id`" % (index + 1), "每项必须有 `id`，值为问卷中的问题块 id"))
+            continue
+        qid = item["id"]
+        if qid in seen:
+            issues.append((1, "答卷重复记录问题块 `%s`" % qid, "每个问题块只保留一条 `answers` 记录"))
+            continue
+        seen[qid] = True
+        block = by_id.get(qid)
+        if block is None:
+            issues.append((
+                1,
+                "答卷引用的问题块 `%s` 不在问卷中" % qid,
+                "检查 id 拼写；若问卷在作答后被编辑，重新运行 show 生成答卷",
+            ))
+            continue
+        selected = item.get("selected")
+        if not isinstance(selected, list) or any(not isinstance(value, str) for value in selected):
+            issues.append((1, "问题块 `%s` 的 `selected` 不是选项 id 数组" % qid, "`selected` 写选项 id 字符串数组，未选则写 `[]`"))
+            continue
+        allowed = [opt["id"] for opt in block["options"]]
+        if block["type"] == "yes-no" and not allowed:
+            allowed = ["yes", "no"]
+        if not allowed and selected:
+            issues.append((
+                1,
+                "问题块 `%s` 是开放题，答卷却记录了选项 %s" % (qid, "、".join("`%s`" % value for value in selected)),
+                "开放题的 `selected` 只能为空数组，作答内容写进 `text`",
+            ))
+        else:
+            for value in selected:
+                if value not in allowed:
+                    issues.append((
+                        1,
+                        "问题块 `%s` 引用了不存在的选项 `%s`" % (qid, value),
+                        "改为问卷中该块的选项 id；问卷改动后需重新作答",
+                    ))
+        if block["type"] in ("radio", "yes-no") and len(selected) > 1:
+            issues.append((
+                1,
+                "问题块 `%s` 是单选题，答卷记录了 %d 个选项" % (qid, len(selected)),
+                "单选只保留一个选项 id",
+            ))
+        if not isinstance(item.get("text", ""), str):
+            issues.append((1, "问题块 `%s` 的 `text` 不是字符串" % qid, "`text` 写自由输入文本，没有则写空串"))
+    return issues
+
+
+def cmd_assemble(path):
+    answers_path = Path(path)
+    if not answers_path.is_file():
+        print("%s:1: 答卷文件不存在 \u2192 检查路径，或先运行 show 生成答卷" % path)
+        return 1
+    try:
+        raw = answers_path.read_text(encoding="utf-8-sig")
+        data = json.loads(raw)
+    except UnicodeDecodeError:
+        print("%s:1: 答卷不是 UTF-8 编码 \u2192 转存为 UTF-8 后重试" % path)
+        return 1
+    except ValueError as error:
+        print("%s:1: 答卷不是合法 JSON（%s） \u2192 修正 JSON 语法后重试" % (path, error))
+        return 1
+    if not isinstance(data, dict):
+        print("%s:1: 答卷顶层不是对象 \u2192 答卷需为含 `questionnaire`/`answers`/`global_comment` 的 JSON 对象" % path)
+        return 1
+
+    name = data.get("questionnaire")
+    if not isinstance(name, str) or not name.strip():
+        print("%s:1: 答卷缺少 `questionnaire` 文件名 \u2192 在答卷中写入问卷文件名，如 `2026-11-01-skill-design-discussion.md`" % path)
+        return 1
+    qpath = answers_path.parent / name
+    if not qpath.is_file():
+        print("%s:1: 问卷 `%s` 不在答卷同目录 \u2192 把问卷放回答卷所在目录，或把答卷移到问卷所在目录" % (path, name))
+        return 1
+    try:
+        content = qpath.read_text(encoding="utf-8-sig").replace("\r\n", "\n").replace("\r", "\n")
+    except UnicodeDecodeError:
+        print("%s:1: 问卷不是 UTF-8 编码 \u2192 转存为 UTF-8 后重试" % path)
+        return 1
+    blocks, parse_issues = parse_blocks(content)
+    if parse_issues:
+        parse_issues.sort(key=lambda item: item[0])
+        for line, message, fix in parse_issues:
+            print("%s:%d: %s \u2192 %s" % (qpath, line, message, fix))
+        return 1
+
+    issues = check_answers(blocks, data)
+    if issues:
+        for line, message, fix in issues:
+            print("%s:%d: %s \u2192 %s" % (path, line, message, fix))
+        return 1
+
+    answers = {}
+    for item in data["answers"]:
+        answers[item["id"]] = {
+            "selected": item["selected"],
+            "text": item.get("text", ""),
+        }
+
+    lines = content.split("\n")
+    output = []
+    position = 0
+    for block in blocks:
+        output.extend(lines[position:block["start"] - 1])
+        output.extend(render_answer(block, answers.get(block["id"])))
+        position = block["end"]
+    output.extend(lines[position:])
+    text = "\n".join(output).rstrip("\n")
+
+    comment = data.get("global_comment")
+    if isinstance(comment, str) and comment.strip():
+        text += "\n\n---\n\n**总评**\n\n" + comment.strip()
+    sys.stdout.write(text + "\n")
+    return 0
+
+
+def main(argv=None):
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    parser = argparse.ArgumentParser(prog="multi_ask", description="问卷校验、答卷收集与拼装")
+    subparsers = parser.add_subparsers(dest="command", required=True)
+    descriptions = {
+        "validate": "校验问卷",
+        "show": "打开交互页收集答卷",
+        "assemble": "按答卷拼装文档",
+    }
+    for name, description in descriptions.items():
+        command = subparsers.add_parser(name, help=description)
+        command.add_argument("path", help="问卷 markdown 或答卷 JSON 的路径")
+    args = parser.parse_args(argv)
+    if args.command == "validate":
+        return cmd_validate(args.path)
+    if args.command == "show":
+        return cmd_show(args.path)
+    return cmd_assemble(args.path)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
