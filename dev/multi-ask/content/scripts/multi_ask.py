@@ -30,50 +30,83 @@ PAGE_TEMPLATE = """<!doctype html>
 <title>问卷 · __NAME__</title>
 <style>
 * { box-sizing: border-box; }
-body { margin: 0; background: #f4f6f9; color: #1b1f24; font: 16px/1.75 -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif; }
-.top { position: sticky; top: 0; z-index: 2; background: rgba(244, 246, 249, .94); border-bottom: 1px solid #e2e7ee; padding: 10px 24px; font-size: 13px; color: #6b7686; }
-.doc { max-width: 820px; margin: 0 auto; padding: 28px 24px 8px; }
-.doc h1 { font-size: 28px; line-height: 1.35; margin: 8px 0 20px; }
-.doc h2 { font-size: 20px; margin: 34px 0 10px; padding-top: 10px; border-top: 1px solid #e6eaf1; }
-.doc h3 { font-size: 17px; margin: 24px 0 8px; }
-.doc h4, .doc h5, .doc h6 { font-size: 16px; margin: 20px 0 6px; }
-.doc p { margin: 12px 0; }
-.doc a { color: #2b64c8; }
-.doc code { background: #eef1f6; padding: 1px 5px; border-radius: 4px; font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: .9em; }
-.doc pre { background: #eef1f6; padding: 12px 14px; border-radius: 8px; overflow-x: auto; font-size: 13px; line-height: 1.6; }
-.doc pre code { background: none; padding: 0; }
-.doc blockquote { margin: 14px 0; padding: 2px 16px; border-left: 3px solid #c7d2e2; color: #4a5567; }
-.doc hr { border: 0; border-top: 1px solid #e2e7ee; margin: 28px 0; }
-.doc ul, .doc ol { padding-left: 24px; margin: 12px 0; }
-.doc li { margin: 4px 0; }
-.qa, .comment-block { background: #fff; border: 1px solid #dde3ec; border-radius: 10px; padding: 14px 16px 16px; margin: 22px 0; box-shadow: 0 1px 2px rgba(20, 30, 50, .04); }
-.qa-id { font-size: 12px; color: #7b8697; margin-bottom: 10px; letter-spacing: .02em; }
-.qa-id code { background: #f1f4f9; color: #56637a; }
-.opt { display: flex; gap: 10px; align-items: baseline; padding: 7px 10px; border-radius: 7px; cursor: pointer; }
-.opt:hover { background: #f2f6fc; }
-.opt input { margin: 0; flex: none; transform: translateY(1px); }
-.opt-id { flex: none; font-family: ui-monospace, Consolas, monospace; font-size: 12px; color: #7b8697; background: #f1f4f9; border-radius: 4px; padding: 0 5px; }
-.opt-text { flex: 1; }
-.qa textarea, .comment-block textarea { width: 100%; margin-top: 10px; padding: 8px 10px; border: 1px solid #d7dee9; border-radius: 7px; font: inherit; font-size: 14px; line-height: 1.6; resize: vertical; background: #fbfcfe; color: inherit; }
-.qa textarea:focus, .comment-block textarea:focus { outline: 2px solid #b9cdf0; outline-offset: 1px; }
-.actions { position: sticky; bottom: 0; display: flex; align-items: center; gap: 14px; max-width: 820px; margin: 0 auto; padding: 12px 24px 16px; background: linear-gradient(to top, #f4f6f9 70%, rgba(244, 246, 249, 0)); }
-button { background: #2b64c8; color: #fff; border: 0; border-radius: 8px; padding: 9px 20px; font: inherit; font-size: 15px; cursor: pointer; }
-button:disabled { background: #9fb2d3; cursor: default; }
-#status { font-size: 14px; color: #2f7a4c; }
+:root {
+  --paper: #f4f0e8;
+  --card: #fdfbf6;
+  --ink: #26221b;
+  --muted: #6d6455;
+  --line: #e2dbcc;
+  --accent: #b23c26;
+  --accent-deep: #97301d;
+  --ring: rgba(178, 60, 38, .22);
+}
+html { scrollbar-color: #c9c0ad transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #c9c0ad; border-radius: 6px; border: 2px solid var(--paper); }
+::-webkit-scrollbar-track { background: transparent; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.85 system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+::selection { background: rgba(178, 60, 38, .18); }
+.doc { max-width: 44rem; margin: 0 auto; padding: 3.5rem 1.5rem 2.5rem; }
+.doc-name { font-size: .8125rem; color: var(--muted); letter-spacing: .04em; margin: 0 0 2.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--line); }
+.doc h1 { font-size: clamp(1.75rem, 4.5vw, 2.25rem); line-height: 1.32; letter-spacing: -.02em; font-weight: 700; margin: 0 0 1.25rem; text-wrap: balance; }
+.doc h2 { font-size: 1.375rem; line-height: 1.45; letter-spacing: -.015em; font-weight: 650; margin: 3.25rem 0 .75rem; text-wrap: balance; }
+.doc h3 { font-size: 1.0625rem; font-weight: 650; margin: 2.25rem 0 .5rem; }
+.doc h4, .doc h5, .doc h6 { font-size: 1rem; font-weight: 650; margin: 1.75rem 0 .5rem; }
+.doc p { margin: 1rem 0; }
+.doc a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.doc a:hover { color: var(--accent-deep); }
+.doc code { background: #eae3d2; padding: .12em .38em; border-radius: 4px; font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: .875em; }
+.doc pre { background: #ece5d5; border: 1px solid var(--line); padding: 1rem 1.25rem; border-radius: 10px; overflow-x: auto; font-size: .8125rem; line-height: 1.7; }
+.doc pre code { background: none; padding: 0; font-size: inherit; }
+.doc blockquote { margin: 1.25rem 0; padding: 0 0 0 1.25rem; color: var(--muted); border-left: 1px solid var(--line); }
+.doc hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
+.doc ul, .doc ol { padding-left: 1.5rem; margin: 1rem 0; }
+.doc li { margin: .4rem 0; }
+.qa, .comment-block { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 1.25rem 1.375rem 1.125rem; margin: 2rem 0; }
+.field-label { display: block; font-size: .9375rem; font-weight: 650; margin: 0 0 .75rem; }
+.opt { display: flex; gap: .75rem; align-items: flex-start; padding: .55rem .75rem; border-radius: 8px; cursor: pointer; transition: background 150ms ease; }
+.opt:hover { background: #f1ebdd; }
+.opt:has(input:checked) { background: rgba(178, 60, 38, .07); }
+.opt input { appearance: none; -webkit-appearance: none; width: 1.125rem; height: 1.125rem; margin: .32rem 0 0; flex: none; border: 1.5px solid #a99f8c; background: var(--card); cursor: pointer; transition: background 180ms cubic-bezier(.22, 1, .36, 1), border-color 150ms ease, box-shadow 180ms cubic-bezier(.22, 1, .36, 1); }
+.opt input[type="radio"] { border-radius: 50%; }
+.opt input[type="checkbox"] { border-radius: 5px; }
+.opt input:hover { border-color: var(--accent); }
+.opt input:checked { border-color: var(--accent); background-color: var(--accent); }
+.opt input[type="radio"]:checked { box-shadow: inset 0 0 0 3px var(--card); }
+.opt input[type="checkbox"]:checked { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-6.5' fill='none' stroke='%23fdfbf6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-size: 100% 100%; }
+.opt input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.opt-text { flex: 1; line-height: 1.75; }
+.qa textarea, .comment-block textarea { width: 100%; margin-top: .75rem; padding: .625rem .875rem; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: inherit; font: inherit; font-size: .9375rem; line-height: 1.7; resize: vertical; caret-color: var(--accent); transition: border-color 150ms ease, box-shadow 150ms ease; }
+.qa textarea::placeholder, .comment-block textarea::placeholder { color: #7d7362; }
+.qa textarea:hover, .comment-block textarea:hover { border-color: #cfc5b0; }
+.qa textarea:focus, .comment-block textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--ring); }
+textarea:disabled, .opt input:disabled { opacity: .55; cursor: default; }
+.actions { position: sticky; bottom: 0; background: var(--paper); border-top: 1px solid var(--line); }
+.actions-inner { display: flex; align-items: center; gap: 1rem; max-width: 44rem; margin: 0 auto; padding: .875rem 1.5rem 1.125rem; }
+button { appearance: none; border: 0; border-radius: 10px; padding: .7rem 1.5rem; font: inherit; font-size: .9375rem; font-weight: 650; letter-spacing: .01em; background: var(--accent); color: #fdfbf6; cursor: pointer; transition: background 150ms ease, transform 120ms cubic-bezier(.22, 1, .36, 1); }
+button:hover { background: var(--accent-deep); }
+button:active { transform: scale(.97); }
+button:disabled { background: #d8cfc0; color: #8f8676; cursor: default; transform: none; }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+#status { font-size: .9375rem; color: var(--muted); }
+#status.ok { color: #2e6a44; }
+#status.err { color: var(--accent-deep); }
 </style>
 </head>
 <body>
-<header class="top">__NAME__</header>
 <main class="doc">
+<div class="doc-name">__NAME__</div>
 __BODY__
 <section class="comment-block">
-<div class="qa-id">总评</div>
+<label class="field-label" for="global">总评</label>
 <textarea id="global" rows="4" placeholder="整份问卷的总体意见（可选）"></textarea>
 </section>
 </main>
 <div class="actions">
+<div class="actions-inner">
 <button id="submit" type="button">提交答卷</button>
 <span id="status" role="status"></span>
+</div>
 </div>
 <script>
 (function () {
@@ -102,10 +135,12 @@ __BODY__
         body: JSON.stringify(payload)
       });
       if (!res.ok) { throw new Error('bad status'); }
+      status.className = 'ok';
       status.textContent = '已提交，可以关闭本页。';
       document.querySelectorAll('textarea, input').forEach(function (el) { el.disabled = true; });
     } catch (e) {
       button.disabled = false;
+      status.className = 'err';
       status.textContent = '提交失败，请重试。';
     }
   });
@@ -121,13 +156,17 @@ DONE_PAGE = """<!doctype html>
 <meta charset="utf-8">
 <title>答卷已提交</title>
 <style>
-body { margin: 0; display: flex; min-height: 100vh; align-items: center; justify-content: center; background: #f4f6f9; color: #1b1f24; font: 16px/1.75 -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif; }
-div { text-align: center; }
-p { color: #6b7686; }
+* { box-sizing: border-box; }
+body { margin: 0; display: flex; min-height: 100vh; align-items: center; justify-content: center; background: #f4f0e8; color: #26221b; font: 16px/1.85 system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; }
+div { text-align: center; padding: 2rem; }
+svg { display: block; margin: 0 auto 1.25rem; }
+h1 { font-size: 1.5rem; letter-spacing: -.015em; margin: 0 0 .5rem; }
+p { color: #6d6455; margin: 0; }
 </style>
 </head>
 <body>
 <div>
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#b23c26" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="21"/><path d="M15 24.5l6.5 6.5L33.5 17"/></svg>
 <h1>答卷已提交</h1>
 <p>可以关闭本页，回到终端查看答卷路径。</p>
 </div>
@@ -473,8 +512,7 @@ def render_widget(block, position):
     options = block.get("options") or []
     escaped_id = html.escape(qid, quote=True)
     parts = [
-        '<section class="qa" data-qid="%s" data-type="%s">' % (escaped_id, html.escape(qtype, quote=True)),
-        '<div class="qa-id">#%d \u00b7 <code>%s</code></div>' % (position + 1, html.escape(qid)),
+        '<section class="qa" data-qid="%s" data-type="%s" role="group" aria-label="第 %d 题">' % (escaped_id, html.escape(qtype, quote=True), position + 1),
     ]
     if qtype == "yes-no":
         pairs = [(opt["id"], opt["text"]) for opt in options] if options else [("yes", "是"), ("no", "否")]
@@ -496,12 +534,11 @@ def render_widget(block, position):
 def render_choice(input_type, qid, opt_id, opt_text):
     return (
         '<label class="opt"><input type="%s" name="%s" value="%s">'
-        '<span class="opt-id">%s</span><span class="opt-text">%s</span></label>'
+        '<span class="opt-text">%s</span></label>'
         % (
             input_type,
             html.escape("q-" + qid, quote=True),
             html.escape(opt_id, quote=True),
-            html.escape(opt_id),
             inline(opt_text),
         )
     )
@@ -679,20 +716,19 @@ def option_label(block, opt_id):
 
 
 def render_answer(block, answer):
-    qid = block["id"]
     if answer is None:
-        return ["> **[%s]** 未答" % qid]
+        return ["> 未答"]
     selected = answer["selected"]
     text = answer["text"].strip()
     if selected:
         labels = "；".join(option_label(block, opt_id) for opt_id in selected)
-        lines = quote_lines("**[%s]** 选：" % qid, labels)
+        lines = quote_lines("选：", labels)
         if text:
             lines.extend(quote_lines("补充：", text))
         return lines
     if text:
-        return quote_lines("**[%s]** 答：" % qid, text)
-    return ["> **[%s]** 未答" % qid]
+        return quote_lines("答：", text)
+    return ["> 未答"]
 
 
 def check_answers(blocks, data):
