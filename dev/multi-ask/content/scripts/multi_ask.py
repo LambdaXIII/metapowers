@@ -46,7 +46,7 @@ html { scrollbar-color: #c9c0ad transparent; }
 ::-webkit-scrollbar-track { background: transparent; }
 body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.85 system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 ::selection { background: rgba(178, 60, 38, .18); }
-.doc { max-width: 44rem; margin: 0 auto; padding: 3.5rem 1.5rem 2.5rem; }
+.doc { max-width: 66rem; margin: 0 auto; padding: 3.5rem 1.5rem 2.5rem; }
 .doc-name { font-size: .8125rem; color: var(--muted); letter-spacing: .04em; margin: 0 0 2.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--line); }
 .doc h1 { font-size: clamp(1.75rem, 4.5vw, 2.25rem); line-height: 1.32; letter-spacing: -.02em; font-weight: 700; margin: 0 0 1.25rem; text-wrap: balance; }
 .doc h2 { font-size: 1.375rem; line-height: 1.45; letter-spacing: -.015em; font-weight: 650; margin: 3.25rem 0 .75rem; text-wrap: balance; }
@@ -64,7 +64,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.85 s
 .doc li { margin: .4rem 0; }
 .qa, .comment-block { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 1.25rem 1.375rem 1.125rem; margin: 2rem 0; }
 .field-label { display: block; font-size: .9375rem; font-weight: 650; margin: 0 0 .75rem; }
-.opt { display: flex; gap: .75rem; align-items: flex-start; padding: .55rem .75rem; border-radius: 8px; cursor: pointer; transition: background 150ms ease; }
+.opt { position: relative; display: flex; gap: .75rem; align-items: flex-start; padding: .55rem .75rem; border-radius: 8px; cursor: pointer; transition: background 150ms ease; }
 .opt:hover { background: #f1ebdd; }
 .opt:has(input:checked) { background: rgba(178, 60, 38, .07); }
 .opt input { appearance: none; -webkit-appearance: none; width: 1.125rem; height: 1.125rem; margin: .32rem 0 0; flex: none; border: 1.5px solid #a99f8c; background: var(--card); cursor: pointer; transition: background 180ms cubic-bezier(.22, 1, .36, 1), border-color 150ms ease, box-shadow 180ms cubic-bezier(.22, 1, .36, 1); }
@@ -76,22 +76,21 @@ body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.85 s
 .opt input[type="checkbox"]:checked { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-6.5' fill='none' stroke='%23fdfbf6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-size: 100% 100%; }
 .opt input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .opt-text { flex: 1; line-height: 1.75; }
-.rec { flex: none; align-self: flex-start; margin: .28rem 0 0 .25rem; padding: .1rem .55rem; border: 1px solid var(--accent); border-radius: 999px; color: var(--accent); font-size: .75rem; font-weight: 600; letter-spacing: .06em; line-height: 1.7; white-space: nowrap; }
+.star { position: absolute; left: -1.15rem; top: .58rem; color: var(--accent); transform: rotate(-12deg); pointer-events: none; }
 .qa textarea, .comment-block textarea { width: 100%; margin-top: .75rem; padding: .625rem .875rem; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: inherit; font: inherit; font-size: .9375rem; line-height: 1.7; resize: vertical; caret-color: var(--accent); transition: border-color 150ms ease, box-shadow 150ms ease; }
 .qa textarea::placeholder, .comment-block textarea::placeholder { color: #7d7362; }
 .qa textarea:hover, .comment-block textarea:hover { border-color: #cfc5b0; }
 .qa textarea:focus, .comment-block textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--ring); }
 textarea:disabled, .opt input:disabled { opacity: .55; cursor: default; }
-.actions { position: sticky; bottom: 0; background: var(--paper); border-top: 1px solid var(--line); }
-.actions-inner { display: flex; align-items: center; gap: 1rem; max-width: 44rem; margin: 0 auto; padding: .875rem 1.5rem 1.125rem; }
-button { appearance: none; border: 0; border-radius: 10px; padding: .7rem 1.5rem; font: inherit; font-size: .9375rem; font-weight: 650; letter-spacing: .01em; background: var(--accent); color: #fdfbf6; cursor: pointer; transition: background 150ms ease, transform 120ms cubic-bezier(.22, 1, .36, 1); }
+.actions { position: sticky; bottom: 0; background: var(--paper); border-top: 1px solid var(--line); padding: .08rem 1.5rem .1rem; }
+.actions-inner { max-width: 66rem; margin: 0 auto; }
+button { appearance: none; display: block; width: 100%; border: 0; border-radius: 8px; padding: .18rem 1rem; font: inherit; font-size: .8125rem; font-weight: 650; line-height: 1.25; letter-spacing: .01em; background: var(--accent); color: #fdfbf6; cursor: pointer; transition: background 150ms ease, transform 120ms cubic-bezier(.22, 1, .36, 1); }
 button:hover { background: var(--accent-deep); }
-button:active { transform: scale(.97); }
+button:active { transform: scale(.995); }
 button:disabled { background: #d8cfc0; color: #8f8676; cursor: default; transform: none; }
+button.ok { background: rgba(46, 106, 68, .12); color: #2e6a44; }
+button.err { background: var(--accent); color: #fdfbf6; }
 button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-#status { font-size: .9375rem; color: var(--muted); }
-#status.ok { color: #2e6a44; }
-#status.err { color: var(--accent-deep); }
 </style>
 </head>
 <body>
@@ -105,14 +104,12 @@ __BODY__
 </main>
 <div class="actions">
 <div class="actions-inner">
-<button id="submit" type="button">提交答卷</button>
-<span id="status" role="status"></span>
+<button id="submit" type="button" aria-live="polite">提交答卷</button>
 </div>
 </div>
 <script>
 (function () {
   var button = document.getElementById('submit');
-  var status = document.getElementById('status');
   button.addEventListener('click', async function () {
     var answers = [];
     document.querySelectorAll('section.qa').forEach(function (el) {
@@ -129,6 +126,8 @@ __BODY__
     });
     var payload = { answers: answers, global_comment: document.getElementById('global').value };
     button.disabled = true;
+    button.className = '';
+    button.textContent = '提交中…';
     try {
       var res = await fetch('/submit', {
         method: 'POST',
@@ -136,13 +135,13 @@ __BODY__
         body: JSON.stringify(payload)
       });
       if (!res.ok) { throw new Error('bad status'); }
-      status.className = 'ok';
-      status.textContent = '已提交，可以关闭本页。';
+      button.className = 'ok';
+      button.textContent = '已提交，可以关闭本页。';
       document.querySelectorAll('textarea, input').forEach(function (el) { el.disabled = true; });
     } catch (e) {
       button.disabled = false;
-      status.className = 'err';
-      status.textContent = '提交失败，请重试。';
+      button.className = 'err';
+      button.textContent = '提交失败，请重试。';
     }
   });
 })();
@@ -545,7 +544,11 @@ def render_widget(block, position):
 
 
 def render_choice(input_type, qid, opt_id, opt_text, recommended=False):
-    badge = '<span class="rec">推荐</span>' if recommended else ""
+    star = (
+        '<svg class="star" width="15" height="15" viewBox="0 0 16 16" role="img" aria-label="推荐">'
+        '<path d="M8 .8l2.35 4.76 5.25.76-3.8 3.7.9 5.23L8 12.76 3.2 15.25l.9-5.23-3.8-3.7 5.25-.76z" fill="currentColor"/></svg>'
+        if recommended else ""
+    )
     return (
         '<label class="opt"><input type="%s" name="%s" value="%s">'
         '<span class="opt-text">%s</span>%s</label>'
@@ -554,7 +557,7 @@ def render_choice(input_type, qid, opt_id, opt_text, recommended=False):
             html.escape("q-" + qid, quote=True),
             html.escape(opt_id, quote=True),
             inline(opt_text),
-            badge,
+            star,
         )
     )
 
