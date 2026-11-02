@@ -15,9 +15,10 @@ description: |
   questionnaires that gather knowledge or opinions from third parties on the
   user's behalf (surveys, polls, collecting feedback from other people).
   Not for a single question that belongs in the conversation.
+license: "MIT"
 metadata:
   version: "0.1.0"
-  last_updated: "2026-11-01"
+  last_updated: "2026-11-02"
   author: "Cxalio"
 ---
 

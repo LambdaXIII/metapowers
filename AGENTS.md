@@ -4,7 +4,7 @@
 
 本仓库是**帮助 Agent 开发 Skill 的工程仓库**：一套通用 Agent 技能，以及产出这些技能的工程规范。开发与发布分离——`dev/` 是唯一开发操作空间，`skills/` 是发布快照（只读产出），开发侧文档不随技能分发。
 
-仓库当前开发 7 个技能：agent-prompt-design、journaling、rehearsal、skill-exposition、skill-master、web-deep-research、web-entity-search。技能的设计规格记在各自的 `dev/<skill>/SPEC.md`，也可以没有。
+仓库当前开发 8 个技能：agent-prompt-design、journaling、multi-ask、rehearsal、skill-exposition、skill-master、web-deep-research、web-entity-search。技能的设计规格记在各自的 `dev/<skill>/SPEC.md`，也可以没有。
 
 每个技能独立成立：不硬性依赖其他技能、仓库特定文件或运行环境特定信息，不硬编码开发环境的路径与工具名；技能之间只允许通过 description 等方式互相推荐，不允许命令式依赖。
 
@@ -114,6 +114,7 @@ metadata:
 | skill-exposition | MIT |
 | web-deep-research | MIT |
 | web-entity-search | MIT |
+| multi-ask | MIT |
 
 变更任一技能的许可证须经用户确认后修订本表。
 

@@ -1,6 +1,6 @@
 # Changelog
 
-## 未定版
+## 0.1.0
 
 - 初始化技能开发框架（dev/multi-ask/ 目录、CHANGELOG、SPEC）
 - SPEC.md：新增技能设计规格
