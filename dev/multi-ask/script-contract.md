@@ -155,13 +155,13 @@ id 含空白的处置：尖括号内不允许空白，因此 `<my id> 题面` �
 
 ### 4.3 `assemble <答卷.json>`
 
-读答卷，按 `questionnaire` 字段在答卷同目录找问卷，逐块替换为作答结果（§6），输出到 stdout，退出码 0。失败情形（答卷/问卷缺失、JSON 非法、答卷未通过 §3.3）：按 §3.2 风格报错并给修复指引，退出码 1。
+读答卷，按 `questionnaire` 记录的问卷路径找问卷（找不到时退回答卷同目录的同名文件），逐块替换为作答结果（§6），输出到 stdout，退出码 0。失败情形（答卷/问卷缺失、JSON 非法、答卷未通过 §3.3）：按 §3.2 风格报错并给修复指引，退出码 1。
 
 ## 5. 答卷 JSON
 
 ```json
 {
-  "questionnaire": "2026-11-01-skill-design-discussion.md",
+  "questionnaire": "/home/user/notes/release-plan.md",
   "answers": [
     { "block": "schema-width", "selected": ["narrow"], "free": "若后续需要控件再扩。" }
   ],
@@ -169,7 +169,7 @@ id 含空白的处置：尖括号内不允许空白，因此 `<my id> 题面` �
 }
 ```
 
-- `questionnaire`：问卷文件名（不含目录），答卷与问卷同目录存放。
+- `questionnaire`：问卷路径。`show` 记录问卷的绝对路径；`assemble` 按该路径找问卷，找不到时退回答卷同目录的同名文件。只写文件名无法让答卷独立定位问卷。
 - `answers`：每个问题块一条，按问卷顺序；`block` = 问题块 id；`selected` = 选项 id 数组；`free` = 自由输入（可为空串）。不回显题干，也不含选项文本。
 - `global_comment`：总评文本（可为空串）。
 - 脚本收卷时按问卷重排并清洗：只保留该块存在的选项 id、去掉重复值、`single-choice` / `yes-or-no` 截断为至多一个；每个问题块都写一条记录，缺失的提交项补为空数组与空串。

@@ -568,7 +568,7 @@ def write_answers(qpath, answers, global_comment):
     filename = "%s.answers.%03d.json" % (qpath.stem, max(numbers) + 1 if numbers else 1)
     target = qpath.parent / filename
     data = {
-        "questionnaire": qpath.name,
+        "questionnaire": str(qpath.resolve()),
         "answers": answers,
         "global_comment": global_comment,
     }
@@ -780,12 +780,18 @@ def cmd_assemble(path):
 
     name = data.get("questionnaire")
     if not isinstance(name, str) or not name.strip():
-        print("%s:1: 答卷缺少 `questionnaire` 文件名 \u2192 在答卷中写入问卷文件名，如 `2026-11-01-skill-design-discussion.md`" % path)
+        print("%s:1: 答卷缺少 `questionnaire` 问卷路径 \u2192 在答卷中写入问卷路径，如 `docs/release-plan.md`" % path)
         return 1
-    qpath = answers_path.parent / name
-    if not qpath.is_file():
-        print("%s:1: 问卷 `%s` 不在答卷同目录 \u2192 把问卷放回答卷所在目录，或把答卷移到问卷所在目录" % (path, name))
+    qpath = Path(name)
+    candidates = [qpath]
+    if not qpath.is_absolute():
+        candidates.append(answers_path.parent / qpath)
+    candidates.append(answers_path.parent / qpath.name)
+    found = next((candidate for candidate in candidates if candidate.is_file()), None)
+    if found is None:
+        print("%s:1: 按答卷记录的问卷路径 `%s` 找不到问卷 \u2192 检查路径；找不到时会在答卷同目录找同名文件" % (path, name))
         return 1
+    qpath = found
     try:
         content = qpath.read_text(encoding="utf-8-sig").replace("\r\n", "\n").replace("\r", "\n")
     except UnicodeDecodeError:

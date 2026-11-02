@@ -119,7 +119,7 @@ python scripts/multi_ask.py show <问卷.md>
 python scripts/multi_ask.py assemble <答卷.json>
 ```
 
-按答卷的 `questionnaire` 字段在答卷同目录找到问卷，把每个问题块替换为作答结果，整份文档输出到 stdout，退出码 0。答卷或问卷缺失、JSON 非法、答卷引用的问题块 id 或选项 id 在问卷中不存在时，按 `validate` 的同一错误行格式报错并给出修复指引，退出码 1。
+按答卷的 `questionnaire` 记录的问卷路径找到问卷（找不到时退回答卷同目录的同名文件），把每个问题块替换为作答结果，整份文档输出到 stdout，退出码 0。答卷或问卷缺失、JSON 非法、答卷引用的问题块 id 或选项 id 在问卷中不存在时，按 `validate` 的同一错误行格式报错并给出修复指引，退出码 1。
 
 ## 答卷
 
@@ -127,7 +127,7 @@ python scripts/multi_ask.py assemble <答卷.json>
 
 ```json
 {
-  "questionnaire": "release-plan.md",
+  "questionnaire": "/home/user/notes/release-plan.md",
   "answers": [
     { "block": "naming", "selected": ["seq"], "free": "并发提交多再换时间戳。" },
     { "block": "scope", "selected": ["core", "docs"], "free": "" }
@@ -136,7 +136,7 @@ python scripts/multi_ask.py assemble <答卷.json>
 }
 ```
 
-- `questionnaire`：问卷文件名，不含目录。
+- `questionnaire`：问卷路径。`show` 记录问卷的绝对路径；`assemble` 按该路径找问卷，找不到时退回答卷同目录的同名文件。
 - `answers`：每个问题块一条，顺序与问卷一致。`block` 为问题块 id；`selected` 为选项 id 数组；`free` 为自由输入，可为空串。答卷不回显题干，也不含选项文本——定位题目看问卷。
 - `global_comment`：总评文本，可为空串。
 
