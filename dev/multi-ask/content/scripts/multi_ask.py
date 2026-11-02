@@ -44,30 +44,36 @@ html { scrollbar-color: #c9c0ad transparent; }
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-thumb { background: #c9c0ad; border-radius: 6px; border: 2px solid var(--paper); }
 ::-webkit-scrollbar-track { background: transparent; }
-body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.85 system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 15.5px/1.7 system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 ::selection { background: rgba(178, 60, 38, .18); }
-.doc { max-width: 66rem; margin: 0 auto; padding: 3.5rem 1.5rem 2.5rem; }
-.doc-name { font-size: .8125rem; color: var(--muted); letter-spacing: .04em; margin: 0 0 2.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--line); }
-.doc h1 { font-size: clamp(1.75rem, 4.5vw, 2.25rem); line-height: 1.32; letter-spacing: -.02em; font-weight: 700; margin: 0 0 1.25rem; text-wrap: balance; }
-.doc h2 { font-size: 1.375rem; line-height: 1.45; letter-spacing: -.015em; font-weight: 650; margin: 3.25rem 0 .75rem; text-wrap: balance; }
-.doc h3 { font-size: 1.0625rem; font-weight: 650; margin: 2.25rem 0 .5rem; }
-.doc h4, .doc h5, .doc h6 { font-size: 1rem; font-weight: 650; margin: 1.75rem 0 .5rem; }
-.doc p { margin: 1rem 0; }
+.doc { max-width: 66rem; margin: 0 auto; padding: 3rem 1.5rem 2rem; }
+.doc-name { font-size: .8125rem; color: var(--muted); letter-spacing: .04em; margin: 0 0 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--line); }
+.doc h1 { font-size: clamp(1.75rem, 4.5vw, 2.25rem); line-height: 1.32; letter-spacing: -.02em; font-weight: 700; margin: 0 0 1rem; text-wrap: balance; }
+.doc h2 { font-size: 1.3125rem; line-height: 1.45; letter-spacing: -.015em; font-weight: 650; margin: 2.25rem 0 .5rem; text-wrap: balance; }
+.doc h3 { font-size: 1.0625rem; font-weight: 650; margin: 1.6rem 0 .4rem; }
+.doc h4, .doc h5, .doc h6 { font-size: 1rem; font-weight: 650; margin: 1.25rem 0 .35rem; }
+.doc p { margin: .75rem 0; }
 .doc a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 1px; }
 .doc a:hover { color: var(--accent-deep); }
 .doc code { background: #eae3d2; padding: .12em .38em; border-radius: 4px; font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: .875em; }
-.doc pre { background: #ece5d5; border: 1px solid var(--line); padding: 1rem 1.25rem; border-radius: 10px; overflow-x: auto; font-size: .8125rem; line-height: 1.7; }
+.doc pre { background: #ece5d5; border: 1px solid var(--line); padding: .875rem 1.125rem; border-radius: 10px; overflow-x: auto; font-size: .8125rem; line-height: 1.6; }
 .doc pre code { background: none; padding: 0; font-size: inherit; }
-.doc blockquote { margin: 1.25rem 0; padding: 0 0 0 1.25rem; color: var(--muted); border-left: 1px solid var(--line); }
-.doc hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
-.doc ul, .doc ol { padding-left: 1.5rem; margin: 1rem 0; }
-.doc li { margin: .4rem 0; }
-.qa, .comment-block { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 1.25rem 1.375rem 1.125rem; margin: 2rem 0; }
+pre.mermaid { background: var(--card); border: 1px solid var(--line); padding: 1rem; border-radius: 10px; text-align: center; overflow-x: auto; }
+.mermaid svg { max-width: 100%; height: auto; }
+.mermaid.rendered { border: 0; background: none; padding: 0; }
+.mermaid.failed { text-align: left; }
+.mermaid.failed::before { content: 'mermaid（渲染不可用，以下为源码）'; display: block; margin-bottom: .5rem; color: var(--muted); font-size: .8125rem; }
+.doc blockquote { margin: 1rem 0; padding: 0 0 0 1.25rem; color: var(--muted); border-left: 1px solid var(--line); }
+.doc hr { border: 0; border-top: 1px solid var(--line); margin: 1.75rem 0; }
+.doc ul, .doc ol { padding-left: 1.5rem; margin: .75rem 0; }
+.doc li { margin: .25rem 0; }
+.qa { margin: .75rem 0 1.5rem; }
+.comment-block { margin: 2rem 0 1rem; }
 .field-label { display: block; font-size: .9375rem; font-weight: 650; margin: 0 0 .75rem; }
-.opt { position: relative; display: flex; gap: .75rem; align-items: flex-start; padding: .55rem .75rem; border-radius: 8px; cursor: pointer; transition: background 150ms ease; }
+.opt { position: relative; display: flex; gap: .625rem; align-items: flex-start; padding: .3rem .5rem; border-radius: 8px; cursor: pointer; transition: background 150ms ease; }
 .opt:hover { background: #f1ebdd; }
 .opt:has(input:checked) { background: rgba(178, 60, 38, .07); }
-.opt input { appearance: none; -webkit-appearance: none; width: 1.125rem; height: 1.125rem; margin: .32rem 0 0; flex: none; border: 1.5px solid #a99f8c; background: var(--card); cursor: pointer; transition: background 180ms cubic-bezier(.22, 1, .36, 1), border-color 150ms ease, box-shadow 180ms cubic-bezier(.22, 1, .36, 1); }
+.opt input { appearance: none; -webkit-appearance: none; width: 1.125rem; height: 1.125rem; margin: .25rem 0 0; flex: none; border: 1.5px solid #a99f8c; background: var(--card); cursor: pointer; transition: background 180ms cubic-bezier(.22, 1, .36, 1), border-color 150ms ease, box-shadow 180ms cubic-bezier(.22, 1, .36, 1); }
 .opt input[type="radio"] { border-radius: 50%; }
 .opt input[type="checkbox"] { border-radius: 5px; }
 .opt input:hover { border-color: var(--accent); }
@@ -75,9 +81,9 @@ body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.85 s
 .opt input[type="radio"]:checked { box-shadow: inset 0 0 0 3px var(--card); }
 .opt input[type="checkbox"]:checked { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-6.5' fill='none' stroke='%23fdfbf6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-size: 100% 100%; }
 .opt input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.opt-text { flex: 1; line-height: 1.75; }
-.star { position: absolute; left: -1.15rem; top: .58rem; color: var(--accent); transform: rotate(-12deg); pointer-events: none; }
-.qa textarea, .comment-block textarea { width: 100%; margin-top: .75rem; padding: .625rem .875rem; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: inherit; font: inherit; font-size: .9375rem; line-height: 1.7; resize: vertical; caret-color: var(--accent); transition: border-color 150ms ease, box-shadow 150ms ease; }
+.opt-text { flex: 1; font-size: 1.0625rem; line-height: 1.55; }
+.opt-text.rec { font-weight: 650; background-image: linear-gradient(90deg, #c2410c, #b45309, #a16207, #15803d, #1d4ed8, #7e22ce, #be185d); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+.qa textarea, .comment-block textarea { width: 100%; margin-top: .5rem; padding: .625rem .875rem; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: inherit; font: inherit; font-size: .9375rem; line-height: 1.6; resize: vertical; caret-color: var(--accent); transition: border-color 150ms ease, box-shadow 150ms ease; }
 .qa textarea::placeholder, .comment-block textarea::placeholder { color: #7d7362; }
 .qa textarea:hover, .comment-block textarea:hover { border-color: #cfc5b0; }
 .qa textarea:focus, .comment-block textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--ring); }
@@ -107,6 +113,29 @@ __BODY__
 <button id="submit" type="button" aria-live="polite">提交答卷</button>
 </div>
 </div>
+<script type="module">
+(async function () {
+  var targets = Array.prototype.slice.call(document.querySelectorAll('pre.mermaid'));
+  if (!targets.length) { return; }
+  try {
+    var module = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
+    var mermaid = module.default;
+    mermaid.initialize({ startOnLoad: false, theme: 'neutral', securityLevel: 'strict' });
+    for (var i = 0; i < targets.length; i += 1) {
+      var el = targets[i];
+      try {
+        var result = await mermaid.render('mermaid-diagram-' + i, el.textContent);
+        el.innerHTML = result.svg;
+        el.classList.add('rendered');
+      } catch (err) {
+        el.classList.add('failed');
+      }
+    }
+  } catch (err) {
+    targets.forEach(function (el) { el.classList.add('failed'); });
+  }
+})();
+</script>
 <script>
 (function () {
   var button = document.getElementById('submit');
@@ -467,7 +496,11 @@ def render_markdown(lines):
             while cursor < total and not closing.match(lines[cursor]):
                 body.append(lines[cursor])
                 cursor += 1
-            out.append('<pre class="code"><code>%s</code></pre>' % html.escape("\n".join(body)))
+            info = (fence_match.group(3).strip().split() or [""])[0].lower()
+            if info == "mermaid":
+                out.append('<pre class="mermaid">%s</pre>' % html.escape("\n".join(body)))
+            else:
+                out.append('<pre class="code"><code>%s</code></pre>' % html.escape("\n".join(body)))
             index = cursor + 1
             continue
         if text[0] == "|":
@@ -544,20 +577,15 @@ def render_widget(block, position):
 
 
 def render_choice(input_type, qid, opt_id, opt_text, recommended=False):
-    star = (
-        '<svg class="star" width="15" height="15" viewBox="0 0 16 16" role="img" aria-label="推荐">'
-        '<path d="M8 .8l2.35 4.76 5.25.76-3.8 3.7.9 5.23L8 12.76 3.2 15.25l.9-5.23-3.8-3.7 5.25-.76z" fill="currentColor"/></svg>'
-        if recommended else ""
-    )
     return (
         '<label class="opt"><input type="%s" name="%s" value="%s">'
-        '<span class="opt-text">%s</span>%s</label>'
+        '<span class="opt-text%s">%s</span></label>'
         % (
             input_type,
             html.escape("q-" + qid, quote=True),
             html.escape(opt_id, quote=True),
+            " rec" if recommended else "",
             inline(opt_text),
-            star,
         )
     )
 
