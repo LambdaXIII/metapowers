@@ -91,6 +91,10 @@ A notebook system for agent long-term memory. Structured notes + maintenance pro
 
 A full-featured meta-skill for designing, modifying, reviewing, and quick-testing agent skills. The productized carrier of metapowers' own skill development methodology.
 
+### multi-ask (in development)
+
+Assembles a batch of open decisions into one Markdown questionnaire; the user answers once on a local interactive page rendered by the bundled script, and the agent continues from the structured answers. Supports single-choice, multi-choice, yes-or-no, and open questions.
+
 ---
 
 ## Project Structure
