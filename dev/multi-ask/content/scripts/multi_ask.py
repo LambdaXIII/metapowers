@@ -67,7 +67,7 @@ pre.mermaid { background: var(--card); border: 1px solid var(--line); padding: 1
 .doc hr { border: 0; border-top: 1px solid var(--line); margin: 1.75rem 0; }
 .doc ul, .doc ol { padding-left: 1.5rem; margin: .75rem 0; }
 .doc li { margin: .25rem 0; }
-.qa { margin: .75rem 0 1.5rem; }
+.qa { margin: .75rem 0 1.5rem; padding-left: 1.5rem; }
 .comment-block { margin: 2rem 0 1rem; }
 .opt { position: relative; display: flex; gap: .55rem; align-items: flex-start; padding: .15rem 0; border-radius: 8px; cursor: pointer; transition: background 150ms ease; }
 .opt:hover { background: #f1ebdd; }
