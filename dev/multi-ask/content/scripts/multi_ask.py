@@ -69,11 +69,10 @@ pre.mermaid { background: var(--card); border: 1px solid var(--line); padding: 1
 .doc li { margin: .25rem 0; }
 .qa { margin: .75rem 0 1.5rem; }
 .comment-block { margin: 2rem 0 1rem; }
-.field-label { display: block; font-size: .9375rem; font-weight: 650; margin: 0 0 .75rem; }
-.opt { position: relative; display: flex; gap: .625rem; align-items: flex-start; padding: .3rem .5rem; border-radius: 8px; cursor: pointer; transition: background 150ms ease; }
+.opt { position: relative; display: flex; gap: .55rem; align-items: flex-start; padding: .15rem 0; border-radius: 8px; cursor: pointer; transition: background 150ms ease; }
 .opt:hover { background: #f1ebdd; }
 .opt:has(input:checked) { background: rgba(178, 60, 38, .07); }
-.opt input { appearance: none; -webkit-appearance: none; width: 1.125rem; height: 1.125rem; margin: .25rem 0 0; flex: none; border: 1.5px solid #a99f8c; background: var(--card); cursor: pointer; transition: background 180ms cubic-bezier(.22, 1, .36, 1), border-color 150ms ease, box-shadow 180ms cubic-bezier(.22, 1, .36, 1); }
+.opt input { appearance: none; -webkit-appearance: none; width: 1.125rem; height: 1.125rem; margin: .3rem 0 0; flex: none; border: 1.5px solid #a99f8c; background: var(--card); cursor: pointer; transition: background 180ms cubic-bezier(.22, 1, .36, 1), border-color 150ms ease, box-shadow 180ms cubic-bezier(.22, 1, .36, 1); }
 .opt input[type="radio"] { border-radius: 50%; }
 .opt input[type="checkbox"] { border-radius: 5px; }
 .opt input:hover { border-color: var(--accent); }
@@ -81,7 +80,7 @@ pre.mermaid { background: var(--card); border: 1px solid var(--line); padding: 1
 .opt input[type="radio"]:checked { box-shadow: inset 0 0 0 3px var(--card); }
 .opt input[type="checkbox"]:checked { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-6.5' fill='none' stroke='%23fdfbf6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-size: 100% 100%; }
 .opt input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.opt-text { flex: 1; font-size: 1.0625rem; line-height: 1.55; }
+.opt-text { flex: 1; }
 .opt-text.rec { font-weight: 650; background-image: linear-gradient(90deg, #c2410c, #b45309, #a16207, #15803d, #1d4ed8, #7e22ce, #be185d); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
 .qa textarea, .comment-block textarea { width: 100%; margin-top: .5rem; padding: .625rem .875rem; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: inherit; font: inherit; font-size: .9375rem; line-height: 1.6; resize: vertical; caret-color: var(--accent); transition: border-color 150ms ease, box-shadow 150ms ease; }
 .qa textarea::placeholder, .comment-block textarea::placeholder { color: #7d7362; }
@@ -104,8 +103,8 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 <div class="doc-name">__NAME__</div>
 __BODY__
 <section class="comment-block">
-<label class="field-label" for="global">总评</label>
-<textarea id="global" rows="4" placeholder="整份问卷的总体意见（可选）"></textarea>
+<hr>
+<textarea id="global" rows="3" placeholder="还有什么想说的？"></textarea>
 </section>
 </main>
 <div class="actions">

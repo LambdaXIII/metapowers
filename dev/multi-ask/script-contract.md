@@ -2,7 +2,7 @@
 
 本文件是 multi-ask 技能脚本层的权威工件契约：问卷 DSL、校验规则、命令行接口、答卷 JSON 与拼装格式的唯一定义。脚本实现与 SKILL.md 使用说明都以本契约为输入，两者不得各自发明词形或字段名。设计理由随本文留档，技能内容（SKILL.md）只记操作事实，不引述本文。
 
-技能设计规格见 [SPEC.md](SPEC.md)。本文裁定 SPEC 未展开的实现层细节，含设计讨论问卷（`test-space/2026-11-01-skill-design-discussion.md`）Q1–Q7 的取舍。
+技能设计规格见 [SPEC.md](SPEC.md)。本文裁定 SPEC 未展开的实现层细节，含示例问卷（`content/examples/skill-design-discussion.md`）各题的取舍。
 
 ## 1. 术语
 
