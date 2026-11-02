@@ -15,6 +15,7 @@
 - scripts/multi_ask.py：卷末总评区改为分隔线 + 单句提示，移除「总评」标签与冗长占位文案
 - scripts/multi_ask.py：选项行字号、行高与间距对齐正文列表，只保留可点击与悬停反馈
 - scripts/multi_ask.py：问题块（选项与自由输入）左缩进 1.5rem，与正文列表同线
+- scripts/multi_ask.py：本地服务改用 ThreadingHTTPServer，避免浏览器空闲连接阻塞页面加载
 - examples/skill-design-discussion.md：新增示例问卷（章节与问题交错、同章节多题、单选/多选/判断/开放题与推荐标记）
 - scripts/multi_ask.py：交互页视觉重做为暖纸朱砂样式
 - SKILL.md：新增技能入口与脚本使用说明

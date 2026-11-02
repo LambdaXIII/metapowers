@@ -4,8 +4,9 @@ import html
 import json
 import re
 import sys
+import threading
 import webbrowser
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 FIELD_NAMES = ("id", "type", "options")
@@ -670,6 +671,7 @@ def cmd_show(path):
     qpath = Path(path)
     page = build_page(qpath.name, content, blocks).encode("utf-8")
     state = {}
+    payload_ready = threading.Event()
 
     class Handler(BaseHTTPRequestHandler):
         def _send(self, status, body, content_type="text/html; charset=utf-8"):
@@ -705,17 +707,20 @@ def cmd_show(path):
                 return
             state["payload"] = payload
             self._send(200, DONE_PAGE)
+            payload_ready.set()
 
         def log_message(self, *args):
             pass
 
     try:
-        server = HTTPServer(("127.0.0.1", 0), Handler)
+        server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
     except OSError as error:
         print("%s:1: 无法启动本地服务（%s） \u2192 检查本机端口占用后重试" % (path, error))
         return 1
 
     url = "http://127.0.0.1:%d/" % server.server_port
+    serving = threading.Thread(target=server.serve_forever, daemon=True)
+    serving.start()
     try:
         opened = False
         try:
@@ -727,12 +732,12 @@ def cmd_show(path):
         else:
             print("浏览器未能自动打开，请手动访问：%s" % url, flush=True)
         try:
-            while "payload" not in state:
-                server.handle_request()
+            payload_ready.wait()
         except KeyboardInterrupt:
             print("已中断，未写答卷。", flush=True)
             return 130
     finally:
+        server.shutdown()
         server.server_close()
 
     payload = state["payload"]
