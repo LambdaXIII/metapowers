@@ -9,12 +9,11 @@ import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
-FIELD_NAMES = ("id", "type", "options")
-TYPES = ("radio", "checkbox", "yes-no")
-EM_DASH = "\u2014"
+BLOCK_LANGS = {"single-choice": "radio", "multi-choice": "checkbox", "multiple-choice": "checkbox", "yes-or-no": "yes-no"}
+BLOCK_HEAD_RE = re.compile(r"^<([^<>\s]+)>\s*(.*)$")
+OPTION_LINE_RE = re.compile(r"^-\s*\[([ xX])\]\s*<([^<>\s]+)>\s*(.*)$")
 
 FENCE_RE = re.compile(r"^( {0,3})(`{3,}|~{3,})(.*)$")
-FIELD_RE = re.compile(r"^([A-Za-z_][A-Za-z0-9_-]*)\s*:\s*(.*)$")
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.*?)\s*$")
 LIST_RE = re.compile(r"^\s*([-*+]|\d{1,9}[.)])\s+(.*)$")
 LINK_RE = re.compile(r"\[([^\]]*)\]\(([^)\s]+)\)")
@@ -69,6 +68,9 @@ pre.mermaid { background: var(--card); border: 1px solid var(--line); padding: 1
 .doc ul, .doc ol { padding-left: 1.5rem; margin: .75rem 0; }
 .doc li { margin: .25rem 0; }
 .qa { margin: .75rem 0 1.5rem; padding-left: 1.5rem; }
+.qa-question { margin: 0 0 .35rem; }
+.qa-question > :first-child { margin-top: 0; }
+.qa-question > :last-child { margin-bottom: 0; }
 .comment-block { margin: 2rem 0 1rem; }
 .opt { position: relative; display: flex; gap: .55rem; align-items: flex-start; padding: .15rem 0; border-radius: 8px; cursor: pointer; transition: background 150ms ease; }
 .opt:hover { background: #f1ebdd; }
@@ -151,7 +153,7 @@ __BODY__
         var picked = el.querySelector('input:checked');
         if (picked) { selected = [picked.value]; }
       }
-      answers.push({ id: el.dataset.qid, selected: selected, text: el.querySelector('textarea').value });
+      answers.push({ block: el.dataset.qid, selected: selected, free: el.querySelector('textarea').value });
     });
     var payload = { answers: answers, global_comment: document.getElementById('global').value };
     button.disabled = true;
@@ -208,175 +210,97 @@ def fence_close_re(fence):
     return re.compile(r"^ {0,3}" + re.escape(fence[0]) + "{" + str(len(fence)) + r",}\s*$")
 
 
-def parse_option(lineno, text, issues):
-    rest = text[1:].strip()
-    recommended = False
-    if rest.startswith("["):
-        if rest.startswith("[x] "):
-            recommended = True
-            rest = rest[4:]
-        else:
-            issues.append((
-                lineno,
-                "选项行前缀无法识别",
-                "推荐标记只写 `[x] `，如 `- [x] my-id \u2014 文本`；选项 id 不要以 `[` 开头",
-            ))
-            return {"id": "", "text": None, "line": lineno, "recommended": False}
-    if EM_DASH not in rest:
-        issues.append((
-            lineno,
-            "选项行缺少 `\u2014` 分隔",
-            "写成 `- <选项id> \u2014 <选项文本>`，id 与文本之间用一个 `\u2014`",
-        ))
-        return {"id": rest.strip(), "text": None, "line": lineno, "recommended": recommended}
-    opt_id, opt_text = rest.split(EM_DASH, 1)
-    return {"id": opt_id.strip(), "text": opt_text.strip(), "line": lineno, "recommended": recommended}
+def parse_option_line(line):
+    match = OPTION_LINE_RE.match(line)
+    if not match:
+        return None
+    text = match.group(3).strip()
+    return {
+        "id": match.group(2),
+        "recommended": match.group(1).lower() == "x",
+        "lines": [text] if text else [],
+    }
 
 
-def parse_qa_block(open_line, body, issues, seen_ids):
-    block = {"id": None, "type": None, "options": [], "start": open_line, "end": open_line}
-    fields = {}
-    seen_fields = {}
-    options = []
-    options_started = False
+def parse_choice_block(open_line, lang, body, issues, seen_ids):
+    block = {"id": None, "type": BLOCK_LANGS[lang], "question": [], "options": [], "start": open_line, "end": open_line}
+    head_line = None
+    head_failed = False
+    question_open = True
+    current = None
 
     for lineno, raw in body:
-        text = raw.strip()
+        line = raw.rstrip()
+        text = line.strip()
+        if head_line is None:
+            if not text:
+                continue
+            match = BLOCK_HEAD_RE.match(text)
+            head_line = lineno
+            if not match:
+                head_failed = True
+                issues.append((lineno, "问题块首行不是 `<id> 问题文本`", "首行写成 `<block-id> 问题文本`，如 `<answer-naming> 答卷文件怎么命名？`"))
+                block["question"].append(text)
+                continue
+            block["id"] = match.group(1)
+            rest = match.group(2).strip()
+            if rest:
+                block["question"].append(rest)
+            continue
+        option = parse_option_line(line)
+        if option is not None:
+            question_open = False
+            option["line"] = lineno
+            current = option
+            block["options"].append(option)
+            continue
+        if re.match(r"^-\s*\[", line):
+            issues.append((lineno, "选项行格式不合法", "写成 `- [ ] <选项id> 选项文本`；推荐项写 `- [x] <选项id> 选项文本`"))
+            question_open = False
+            current = None
+            continue
         if not text:
             continue
-        if text[0] in "-*+":
-            if text[0] != "-":
-                issues.append((
-                    lineno,
-                    "选项行以 `%s` 开头" % text[0],
-                    "选项行必须写成 `- <选项id> \u2014 <选项文本>`，以 `-` 开头",
-                ))
-                continue
-            if not options_started:
-                issues.append((
-                    lineno,
-                    "选项行出现在 `options:` 之前",
-                    "把选项行写在 `options:` 行之下，或删除该行",
-                ))
-                continue
-            options.append(parse_option(lineno, text, issues))
-            continue
-        match = FIELD_RE.match(text)
-        if not match:
-            issues.append((
-                lineno,
-                "无法解析的行",
-                "字段写成 `id: \u2026` / `type: \u2026` / `options:`，选项写成 `- <选项id> \u2014 <选项文本>`",
-            ))
-            continue
-        key, value = match.group(1), match.group(2).strip()
-        if key not in FIELD_NAMES:
-            issues.append((
-                lineno,
-                "未知字段 `%s`" % key,
-                "问题块只接受 `id`/`type`/`options` 三个字段，删除该行",
-            ))
-            continue
-        if key in seen_fields:
-            issues.append((
-                lineno,
-                "字段 `%s` 重复" % key,
-                "每个问题块只保留一处 `%s`" % key,
-            ))
-            continue
-        seen_fields[key] = lineno
-        if key == "options":
-            options_started = True
-            if value:
-                issues.append((
-                    lineno,
-                    "`options:` 行后不应直接写内容",
-                    "选项另起一行，写成 `- <选项id> \u2014 <选项文本>`",
-                ))
-        else:
-            fields[key] = (value, lineno)
+        if question_open:
+            block["question"].append(text)
+        elif current is not None:
+            current["lines"].append(text)
 
-    if "id" not in fields:
-        issues.append((open_line, "问题块缺少 `id` 字段", "在问题块首行写 `id: <名称>`"))
-    else:
-        qid, lineno = fields["id"]
-        if not qid:
-            issues.append((lineno, "问题块 `id` 为空", "在 `id:` 后写名称，如 `answer-naming`"))
-        elif any(ch.isspace() for ch in qid):
-            issues.append((lineno, "问题块 id `%s` 含空格" % qid, "改用不含空格的 id，如 `answer-naming`"))
-        elif qid in seen_ids:
-            issues.append((
-                lineno,
-                "问题块 id `%s` 与第 %d 行重复" % (qid, seen_ids[qid]),
-                "同一问卷内问题块 id 必须唯一，另取一个 id，如 `%s-2`" % qid,
-            ))
+    if block["id"] is None and not head_failed:
+        issues.append((open_line, "问题块缺少 `<id> 问题文本` 首行", "块首行写 `<block-id> 问题文本`"))
+    elif block["id"] is not None:
+        qid = block["id"]
+        if qid in seen_ids:
+            issues.append((head_line, "问题块 id `%s` 与第 %d 行重复" % (qid, seen_ids[qid]), "同一问卷内问题块 id 必须唯一，另取一个 id，如 `%s-2`" % qid))
         else:
-            seen_ids[qid] = lineno
-            block["id"] = qid
-
-    if "type" not in fields:
-        issues.append((open_line, "问题块缺少 `type` 字段", "写 `type: radio`、`type: checkbox` 或 `type: yes-no`"))
-    else:
-        qtype, lineno = fields["type"]
-        if qtype not in TYPES:
-            issues.append((
-                lineno,
-                "`type` 取值 `%s` 不合法" % qtype,
-                "改为 `radio`（单选）、`checkbox`（多选）或 `yes-no`（判断）",
-            ))
-        else:
-            block["type"] = qtype
+            seen_ids[qid] = head_line
+        if not block["question"]:
+            issues.append((head_line, "问题文本为空", "在 `<id>` 之后写题面；题面可跨多行，直到第一个选项行"))
 
     option_ids = {}
-    for opt in options:
-        opt_id = opt["id"]
-        opt_text = opt["text"]
-        lineno = opt["line"]
-        if opt_text is None:
-            continue
-        invalid = False
-        if not opt_id:
-            issues.append((lineno, "选项 id 为空", "在 `-` 之后写选项 id，如 `- my-id \u2014 说明文本`"))
-            invalid = True
-        elif any(ch.isspace() for ch in opt_id):
-            issues.append((
-                lineno,
-                "选项 id `%s` 含空格" % opt_id,
-                "改用不含空格的 id，如 `my-id`；选项文本写在 `\u2014` 之后",
-            ))
-            invalid = True
-        elif opt_id in option_ids:
-            issues.append((
-                lineno,
-                "选项 id `%s` 在问题块内重复（另见第 %d 行）" % (opt_id, option_ids[opt_id]),
-                "同一问题块内选项 id 必须唯一，改掉其中一个",
-            ))
-            invalid = True
-        if not invalid and not opt_text:
-            issues.append((lineno, "选项文本为空", "在 `\u2014` 之后写选项文本"))
-            invalid = True
-        if not invalid:
+    for option in block["options"]:
+        opt_id = option["id"]
+        lineno = option["line"]
+        option["text"] = " ".join(option["lines"]).strip()
+        option.pop("lines", None)
+        if opt_id in option_ids:
+            issues.append((lineno, "选项 id `%s` 在问题块内重复（另见第 %d 行）" % (opt_id, option_ids[opt_id]), "同一问题块内选项 id 必须唯一，改掉其中一个"))
+        else:
             option_ids[opt_id] = lineno
-            block["options"].append({"id": opt_id, "text": opt_text, "recommended": opt["recommended"]})
+        if not option["text"]:
+            issues.append((lineno, "选项文本为空", "在 `<选项id>` 之后写选项文本；选项文本可跨多行"))
 
-    if block["type"] == "yes-no" and options:
-        counts = {}
-        for opt in options:
-            counts[opt["id"]] = counts.get(opt["id"], 0) + 1
-        missing = [name for name in ("yes", "no") if name not in counts]
-        extra = [name for name in counts if name not in ("yes", "no")]
-        if missing:
-            issues.append((
-                open_line,
-                "`yes-no` 题缺少选项 %s" % "、".join("`%s`" % name for name in missing),
-                "补上 `- yes \u2014 是` 与 `- no \u2014 否`，或删掉整个 `options` 使用默认的「是/否」",
-            ))
-        if extra:
-            issues.append((
-                open_line,
-                "`yes-no` 题出现多余选项 %s" % "、".join("`%s`" % name for name in extra),
-                "`yes-no` 只接受 `yes` 与 `no`，删掉多余选项或改用 `type: radio`",
-            ))
+    if block["type"] == "yes-no":
+        for option in block["options"]:
+            if option["id"] not in ("yes", "no"):
+                issues.append((option["line"], "yes-or-no 选项标签 `%s` 不合法" % option["id"], "yes-or-no 的选项只接受 `<yes>` 与 `<no>`，选项文本写在标签之后，如 `- [ ] <yes> 同意`"))
+        if not block["options"]:
+            block["options"] = [
+                {"id": "yes", "text": "同意", "recommended": False},
+                {"id": "no", "text": "驳回", "recommended": False},
+            ]
+    elif len(block["options"]) == 1:
+        issues.append((block["options"][0]["line"], "选择题只有 1 个选项，校验不通过", "改成判断题 `yes-or-no`（把题面写成完整命题），或把同类问题合并为一道 `multi-choice` 多选题"))
 
     return block
 
@@ -394,25 +318,27 @@ def parse_blocks(text):
             index += 1
             continue
         fence = fence_match.group(2)
-        info = fence_match.group(3).strip()
+        info = fence_match.group(3).strip().split()[0].lower() if fence_match.group(3).strip() else ""
         closing = fence_close_re(fence)
         cursor = index + 1
         while cursor < total and not closing.match(lines[cursor]):
             cursor += 1
         closed = cursor < total
         end_line = cursor + 1 if closed else total
-        if info == "qa":
+        if info in BLOCK_LANGS:
             body = [(number + 1, lines[number]) for number in range(index + 1, cursor if closed else total)]
-            block = parse_qa_block(index + 1, body, issues, seen_ids)
+            block = parse_choice_block(index + 1, info, body, issues, seen_ids)
             block["start"] = index + 1
             block["end"] = end_line
             blocks.append(block)
             if not closed:
-                issues.append((index + 1, "qa 块缺少闭合围栏", "在块末补上一行 ` ``` ` 结束围栏"))
+                issues.append((index + 1, "问题块缺少闭合围栏", "在块末补上一行与开头相同的围栏"))
                 break
         elif not closed:
             break
         index = end_line
+    if not blocks and not issues:
+        issues.append((1, "问卷中没有可识别的问题块", "问题块用 ```single-choice、```multi-choice 或 ```yes-or-no 围栏，首行写 `<id> 问题文本`"))
     return blocks, issues
 
 
@@ -559,18 +485,16 @@ def render_widget(block, position):
     parts = [
         '<section class="qa" data-qid="%s" data-type="%s" role="group" aria-label="第 %d 题">' % (escaped_id, html.escape(qtype, quote=True), position + 1),
     ]
-    if qtype == "yes-no":
-        pairs = [(opt["id"], opt["text"], opt["recommended"]) for opt in options] if options else [("yes", "是", False), ("no", "否", False)]
-        for opt_id, opt_text, opt_rec in pairs:
-            parts.append(render_choice("radio", qid, opt_id, opt_text, opt_rec))
-    elif options:
-        input_type = "radio" if qtype == "radio" else "checkbox"
+    question = render_markdown(block.get("question") or [])
+    if question:
+        parts.append('<div class="qa-question">%s</div>' % question)
+    if options:
+        input_type = "radio" if qtype in ("radio", "yes-no") else "checkbox"
         for opt in options:
             parts.append(render_choice(input_type, qid, opt["id"], opt["text"], opt["recommended"]))
-    has_controls = bool(options) or qtype == "yes-no"
     parts.append(
         '<textarea class="free" rows="2" placeholder="%s"></textarea>'
-        % ("补充（可选）" if has_controls else "作答（可选）")
+        % ("补充（可选）" if options else "作答（可选）")
     )
     parts.append("</section>")
     return "\n".join(parts)
@@ -611,14 +535,12 @@ def normalize_answers(blocks, payload):
     raw = payload.get("answers")
     if isinstance(raw, list):
         for item in raw:
-            if isinstance(item, dict) and isinstance(item.get("id"), str):
-                submitted[item["id"]] = item
+            if isinstance(item, dict) and isinstance(item.get("block"), str):
+                submitted[item["block"]] = item
     answers = []
     for block in blocks:
         item = submitted.get(block["id"]) or {}
         allowed = [opt["id"] for opt in block["options"]]
-        if block["type"] == "yes-no" and not allowed:
-            allowed = ["yes", "no"]
         chosen = item.get("selected")
         selected = []
         if isinstance(chosen, list):
@@ -627,11 +549,11 @@ def normalize_answers(blocks, payload):
                     selected.append(value)
         if block["type"] in ("radio", "yes-no") and len(selected) > 1:
             selected = selected[:1]
-        text = item.get("text")
+        free = item.get("free")
         answers.append({
-            "id": block["id"],
+            "block": block["id"],
             "selected": selected,
-            "text": text if isinstance(text, str) else "",
+            "free": free if isinstance(free, str) else "",
         })
     return answers
 
@@ -760,25 +682,28 @@ def option_label(block, opt_id):
     for opt in block["options"]:
         if opt["id"] == opt_id:
             return opt["text"]
-    if block["type"] == "yes-no":
-        return "是" if opt_id == "yes" else "否"
     return opt_id
 
 
 def render_answer(block, answer):
     if answer is None:
-        return ["> 未答"]
-    selected = answer["selected"]
-    text = answer["text"].strip()
-    if selected:
-        labels = "；".join(option_label(block, opt_id) for opt_id in selected)
-        lines = quote_lines("选：", labels)
-        if text:
-            lines.extend(quote_lines("补充：", text))
-        return lines
-    if text:
-        return quote_lines("答：", text)
-    return ["> 未答"]
+        body = ["> 未答"]
+    else:
+        selected = answer["selected"]
+        free = answer["free"].strip()
+        if selected:
+            labels = "；".join(option_label(block, opt_id) for opt_id in selected)
+            body = quote_lines("选：", labels)
+            if free:
+                body.extend(quote_lines("补充：", free))
+        elif free:
+            body = quote_lines("答：", free)
+        else:
+            body = ["> 未答"]
+    question = list(block.get("question") or [])
+    if not question:
+        return body
+    return question + [""] + body
 
 
 def check_answers(blocks, data):
@@ -786,13 +711,13 @@ def check_answers(blocks, data):
     by_id = {block["id"]: block for block in blocks}
     raw = data.get("answers")
     if not isinstance(raw, list):
-        return [(1, "答卷缺少 `answers` 数组", "答卷需含 `answers` 数组，每项形如 `{\"id\": \"\u2026\", \"selected\": [], \"text\": \"\"}`")]
+        return [(1, "答卷缺少 `answers` 数组", "答卷需含 `answers` 数组，每项形如 `{\"block\": \"\u2026\", \"selected\": [], \"free\": \"\"}`")]
     seen = {}
     for index, item in enumerate(raw):
-        if not isinstance(item, dict) or not isinstance(item.get("id"), str):
-            issues.append((1, "`answers` 第 %d 项缺少字符串 `id`" % (index + 1), "每项必须有 `id`，值为问卷中的问题块 id"))
+        if not isinstance(item, dict) or not isinstance(item.get("block"), str):
+            issues.append((1, "`answers` 第 %d 项缺少字符串 `block`" % (index + 1), "每项必须有 `block`，值为问卷中的问题块 id"))
             continue
-        qid = item["id"]
+        qid = item["block"]
         if qid in seen:
             issues.append((1, "答卷重复记录问题块 `%s`" % qid, "每个问题块只保留一条 `answers` 记录"))
             continue
@@ -810,13 +735,11 @@ def check_answers(blocks, data):
             issues.append((1, "问题块 `%s` 的 `selected` 不是选项 id 数组" % qid, "`selected` 写选项 id 字符串数组，未选则写 `[]`"))
             continue
         allowed = [opt["id"] for opt in block["options"]]
-        if block["type"] == "yes-no" and not allowed:
-            allowed = ["yes", "no"]
         if not allowed and selected:
             issues.append((
                 1,
                 "问题块 `%s` 是开放题，答卷却记录了选项 %s" % (qid, "、".join("`%s`" % value for value in selected)),
-                "开放题的 `selected` 只能为空数组，作答内容写进 `text`",
+                "开放题的 `selected` 只能为空数组，作答内容写进 `free`",
             ))
         else:
             for value in selected:
@@ -832,8 +755,8 @@ def check_answers(blocks, data):
                 "问题块 `%s` 是单选题，答卷记录了 %d 个选项" % (qid, len(selected)),
                 "单选只保留一个选项 id",
             ))
-        if not isinstance(item.get("text", ""), str):
-            issues.append((1, "问题块 `%s` 的 `text` 不是字符串" % qid, "`text` 写自由输入文本，没有则写空串"))
+        if not isinstance(item.get("free", ""), str):
+            issues.append((1, "问题块 `%s` 的 `free` 不是字符串" % qid, "`free` 写自由输入文本，没有则写空串"))
     return issues
 
 
@@ -883,9 +806,9 @@ def cmd_assemble(path):
 
     answers = {}
     for item in data["answers"]:
-        answers[item["id"]] = {
+        answers[item["block"]] = {
             "selected": item["selected"],
-            "text": item.get("text", ""),
+            "free": item.get("free", ""),
         }
 
     lines = content.split("\n")
