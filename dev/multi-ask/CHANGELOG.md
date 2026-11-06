@@ -21,8 +21,6 @@
 - SPEC.md：正文组织改为入口路由；方法参考只给判断不立细则；新增操作文档写清边界与失败形态
 - script-contract.md：同步校验清单（围栏闭合、围栏名提示）、yes-or-no 计数措辞、SKILL.md 要点与 license 登记
 
-## 0.1.0
-
 - 初始化技能开发框架（dev/multi-ask/ 目录、CHANGELOG、SPEC）
 - SPEC.md：新增技能设计规格
 - script-contract.md：新增脚本工件契约（DSL、校验清单、命令行、答卷 JSON、拼装格式）
