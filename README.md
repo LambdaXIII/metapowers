@@ -31,7 +31,7 @@ metapowers 解决这些问题——它提供一套经过验证的**通用技能*
 
 ## 功能特性
 
-- **6 个生产级技能** —— 覆盖深度研究、技能阐述、技能开发、技能测试、实体搜索、长期记忆
+- **7 个生产级技能** —— 覆盖深度研究、技能阐述、技能开发、技能测试、实体搜索、长期记忆、问答征集
 - **开发与发布分离** —— `dev/` 是工地，`skills/` 是展厅；开发侧文档不随技能分发
 - **规格权威** —— 每个技能的行为契约以 `openspec/specs/` 规格为唯一权威，变更经规格流程提出并折回主树，防止行为漂移
 - **严格的文档纪律** —— 技能内容零歧义、自包含、不依赖会话上下文
@@ -57,6 +57,7 @@ npx skills add LambdaXIII/metapowers --skill web-deep-research
 npx skills add LambdaXIII/metapowers --skill web-entity-search
 npx skills add LambdaXIII/metapowers --skill rehearsal
 npx skills add LambdaXIII/metapowers --skill journaling
+npx skills add LambdaXIII/metapowers --skill multi-ask
 ```
 ---
 
@@ -89,6 +90,10 @@ Agent 长期记忆的笔记本系统。结构化笔记 + 维护协议 + 渐进�
 ### skill-master
 
 设计、修改、审查、快速测试 agent 技能的全功能元技能。metapowers 自身技能开发方法论的产品化承载者。
+
+### multi-ask
+
+从容、详细地向用户征集裁决：把一批待决问题连同足够完整的论述写成一份 markdown 问卷，用户在脚本打开的本地交互页读完再答，收回结构化答卷。支持单选、多选、判断与开放题。
 
 ---
 

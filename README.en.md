@@ -31,7 +31,7 @@ metapowers solves these problems — it provides a set of battle-tested **univer
 
 ## Features
 
-- **6 production-grade skills** — covering deep research, skill exposition, skill development, skill testing, entity search, and long-term memory
+- **7 production-grade skills** — covering deep research, skill exposition, skill development, skill testing, entity search, long-term memory, and batch questioning
 - **Development/release separation** — `dev/` is the workshop, `skills/` is the showroom; development-side docs never ship to runtime
 - **Spec authority** — each skill's behavioral contract lives in the `openspec/specs/` specs as the single source of truth; changes go through the spec workflow and fold back into the main tree, preventing behavioral drift
 - **Strict documentation discipline** — skill content is unambiguous, self-contained, and never depends on conversation context
@@ -57,6 +57,7 @@ npx skills add LambdaXIII/metapowers --skill web-deep-research
 npx skills add LambdaXIII/metapowers --skill web-entity-search
 npx skills add LambdaXIII/metapowers --skill rehearsal
 npx skills add LambdaXIII/metapowers --skill journaling
+npx skills add LambdaXIII/metapowers --skill multi-ask
 ```
 
 ---
@@ -90,6 +91,10 @@ A notebook system for agent long-term memory. Structured notes + maintenance pro
 ### skill-master
 
 A full-featured meta-skill for designing, modifying, reviewing, and quick-testing agent skills. The productized carrier of metapowers' own skill development methodology.
+
+### multi-ask
+
+Asks the user for rulings unhurriedly: a batch of open decisions becomes one Markdown questionnaire, each question carrying the context it needs, and the user reads and answers it on a local interactive page rendered by the bundled script. Supports single-choice, multi-choice, yes-or-no, and open questions.
 
 ---
 
