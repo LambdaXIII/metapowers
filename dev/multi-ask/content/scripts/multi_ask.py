@@ -5,6 +5,7 @@ import json
 import re
 import sys
 import threading
+import time
 import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -40,7 +41,7 @@ PAGE_TEMPLATE = """<!doctype html>
   --accent-deep: #97301d;
   --ring: rgba(178, 60, 38, .22);
 }
-html { scrollbar-color: #c9c0ad transparent; }
+html { scrollbar-color: #c9c0ad transparent; scroll-behavior: smooth; }
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-thumb { background: #c9c0ad; border-radius: 6px; border: 2px solid var(--paper); }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -51,6 +52,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); font: 15.5px/1.7 
 .doc h1 { font-size: clamp(1.75rem, 4.5vw, 2.25rem); line-height: 1.32; letter-spacing: -.02em; font-weight: 700; margin: 0 0 1rem; text-wrap: balance; }
 .doc h2 { font-size: 1.3125rem; line-height: 1.45; letter-spacing: -.015em; font-weight: 650; margin: 2.25rem 0 .5rem; text-wrap: balance; }
 .doc h3 { font-size: 1.0625rem; font-weight: 650; margin: 1.6rem 0 .4rem; }
+.doc h1, .doc h2, .doc h3 { scroll-margin-top: 1.5rem; }
 .doc h4, .doc h5, .doc h6 { font-size: 1rem; font-weight: 650; margin: 1.25rem 0 .35rem; }
 .doc p { margin: .75rem 0; }
 .doc a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 1px; }
@@ -83,8 +85,8 @@ pre.mermaid { background: var(--card); border: 1px solid var(--line); padding: 1
 .opt input[type="radio"]:checked { box-shadow: inset 0 0 0 3px var(--card); }
 .opt input[type="checkbox"]:checked { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-6.5' fill='none' stroke='%23fdfbf6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-size: 100% 100%; }
 .opt input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.opt-text { flex: 1; }
-.opt-text.rec { font-weight: 650; background-image: linear-gradient(90deg, #c2410c, #b45309, #a16207, #15803d, #1d4ed8, #7e22ce, #be185d); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+.opt-text { flex: 0 1 auto; }
+.opt-text.rec { font-weight: 650; background-image: linear-gradient(90deg, #c2410c, #b45309, #a16207, #15803d, #1d4ed8, #7e22ce, #be185d, #c2410c); background-size: 240px 100%; background-repeat: repeat-x; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
 .qa textarea, .comment-block textarea { width: 100%; margin-top: .5rem; padding: .625rem .875rem; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: inherit; font: inherit; font-size: .9375rem; line-height: 1.6; resize: vertical; caret-color: var(--accent); transition: border-color 150ms ease, box-shadow 150ms ease; }
 .qa textarea::placeholder, .comment-block textarea::placeholder { color: #7d7362; }
 .qa textarea:hover, .comment-block textarea:hover { border-color: #cfc5b0; }
@@ -99,6 +101,16 @@ button:disabled { background: #d8cfc0; color: #8f8676; cursor: default; transfor
 button.ok { background: rgba(46, 106, 68, .12); color: #2e6a44; }
 button.err { background: var(--accent); color: #fdfbf6; }
 button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.toc { position: fixed; top: 50%; left: 0; width: calc((100vw - 66rem) / 2); transform: translateY(-50%); display: none; justify-content: center; padding: 0 1rem; max-height: 80vh; overflow-y: auto; scrollbar-width: none; }
+.toc::-webkit-scrollbar { display: none; }
+@media (min-width: 1360px) { .toc { display: flex; } }
+.toc nav ol { list-style: none; margin: 0; padding: 0; width: fit-content; max-width: min(13rem, 100%); font-size: .8125rem; line-height: 1.45; }
+.toc li { margin: 0; }
+.toc a { display: block; padding: .22rem .4rem .22rem .7rem; color: var(--muted); text-decoration: none; border-left: 2px solid transparent; border-radius: 0 4px 4px 0; transition: color 120ms ease, border-color 120ms ease, background 120ms ease; }
+.toc a:hover { color: var(--ink); border-left-color: var(--line); background: rgba(0, 0, 0, .02); }
+.toc a.active { color: var(--accent); border-left-color: var(--accent); font-weight: 650; }
+.toc a.lvl-1 { color: var(--ink); font-weight: 650; margin-bottom: .3rem; }
+.toc a.lvl-3 { padding-left: 1.45rem; }
 </style>
 </head>
 <body>
@@ -136,6 +148,50 @@ __BODY__
   } catch (err) {
     targets.forEach(function (el) { el.classList.add('failed'); });
   }
+})();
+</script>
+<script>
+(function () {
+  var doc = document.querySelector('main.doc');
+  if (!doc) { return; }
+  var heads = Array.prototype.slice.call(doc.querySelectorAll('h1, h2, h3'));
+  if (heads.length < 2) { return; }
+  var wrap = document.createElement('aside');
+  wrap.className = 'toc';
+  var nav = document.createElement('nav');
+  nav.setAttribute('aria-label', '目录');
+  var list = document.createElement('ol');
+  heads.forEach(function (head, i) {
+    if (!head.id) { head.id = 'sec-' + (i + 1); }
+    var li = document.createElement('li');
+    var link = document.createElement('a');
+    link.href = '#' + head.id;
+    link.textContent = head.textContent.trim();
+    link.className = 'lvl-' + head.tagName.charAt(1);
+    li.appendChild(link);
+    list.appendChild(li);
+  });
+  nav.appendChild(list);
+  wrap.appendChild(nav);
+  document.body.appendChild(wrap);
+
+  var links = Array.prototype.slice.call(list.querySelectorAll('a'));
+  var ticking = false;
+  function sync() {
+    ticking = false;
+    var line = window.scrollY + 96;
+    var current = 0;
+    heads.forEach(function (head, i) {
+      if (head.getBoundingClientRect().top + window.scrollY <= line) { current = i; }
+    });
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) { current = heads.length - 1; }
+    links.forEach(function (link, i) { link.classList.toggle('active', i === current); });
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(sync); }
+  }, { passive: true });
+  window.addEventListener('resize', sync);
+  sync();
 })();
 </script>
 <script>
@@ -199,7 +255,7 @@ p { color: #6d6455; margin: 0; }
 <div>
 <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#b23c26" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="21"/><path d="M15 24.5l6.5 6.5L33.5 17"/></svg>
 <h1>答卷已提交</h1>
-<p>可以关闭本页，回到终端查看答卷路径。</p>
+<p>可以关闭本标签页，答卷已写入磁盘。</p>
 </div>
 </body>
 </html>
@@ -305,6 +361,16 @@ def parse_choice_block(open_line, lang, body, issues, seen_ids):
     return block
 
 
+def fence_hint(info):
+    key = re.sub(r"[^a-z]", "", info.lower())
+    if not key:
+        return None
+    for lang in sorted(BLOCK_LANGS):
+        if re.sub(r"[^a-z]", "", lang) == key:
+            return lang
+    return None
+
+
 def parse_blocks(text):
     lines = text.split("\n")
     blocks = []
@@ -334,8 +400,13 @@ def parse_blocks(text):
             if not closed:
                 issues.append((index + 1, "问题块缺少闭合围栏", "在块末补上一行与开头相同的围栏"))
                 break
-        elif not closed:
-            break
+        else:
+            if not closed:
+                issues.append((index + 1, "代码围栏缺少闭合", "在块末补上一行与开头相同的围栏；不补的话，本行之后的内容不会被当作问卷正文与问题块"))
+                break
+            hint = fence_hint(info)
+            if hint:
+                issues.append((index + 1, "围栏 `%s` 不是题型，整块按正文代码块处理" % info, "要让它成为问题块，围栏改成 `%s`" % hint))
         index = end_line
     if not blocks and not issues:
         issues.append((1, "问卷中没有可识别的问题块", "问题块用 ```single-choice、```multi-choice 或 ```yes-or-no 围栏，首行写 `<id> 问题文本`"))
@@ -559,14 +630,23 @@ def normalize_answers(blocks, payload):
 
 
 def write_answers(qpath, answers, global_comment):
-    pattern = re.compile(r"^" + re.escape(qpath.stem) + r"\.answers\.(\d+)\.json$")
-    numbers = []
-    for entry in qpath.parent.iterdir():
-        match = pattern.match(entry.name)
-        if match and entry.is_file():
-            numbers.append(int(match.group(1)))
-    filename = "%s.answers.%03d.json" % (qpath.stem, max(numbers) + 1 if numbers else 1)
-    target = qpath.parent / filename
+    stem = re.escape(qpath.stem)
+    stamp = time.strftime("%Y%m%d-%H%M%S")
+    base = "%s.answers.%s" % (qpath.stem, stamp)
+    target = qpath.parent / (base + ".json")
+    if target.exists():
+        serial = re.compile(r"^" + stem + r"\.answers\." + re.escape(stamp) + r"\.(\d+)\.json$")
+        numbers = []
+        for entry in qpath.parent.iterdir():
+            match = serial.match(entry.name)
+            if match and entry.is_file():
+                numbers.append(int(match.group(1)))
+        index = max(numbers) + 1 if numbers else 1
+        while True:
+            target = qpath.parent / ("%s.%03d.json" % (base, index))
+            if not target.exists():
+                break
+            index += 1
     data = {
         "questionnaire": str(qpath.resolve()),
         "answers": answers,
