@@ -1,5 +1,26 @@
 # Changelog
 
+## 未定版
+
+- scripts/multi_ask.py：交互页左侧空白区新增标题目录，点击跳转并按滚动位置高亮，窄视口隐藏
+- SKILL.md：定位改为「从容、详细的批量问答」，description、是什么、为什么重写；论述与题面的分工写进入口，题量改为由待决点决定
+- references/organizing-questions.md：主线改为「论述写足」，新增「每题自成一体」「篇幅」两节，删去以压缩为导向的表述
+- references/writing-questions.md：开篇补论述 / 题面 / 选项的分工与自检
+- SPEC.md：新增「问答的价值来自论述充分，而不是题量」
+- examples/release-plan.md：每题之前补齐实质论述，并声明本卷示范的内容
+- SKILL.md：重写为「是什么 / 为什么 / 怎么做」三节，「怎么做」改为按情形指向参考文档的路由并给出阅读顺序；description 补回读触发，正文写明脚本与用户同机的前提
+- references/writing-questions.md、organizing-questions.md：补「论述 / 题面 / 选项」的分工与自检，删去「论述越长判断越差」这类与写足论述相抵的表述
+- references/questionnaire-format.md：新增问卷格式契约——围栏与题型、id 规则、续行与并入规则、渲染边界、拼错围栏的后果、yes-or-no 标签方向
+- references/script-usage.md：新增脚本用法——运行前提、五步流程、三命令、答卷结构、assemble 配对契约、读答卷的处置准则
+- references/organizing-questions.md：新增组织方法——分拣哪些题进卷、什么算已定、依赖链拆批、背景粒度、长卷版式
+- references/writing-questions.md：新增单题写法——判断题命题、选项集合、单候选、承重假设、选项写法
+- examples/release-plan.md：新增示例问卷，替换 skill-design-discussion.md（后者把技能自身已定的设计当作待决问题）；每题前有实质论述，覆盖多级章节、同章多题、mermaid、四种题型与推荐标记
+- scripts/multi_ask.py：推荐选项的彩虹改为固定宽度循环花纹（`background-size: 240px` 平铺），此前渐变按元素宽度铺开、文字只取到第一段橙色
+- scripts/multi_ask.py：答卷文件命名改为「问卷名 + 提交时间点」，同名时才追加三位序号并按同名文件名累积（`<问卷名>.answers.<YYYYMMDD-HHMMSS>[.NNN].json`）
+- scripts/multi_ask.py：围栏未闭合改为校验错误（原为静默截断后文）；非白名单围栏名接近题型名时给出拼写提示
+- SPEC.md：正文组织改为入口路由；方法参考只给判断不立细则；新增操作文档写清边界与失败形态
+- script-contract.md：同步校验清单（围栏闭合、围栏名提示）、yes-or-no 计数措辞、SKILL.md 要点与 license 登记
+
 ## 0.1.0
 
 - 初始化技能开发框架（dev/multi-ask/ 目录、CHANGELOG、SPEC）
